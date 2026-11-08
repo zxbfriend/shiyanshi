@@ -1,0 +1,6635 @@
+{
+  "date": "2026-09-17",
+  "scope": "non-M08 business design; first-pass review, not full semantic acceptance",
+  "sources": [
+    {
+      "name": "01-基本设置.md",
+      "sha256": "01052A803C4F202F0246D8D98E256DA91619F96BEF12CD52426E3E7B62EEFF50"
+    },
+    {
+      "name": "02-实验室设置.md",
+      "sha256": "F0EB5C53414B9F42E465B61DC2FB77AA6C98BFF7D57491BDF6DD83FB8FB0644F"
+    },
+    {
+      "name": "03-资源管理.md",
+      "sha256": "AC3B0F7FCED350CCEA2AFD3E0C311B5BFC30F1A22FDC5475472925DFA8868AB5"
+    },
+    {
+      "name": "04-项目设置①.md",
+      "sha256": "90FFEEA694FBEF4C9AB6848B24BFEBC896584033FEE9C8E801E4C48D5D28FB76"
+    },
+    {
+      "name": "05-数据字典.md",
+      "sha256": "017D83440008393F074761E5B51B1C8FF8B3004504A0DFDD140274F8821A9381"
+    },
+    {
+      "name": "06-工艺设置.md",
+      "sha256": "6DE17652A39197024E73983ED9A537F44C81309AE8513C20A2A0BADB18D9B96D"
+    },
+    {
+      "name": "07-数据管理.md",
+      "sha256": "277EFD5846D6D250441325729BC0DD507DDFBA1035375B74B0C77058748C4A1C"
+    },
+    {
+      "name": "08-检测分析.md",
+      "sha256": "E89DA73A027E439A0186A2EDFC64817666DA0E148D6AE43B1C433409ACD273E8"
+    },
+    {
+      "name": "09-数据签名操作台①.md",
+      "sha256": "FF0605A8719B70EF125AE4A778E612BD62AE131D7182F7FA076BCD16D4D615DC"
+    },
+    {
+      "name": "10-签批记录①.md",
+      "sha256": "A776C3EA09360A085608924BEC9443880A44C24BCE3DD795157648458D71F02E"
+    },
+    {
+      "name": "11-在线数据②.md",
+      "sha256": "B6298005959FE10684127DE97F95DB8E0283271B78CC1E3396AEBE1C901B9B7B"
+    },
+    {
+      "name": "12-离线数据②（3.2）.md",
+      "sha256": "AFC4034D5E0BD98AB0C235266C9B5FF88EB32D2E666FB30A1FF93D2D15DB9110"
+    },
+    {
+      "name": "13-实验室工作台看板.md",
+      "sha256": "0B60D076EE80C8068C9BD66A936142F8092F247A2B6EED85D036D8E7BB0C6FEF"
+    },
+    {
+      "name": "14-反应器详情（3.1）.md",
+      "sha256": "B225255FF3226D0D0CF3186FE64E22EBD45A6CD9288A81844E4082A2283E1A15"
+    },
+    {
+      "name": "15-工作流（3.2）.md",
+      "sha256": "7808CBDAF46586187FFDB6FC72BD9BE0FB0509E2EB1455ED774111F8A02514ED"
+    },
+    {
+      "name": "16-任务队列（3.1）.md",
+      "sha256": "802A15103542748574A5165F4B6C8A9601D6A68B50E1819B41453988B2FC309A"
+    },
+    {
+      "name": "17-流程审批（3.1）.md",
+      "sha256": "D4BE70DB9E12EB68C5E46BFE073F23635353F4EFADBA212F184CA93F08F6F854"
+    },
+    {
+      "name": "18-首页（4.0）.md",
+      "sha256": "F32F2C6BAA9C6DD14713A135F11E889884B1346997B5689D56606156C2407F0B"
+    },
+    {
+      "name": "19-顶部导航栏（4.0）.md",
+      "sha256": "8F3F8A0D89F8C02522BEF2BD0F256F4D12F7ECCF9F7915951E7AA13A81913941"
+    },
+    {
+      "name": "20-个人工作台（4.0）.md",
+      "sha256": "0663770D3C90856A032D07F62AF5AEFFCCF43CD347C6DA84FE7B5C1B1D5748D9"
+    },
+    {
+      "name": "21-字段说明与计算公式（3.1）（3.2）.md",
+      "sha256": "804EEDA1B16B297AA949131428F986D1754896898A4F0EF60AEA871C8EB2D26C"
+    },
+    {
+      "name": "22-补料任务的记录信息（3.1）.md",
+      "sha256": "B004471D3F220389DFFDCC917217E419C82F8BA256A786D3AEA5CF9C3B204A04"
+    },
+    {
+      "name": "23-补糖任务的记录信息（3.1）.md",
+      "sha256": "011168C84E513AD1262B1322F2703DBC8C8D41A01776BAA59F81D7406C0331E3"
+    },
+    {
+      "name": "24-药明方提供原系统参考文档（3.1）（3.2）.md",
+      "sha256": "63D084534A2C5A72796C8A4C0EABE8C4175ACB7C2F89DD7EF9B933122C251CDC"
+    },
+    {
+      "name": "需求澄清决策记录.md",
+      "sha256": "E7389B934A8DC02D4F736EFD7C89AC333EF473F0753DF1828F39526D1E8824FE"
+    },
+    {
+      "name": "index.md",
+      "sha256": "F50AD0DCA02E36222187F0BF357279EABC2DFCCD33B0ADF54E94882A71F0D908"
+    }
+  ],
+  "records": [
+    {
+      "id": "REQ-01-001",
+      "source": "01-基本设置.md",
+      "start": 5,
+      "end": 107,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "场地管理①"
+      ],
+      "textLines": 30,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-002",
+      "source": "01-基本设置.md",
+      "start": 108,
+      "end": 241,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "部门管理①"
+      ],
+      "textLines": 39,
+      "imageRefs": 7,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-003",
+      "source": "01-基本设置.md",
+      "start": 242,
+      "end": 361,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "实验组①"
+      ],
+      "textLines": 32,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-004",
+      "source": "01-基本设置.md",
+      "start": 362,
+      "end": 488,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "功能管理①"
+      ],
+      "textLines": 53,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-005",
+      "source": "01-基本设置.md",
+      "start": 489,
+      "end": 702,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "角色管理①"
+      ],
+      "textLines": 52,
+      "imageRefs": 12,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-006",
+      "source": "01-基本设置.md",
+      "start": 703,
+      "end": 936,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "用户管理①"
+      ],
+      "textLines": 57,
+      "imageRefs": 15,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-007",
+      "source": "01-基本设置.md",
+      "start": 937,
+      "end": 994,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "系统登录⓪"
+      ],
+      "textLines": 19,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-008",
+      "source": "01-基本设置.md",
+      "start": 995,
+      "end": 1039,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "登录记录（4.0）"
+      ],
+      "textLines": 20,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-009",
+      "source": "01-基本设置.md",
+      "start": 1040,
+      "end": 1127,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "操作记录（4.0）"
+      ],
+      "textLines": 29,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-010",
+      "source": "01-基本设置.md",
+      "start": 1128,
+      "end": 1131,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "通知（4.0）"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M09"
+      ],
+      "candidateDesigns": [
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-01-011",
+      "source": "01-基本设置.md",
+      "start": 1132,
+      "end": 1175,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "通知（4.0）",
+        "站内（4.0）"
+      ],
+      "textLines": 17,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M09"
+      ],
+      "candidateDesigns": [
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G05"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-01-012",
+      "source": "01-基本设置.md",
+      "start": 1176,
+      "end": 1214,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "通知（4.0）",
+        "邮件（4.0）"
+      ],
+      "textLines": 18,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M09"
+      ],
+      "candidateDesigns": [
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G05"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-01-013",
+      "source": "01-基本设置.md",
+      "start": 1215,
+      "end": 1251,
+      "path": [
+        "系统设置",
+        "基本设置",
+        "通知（4.0）",
+        "短信（4.0）"
+      ],
+      "textLines": 17,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M09"
+      ],
+      "candidateDesigns": [
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G05"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-02-001",
+      "source": "02-实验室设置.md",
+      "start": 5,
+      "end": 221,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "实验室管理①（3.1）（3.3）"
+      ],
+      "textLines": 65,
+      "imageRefs": 11,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-002",
+      "source": "02-实验室设置.md",
+      "start": 226,
+      "end": 337,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "台式反应器设置①",
+        "台式反应器设置①"
+      ],
+      "textLines": 37,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-003",
+      "source": "02-实验室设置.md",
+      "start": 338,
+      "end": 413,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "台式反应器设置①",
+        "泵的默认连接①"
+      ],
+      "textLines": 30,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-004",
+      "source": "02-实验室设置.md",
+      "start": 414,
+      "end": 609,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "天平设置①"
+      ],
+      "textLines": 38,
+      "imageRefs": 10,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-005",
+      "source": "02-实验室设置.md",
+      "start": 610,
+      "end": 780,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "蠕动泵①"
+      ],
+      "textLines": 42,
+      "imageRefs": 9,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-006",
+      "source": "02-实验室设置.md",
+      "start": 781,
+      "end": 942,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "空气泵①"
+      ],
+      "textLines": 39,
+      "imageRefs": 9,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-007",
+      "source": "02-实验室设置.md",
+      "start": 943,
+      "end": 1099,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "检测设备①"
+      ],
+      "textLines": 45,
+      "imageRefs": 8,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-008",
+      "source": "02-实验室设置.md",
+      "start": 1100,
+      "end": 1297,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "集成反应器①"
+      ],
+      "textLines": 51,
+      "imageRefs": 9,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-009",
+      "source": "02-实验室设置.md",
+      "start": 1298,
+      "end": 1400,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "培养容器①"
+      ],
+      "textLines": 32,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-010",
+      "source": "02-实验室设置.md",
+      "start": 1401,
+      "end": 1555,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "地秤①"
+      ],
+      "textLines": 45,
+      "imageRefs": 9,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-011",
+      "source": "02-实验室设置.md",
+      "start": 1556,
+      "end": 1745,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "设备配置①",
+        "下游设备②"
+      ],
+      "textLines": 54,
+      "imageRefs": 12,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-012",
+      "source": "02-实验室设置.md",
+      "start": 1748,
+      "end": 1883,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "其他设备",
+        "声光报警器①"
+      ],
+      "textLines": 31,
+      "imageRefs": 7,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-013",
+      "source": "02-实验室设置.md",
+      "start": 1884,
+      "end": 2021,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "其他设备",
+        "打印机①"
+      ],
+      "textLines": 30,
+      "imageRefs": 8,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-014",
+      "source": "02-实验室设置.md",
+      "start": 2022,
+      "end": 2148,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "其他设备",
+        "继电器①"
+      ],
+      "textLines": 28,
+      "imageRefs": 7,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-015",
+      "source": "02-实验室设置.md",
+      "start": 2149,
+      "end": 2198,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "离线告警设置   ①（搁置）（在反应器详情页面实现）"
+      ],
+      "textLines": 16,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-016",
+      "source": "02-实验室设置.md",
+      "start": 2199,
+      "end": 2280,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "消耗设置②"
+      ],
+      "textLines": 17,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-017",
+      "source": "02-实验室设置.md",
+      "start": 2281,
+      "end": 2289,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "液瓶配置②"
+      ],
+      "textLines": 6,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-018",
+      "source": "02-实验室设置.md",
+      "start": 2290,
+      "end": 2329,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "液瓶配置②",
+        "取样单元②"
+      ],
+      "textLines": 16,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-019",
+      "source": "02-实验室设置.md",
+      "start": 2330,
+      "end": 2367,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "液瓶配置②",
+        "补料单元②"
+      ],
+      "textLines": 14,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-020",
+      "source": "02-实验室设置.md",
+      "start": 2370,
+      "end": 2409,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "状态告警②",
+        "耗材②"
+      ],
+      "textLines": 15,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-021",
+      "source": "02-实验室设置.md",
+      "start": 2410,
+      "end": 2440,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "状态告警②",
+        "液体②"
+      ],
+      "textLines": 15,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-022",
+      "source": "02-实验室设置.md",
+      "start": 2441,
+      "end": 2487,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "状态告警②",
+        "取样单元②"
+      ],
+      "textLines": 20,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M09",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "09-告警与通知管理/页面与接口契约.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": ["G07"],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-02-023",
+      "source": "02-实验室设置.md",
+      "start": 2488,
+      "end": 2534,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "状态告警②",
+        "补料单元②"
+      ],
+      "textLines": 17,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M09",
+        "M02"
+      ],
+      "candidateDesigns": [
+        "09-告警与通知管理/页面与接口契约.md",
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": ["G07"],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-02-024",
+      "source": "02-实验室设置.md",
+      "start": 2537,
+      "end": 2613,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "告警查询②",
+        "告警规则梳理②"
+      ],
+      "textLines": 64,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-025",
+      "source": "02-实验室设置.md",
+      "start": 2614,
+      "end": 2717,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "告警查询②",
+        "告警查询页面②"
+      ],
+      "textLines": 41,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-026",
+      "source": "02-实验室设置.md",
+      "start": 2718,
+      "end": 2788,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "告警设置②"
+      ],
+      "textLines": 30,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-02-027",
+      "source": "02-实验室设置.md",
+      "start": 2789,
+      "end": 2801,
+      "path": [
+        "系统设置",
+        "实验室设置",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 9,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M02"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-001",
+      "source": "03-资源管理.md",
+      "start": 5,
+      "end": 10,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-002",
+      "source": "03-资源管理.md",
+      "start": 11,
+      "end": 117,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "台式反应器①"
+      ],
+      "textLines": 27,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-003",
+      "source": "03-资源管理.md",
+      "start": 118,
+      "end": 210,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "集成反应器①（4.0调整）"
+      ],
+      "textLines": 30,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-004",
+      "source": "03-资源管理.md",
+      "start": 211,
+      "end": 279,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "培养容器①"
+      ],
+      "textLines": 20,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-005",
+      "source": "03-资源管理.md",
+      "start": 280,
+      "end": 362,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "称重设备①"
+      ],
+      "textLines": 25,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-006",
+      "source": "03-资源管理.md",
+      "start": 363,
+      "end": 366,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "检测设备①"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-007",
+      "source": "03-资源管理.md",
+      "start": 367,
+      "end": 461,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "检测设备①",
+        "检测设备①（3.2）"
+      ],
+      "textLines": 28,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-008",
+      "source": "03-资源管理.md",
+      "start": 462,
+      "end": 593,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "检测设备①",
+        "设备检测项①"
+      ],
+      "textLines": 36,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-009",
+      "source": "03-资源管理.md",
+      "start": 594,
+      "end": 665,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "蠕动泵①"
+      ],
+      "textLines": 23,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-010",
+      "source": "03-资源管理.md",
+      "start": 666,
+      "end": 738,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "空气泵①"
+      ],
+      "textLines": 23,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-011",
+      "source": "03-资源管理.md",
+      "start": 739,
+      "end": 849,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "设备库①",
+        "分析检测仪②"
+      ],
+      "textLines": 29,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-012",
+      "source": "03-资源管理.md",
+      "start": 850,
+      "end": 928,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "校准对象设置②"
+      ],
+      "textLines": 20,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-013",
+      "source": "03-资源管理.md",
+      "start": 929,
+      "end": 959,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "检测规则②"
+      ],
+      "textLines": 7,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-014",
+      "source": "03-资源管理.md",
+      "start": 960,
+      "end": 1055,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "液袋管理②"
+      ],
+      "textLines": 30,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-015",
+      "source": "03-资源管理.md",
+      "start": 1056,
+      "end": 1134,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "补液培养基管理②（3.2）"
+      ],
+      "textLines": 20,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-016",
+      "source": "03-资源管理.md",
+      "start": 1135,
+      "end": 1234,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "耗材管理②"
+      ],
+      "textLines": 32,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-03-017",
+      "source": "03-资源管理.md",
+      "start": 1235,
+      "end": 1239,
+      "path": [
+        "系统设置",
+        "资源管理",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-04-001",
+      "source": "04-项目设置①.md",
+      "start": 5,
+      "end": 259,
+      "path": [
+        "系统设置",
+        "项目设置①",
+        "项目管理①"
+      ],
+      "textLines": 42,
+      "imageRefs": 14,
+      "historical": false,
+      "owners": [
+        "M03",
+        "M04"
+      ],
+      "candidateDesigns": [
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-04-002",
+      "source": "04-项目设置①.md",
+      "start": 260,
+      "end": 612,
+      "path": [
+        "系统设置",
+        "项目设置①",
+        "批次管理①（3.2）"
+      ],
+      "textLines": 80,
+      "imageRefs": 19,
+      "historical": false,
+      "owners": [
+        "M03",
+        "M04"
+      ],
+      "candidateDesigns": [
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-04-003",
+      "source": "04-项目设置①.md",
+      "start": 615,
+      "end": 916,
+      "path": [
+        "系统设置",
+        "项目设置①",
+        "培养ID管理①③",
+        "培养ID基础管理①（3.2）（3.3）"
+      ],
+      "textLines": 79,
+      "imageRefs": 15,
+      "historical": false,
+      "owners": [
+        "M03",
+        "M04"
+      ],
+      "candidateDesigns": [
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-04-004",
+      "source": "04-项目设置①.md",
+      "start": 917,
+      "end": 1032,
+      "path": [
+        "系统设置",
+        "项目设置①",
+        "培养ID管理①③",
+        "培养方案修改③（3.2）"
+      ],
+      "textLines": 55,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M03",
+        "M04"
+      ],
+      "candidateDesigns": [
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-04-005",
+      "source": "04-项目设置①.md",
+      "start": 1043,
+      "end": 1102,
+      "path": [
+        "系统设置",
+        "项目设置①",
+        "培养ID管理①③",
+        "培养方案修改③（3.2）",
+        "补液方案③（3.2）"
+      ],
+      "textLines": 9,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M03",
+        "M04"
+      ],
+      "candidateDesigns": [
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-04-006",
+      "source": "04-项目设置①.md",
+      "start": 1107,
+      "end": 1114,
+      "path": [
+        "系统设置",
+        "项目设置①",
+        "原图核对"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": true,
+      "owners": [
+        "M03",
+        "M04"
+      ],
+      "candidateDesigns": [
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-04-007",
+      "source": "04-项目设置①.md",
+      "start": 1115,
+      "end": 1134,
+      "path": [
+        "系统设置",
+        "项目设置①",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 16,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M03",
+        "M04"
+      ],
+      "candidateDesigns": [
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-05-001",
+      "source": "05-数据字典.md",
+      "start": 3,
+      "end": 18,
+      "path": [
+        "系统设置",
+        "数据字典"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M01"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-05-002",
+      "source": "05-数据字典.md",
+      "start": 19,
+      "end": 104,
+      "path": [
+        "系统设置",
+        "数据字典",
+        "维护字典信息①"
+      ],
+      "textLines": 29,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M01"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-05-003",
+      "source": "05-数据字典.md",
+      "start": 105,
+      "end": 193,
+      "path": [
+        "系统设置",
+        "数据字典",
+        "添加字典数据项①"
+      ],
+      "textLines": 26,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M01"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-001",
+      "source": "06-工艺设置.md",
+      "start": 5,
+      "end": 98,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "工作流管理②"
+      ],
+      "textLines": 26,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-002",
+      "source": "06-工艺设置.md",
+      "start": 99,
+      "end": 102,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-003",
+      "source": "06-工艺设置.md",
+      "start": 103,
+      "end": 108,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）",
+        "新增方案模板（4.0）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-004",
+      "source": "06-工艺设置.md",
+      "start": 109,
+      "end": 143,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）",
+        "新增方案模板（4.0）",
+        "基础信息（4.0）"
+      ],
+      "textLines": 13,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-005",
+      "source": "06-工艺设置.md",
+      "start": 144,
+      "end": 175,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）",
+        "新增方案模板（4.0）",
+        "MFC设置（4.0）"
+      ],
+      "textLines": 12,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-006",
+      "source": "06-工艺设置.md",
+      "start": 176,
+      "end": 208,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）",
+        "新增方案模板（4.0）",
+        "蠕动泵（4.0）"
+      ],
+      "textLines": 13,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-007",
+      "source": "06-工艺设置.md",
+      "start": 209,
+      "end": 303,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）",
+        "新增方案模板（4.0）",
+        "控制回路（4.0）"
+      ],
+      "textLines": 53,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-008",
+      "source": "06-工艺设置.md",
+      "start": 304,
+      "end": 361,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）",
+        "新增方案模板（4.0）",
+        "工艺值（4.0）"
+      ],
+      "textLines": 28,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-009",
+      "source": "06-工艺设置.md",
+      "start": 362,
+      "end": 482,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "Config关联设置方案（4.0）",
+        "模板查询与展示（4.0）"
+      ],
+      "textLines": 30,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-010",
+      "source": "06-工艺设置.md",
+      "start": 485,
+      "end": 646,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "灌注培养基方案模板（4.0）",
+        "新增方案模板（4.0）"
+      ],
+      "textLines": 92,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-011",
+      "source": "06-工艺设置.md",
+      "start": 647,
+      "end": 780,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "灌注培养基方案模板（4.0）",
+        "模板查询与展示（4.0）"
+      ],
+      "textLines": 29,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-012",
+      "source": "06-工艺设置.md",
+      "start": 783,
+      "end": 852,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "取样测样方案模板（4.0）",
+        "新增方案模板（4.0）"
+      ],
+      "textLines": 29,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-013",
+      "source": "06-工艺设置.md",
+      "start": 853,
+      "end": 970,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "取样测样方案模板（4.0）",
+        "模板查询与展示（4.0）"
+      ],
+      "textLines": 28,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-014",
+      "source": "06-工艺设置.md",
+      "start": 971,
+      "end": 977,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）"
+      ],
+      "textLines": 3,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-015",
+      "source": "06-工艺设置.md",
+      "start": 978,
+      "end": 1000,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）"
+      ],
+      "textLines": 4,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-016",
+      "source": "06-工艺设置.md",
+      "start": 1001,
+      "end": 1035,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "基础信息（4.0）"
+      ],
+      "textLines": 13,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-017",
+      "source": "06-工艺设置.md",
+      "start": 1036,
+      "end": 1101,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "取样测样（4.0）"
+      ],
+      "textLines": 22,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-018",
+      "source": "06-工艺设置.md",
+      "start": 1102,
+      "end": 1185,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "PH校准（4.0）"
+      ],
+      "textLines": 29,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-019",
+      "source": "06-工艺设置.md",
+      "start": 1186,
+      "end": 1232,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "PH调整（4.0）"
+      ],
+      "textLines": 20,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-020",
+      "source": "06-工艺设置.md",
+      "start": 1233,
+      "end": 1297,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "通气调整（4.0）"
+      ],
+      "textLines": 33,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-021",
+      "source": "06-工艺设置.md",
+      "start": 1298,
+      "end": 1358,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "搅拌调整（4.0）"
+      ],
+      "textLines": 30,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-022",
+      "source": "06-工艺设置.md",
+      "start": 1359,
+      "end": 1417,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "微泡开启（4.0）"
+      ],
+      "textLines": 29,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-023",
+      "source": "06-工艺设置.md",
+      "start": 1418,
+      "end": 1490,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "温度调整（4.0）"
+      ],
+      "textLines": 27,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-024",
+      "source": "06-工艺设置.md",
+      "start": 1491,
+      "end": 1512,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "新增方案模板（4.0）",
+        "培养结束（4.0）"
+      ],
+      "textLines": 7,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-025",
+      "source": "06-工艺设置.md",
+      "start": 1513,
+      "end": 1635,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "自动控制方案模板（4.0）",
+        "模板查询与展示（4.0）"
+      ],
+      "textLines": 31,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-026",
+      "source": "06-工艺设置.md",
+      "start": 1636,
+      "end": 1639,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "补液方案③"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-027",
+      "source": "06-工艺设置.md",
+      "start": 1640,
+      "end": 1847,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "补液方案③",
+        "新增补液方案模板③（3.2）（3.3）"
+      ],
+      "textLines": 60,
+      "imageRefs": 14,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-028",
+      "source": "06-工艺设置.md",
+      "start": 1848,
+      "end": 1943,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "补液方案③",
+        "模板查询与展示③（3.3）"
+      ],
+      "textLines": 26,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-029",
+      "source": "06-工艺设置.md",
+      "start": 1944,
+      "end": 1984,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "泵速策略③"
+      ],
+      "textLines": 17,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-030",
+      "source": "06-工艺设置.md",
+      "start": 1985,
+      "end": 2168,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "泵速策略③",
+        "新增策略③（3.2）"
+      ],
+      "textLines": 112,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": ["G06"],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-06-031",
+      "source": "06-工艺设置.md",
+      "start": 2169,
+      "end": 2255,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "泵速策略③",
+        "查询与展示③"
+      ],
+      "textLines": 29,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-06-032",
+      "source": "06-工艺设置.md",
+      "start": 2256,
+      "end": 2261,
+      "path": [
+        "系统设置",
+        "工艺设置",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M04",
+        "M03",
+        "M07"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-07-001",
+      "source": "07-数据管理.md",
+      "start": 1,
+      "end": 91,
+      "path": [
+        "数据管理"
+      ],
+      "textLines": 62,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-07-002",
+      "source": "07-数据管理.md",
+      "start": 92,
+      "end": 98,
+      "path": [
+        "数据管理",
+        "原图核对"
+      ],
+      "textLines": 1,
+      "imageRefs": 2,
+      "historical": true,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-001",
+      "source": "08-检测分析.md",
+      "start": 5,
+      "end": 222,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "整体业务说明①（3.3）"
+      ],
+      "textLines": 153,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-002",
+      "source": "08-检测分析.md",
+      "start": 223,
+      "end": 246,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "BGA①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-003",
+      "source": "08-检测分析.md",
+      "start": 247,
+      "end": 259,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "BGA①",
+        "设备筛选及记录查看区域"
+      ],
+      "textLines": 10,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-004",
+      "source": "08-检测分析.md",
+      "start": 260,
+      "end": 368,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "BGA①",
+        "需求队列区域（3.3）"
+      ],
+      "textLines": 52,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-005",
+      "source": "08-检测分析.md",
+      "start": 369,
+      "end": 487,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "BGA①",
+        "检测列表区域（3.3）"
+      ],
+      "textLines": 45,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-006",
+      "source": "08-检测分析.md",
+      "start": 488,
+      "end": 512,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Vicell①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-007",
+      "source": "08-检测分析.md",
+      "start": 513,
+      "end": 520,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Vicell①",
+        "设备筛选及记录查看区域"
+      ],
+      "textLines": 5,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-008",
+      "source": "08-检测分析.md",
+      "start": 521,
+      "end": 603,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Vicell①",
+        "需求队列区域（3.3）"
+      ],
+      "textLines": 53,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-009",
+      "source": "08-检测分析.md",
+      "start": 604,
+      "end": 627,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Vicell①",
+        "检测列表区域（3.3）"
+      ],
+      "textLines": 21,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-010",
+      "source": "08-检测分析.md",
+      "start": 628,
+      "end": 650,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-1 ①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-011",
+      "source": "08-检测分析.md",
+      "start": 651,
+      "end": 654,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-1 ①",
+        "设备筛选及记录查看区域"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-012",
+      "source": "08-检测分析.md",
+      "start": 655,
+      "end": 658,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-1 ①",
+        "需求队列区域"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-013",
+      "source": "08-检测分析.md",
+      "start": 659,
+      "end": 666,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-1 ①",
+        "检测列表区域（3.3）"
+      ],
+      "textLines": 5,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-014",
+      "source": "08-检测分析.md",
+      "start": 667,
+      "end": 690,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-2/OSMO-3①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-015",
+      "source": "08-检测分析.md",
+      "start": 691,
+      "end": 694,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-2/OSMO-3①",
+        "设备筛选及记录查看区域"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-016",
+      "source": "08-检测分析.md",
+      "start": 695,
+      "end": 760,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-2/OSMO-3①",
+        "需求队列区域（3.3）"
+      ],
+      "textLines": 36,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-017",
+      "source": "08-检测分析.md",
+      "start": 761,
+      "end": 770,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "OSMO-2/OSMO-3①",
+        "检测列表区域（3.3）"
+      ],
+      "textLines": 7,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-018",
+      "source": "08-检测分析.md",
+      "start": 771,
+      "end": 794,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-019",
+      "source": "08-检测分析.md",
+      "start": 795,
+      "end": 798,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio①",
+        "设备筛选及记录查看区域"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-020",
+      "source": "08-检测分析.md",
+      "start": 799,
+      "end": 904,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio①",
+        "需求队列区域（3.3）"
+      ],
+      "textLines": 36,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-021",
+      "source": "08-检测分析.md",
+      "start": 905,
+      "end": 978,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio①",
+        "检测列表区域（3.3）"
+      ],
+      "textLines": 17,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-022",
+      "source": "08-检测分析.md",
+      "start": 979,
+      "end": 1003,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio HT①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-023",
+      "source": "08-检测分析.md",
+      "start": 1004,
+      "end": 1007,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio HT①",
+        "设备筛选及记录查看区域"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-024",
+      "source": "08-检测分析.md",
+      "start": 1008,
+      "end": 1102,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio HT①",
+        "需求队列区域（3.3）"
+      ],
+      "textLines": 41,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-025",
+      "source": "08-检测分析.md",
+      "start": 1103,
+      "end": 1186,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "Cedex Bio HT①",
+        "(3)检测列表区域（3.3）"
+      ],
+      "textLines": 27,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-026",
+      "source": "08-检测分析.md",
+      "start": 1187,
+      "end": 1208,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "检测记录①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-027",
+      "source": "08-检测分析.md",
+      "start": 1209,
+      "end": 1247,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "检测记录①",
+        "筛选区域"
+      ],
+      "textLines": 13,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-028",
+      "source": "08-检测分析.md",
+      "start": 1248,
+      "end": 1256,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "检测记录①",
+        "结果展示区域"
+      ],
+      "textLines": 3,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-029",
+      "source": "08-检测分析.md",
+      "start": 1257,
+      "end": 1262,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-08-030",
+      "source": "08-检测分析.md",
+      "start": 1263,
+      "end": 1267,
+      "path": [
+        "数据管理",
+        "检测分析",
+        "原图核对"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": true,
+      "owners": [
+        "M05"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-001",
+      "source": "09-数据签名操作台①.md",
+      "start": 3,
+      "end": 60,
+      "path": [
+        "数据管理",
+        "数据签名操作台①"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-002",
+      "source": "09-数据签名操作台①.md",
+      "start": 61,
+      "end": 72,
+      "path": [
+        "数据管理",
+        "数据签名操作台①",
+        "查询条件①"
+      ],
+      "textLines": 8,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-003",
+      "source": "09-数据签名操作台①.md",
+      "start": 73,
+      "end": 96,
+      "path": [
+        "数据管理",
+        "数据签名操作台①",
+        "检测结果展示①（3.2）"
+      ],
+      "textLines": 20,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-004",
+      "source": "09-数据签名操作台①.md",
+      "start": 97,
+      "end": 222,
+      "path": [
+        "数据管理",
+        "数据签名操作台①",
+        "可执行操作①"
+      ],
+      "textLines": 28,
+      "imageRefs": 5,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-005",
+      "source": "09-数据签名操作台①.md",
+      "start": 223,
+      "end": 258,
+      "path": [
+        "数据管理",
+        "数据签名操作台①",
+        "数据打印①"
+      ],
+      "textLines": 17,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-006",
+      "source": "09-数据签名操作台①.md",
+      "start": 259,
+      "end": 367,
+      "path": [
+        "数据管理",
+        "数据签名操作台①",
+        "数据导出①"
+      ],
+      "textLines": 78,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-007",
+      "source": "09-数据签名操作台①.md",
+      "start": 368,
+      "end": 420,
+      "path": [
+        "数据管理",
+        "数据签名操作台①",
+        "审核日志①"
+      ],
+      "textLines": 14,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-09-008",
+      "source": "09-数据签名操作台①.md",
+      "start": 421,
+      "end": 432,
+      "path": [
+        "数据管理",
+        "数据签名操作台①",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 8,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-10-001",
+      "source": "10-签批记录①.md",
+      "start": 3,
+      "end": 72,
+      "path": [
+        "数据管理",
+        "签批记录①"
+      ],
+      "textLines": 25,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M06"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-11-001",
+      "source": "11-在线数据②.md",
+      "start": 3,
+      "end": 70,
+      "path": [
+        "数据管理",
+        "在线数据②"
+      ],
+      "textLines": 42,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-11-002",
+      "source": "11-在线数据②.md",
+      "start": 71,
+      "end": 139,
+      "path": [
+        "数据管理",
+        "在线数据②",
+        "按时间统计②"
+      ],
+      "textLines": 31,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-11-003",
+      "source": "11-在线数据②.md",
+      "start": 140,
+      "end": 256,
+      "path": [
+        "数据管理",
+        "在线数据②",
+        "按培养统计②"
+      ],
+      "textLines": 62,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-12-001",
+      "source": "12-离线数据②（3.2）.md",
+      "start": 3,
+      "end": 98,
+      "path": [
+        "数据管理",
+        "离线数据②（3.2）"
+      ],
+      "textLines": 41,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M05",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "05-检测与数据签批/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-13-001",
+      "source": "13-实验室工作台看板.md",
+      "start": 3,
+      "end": 7,
+      "path": [
+        "实验室工作台",
+        "实验室工作台看板"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-001",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 3,
+      "end": 6,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-002",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 7,
+      "end": 10,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-003",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 11,
+      "end": 57,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-004",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 58,
+      "end": 144,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "设置与导出操作（3.1）（3.2）"
+      ],
+      "textLines": 47,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-005",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 145,
+      "end": 219,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "设备信息（3.1）（3.2）（3.3）"
+      ],
+      "textLines": 26,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-006",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 220,
+      "end": 292,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "培养基本信息（3.1）（3.2）"
+      ],
+      "textLines": 28,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G02",
+        "G08"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-14-007",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 293,
+      "end": 369,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "重量信息（3.1）（3.2）"
+      ],
+      "textLines": 21,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": ["G09"],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-14-008",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 370,
+      "end": 530,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "残糖确认（3.1）"
+      ],
+      "textLines": 60,
+      "imageRefs": 8,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-009",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 531,
+      "end": 643,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "工艺设置（3.1）（3.2）"
+      ],
+      "textLines": 40,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-010",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 644,
+      "end": 741,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "在线数据（3.1）（3.2）"
+      ],
+      "textLines": 33,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-011",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 742,
+      "end": 790,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "已预约的反应器（3.1）",
+        "离线数据（3.1）"
+      ],
+      "textLines": 23,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-012",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 791,
+      "end": 830,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "空闲的反应器（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G01"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-14-013",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 831,
+      "end": 840,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "空闲的反应器（3.1）",
+        "设置操作（3.1）"
+      ],
+      "textLines": 4,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G01"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-14-014",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 841,
+      "end": 849,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "空闲的反应器（3.1）",
+        "设备信息（3.1）"
+      ],
+      "textLines": 6,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G01"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-14-015",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 850,
+      "end": 868,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "空闲的反应器（3.1）",
+        "在线数据（3.1）（3.2）"
+      ],
+      "textLines": 11,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G01"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-14-016",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 869,
+      "end": 897,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "培养详情（3.1）",
+        "空闲的反应器（3.1）",
+        "关联培养信息（3.1）"
+      ],
+      "textLines": 8,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "P",
+      "gapIds": [
+        "G01"
+      ],
+      "gapDesignStatus": "DESIGN_UPDATED_PENDING_REVIEW"
+    },
+    {
+      "id": "REQ-14-017",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 898,
+      "end": 921,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "生产过程（3.1）"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-018",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 922,
+      "end": 949,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "生产过程（3.1）",
+        "基本信息（3.1）（3.2）"
+      ],
+      "textLines": 10,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-019",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 950,
+      "end": 1099,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "生产过程（3.1）",
+        "生产工作流程（3.1）（3.2）"
+      ],
+      "textLines": 68,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-020",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1102,
+      "end": 1159,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "任务查询及展示操作（3.1）"
+      ],
+      "textLines": 35,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-021",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1162,
+      "end": 1449,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "补液任务（3.1）",
+        "补液任务生成与执行的业务说明（3.1）（3.2）"
+      ],
+      "textLines": 215,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-022",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1450,
+      "end": 1488,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "补液任务（3.1）",
+        "补液任务－新增（3.1）"
+      ],
+      "textLines": 15,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-023",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1489,
+      "end": 1878,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "补液任务（3.1）",
+        "补液任务－详情（3.1）（3.2）"
+      ],
+      "textLines": 106,
+      "imageRefs": 18,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-024",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1879,
+      "end": 1882,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "补液任务（3.1）",
+        "补液任务－刷新（3.1）"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-025",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1883,
+      "end": 1907,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "补液任务（3.1）",
+        "补液任务－复制（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-026",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1908,
+      "end": 1930,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "补液任务（3.1）",
+        "补液任务－日志（3.1）"
+      ],
+      "textLines": 6,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-027",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 1931,
+      "end": 2070,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "任务队列（3.1）",
+        "补液任务（3.1）",
+        "补液任务－执行记录（3.1）（3.2）"
+      ],
+      "textLines": 78,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-028",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 2071,
+      "end": 2100,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "远程服务（3.1）（3.2）"
+      ],
+      "textLines": 11,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-029",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 2101,
+      "end": 2114,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 9,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-14-030",
+      "source": "14-反应器详情（3.1）.md",
+      "start": 2115,
+      "end": 2127,
+      "path": [
+        "实验室工作台",
+        "反应器详情（3.1）",
+        "原图核对"
+      ],
+      "textLines": 1,
+      "imageRefs": 4,
+      "historical": true,
+      "owners": [
+        "M02",
+        "M03",
+        "M04",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "02-实验室与资源管理/详细设计.md",
+        "03-项目与培养管理/详细设计.md",
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-001",
+      "source": "15-工作流（3.2）.md",
+      "start": 3,
+      "end": 55,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）"
+      ],
+      "textLines": 25,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-002",
+      "source": "15-工作流（3.2）.md",
+      "start": 56,
+      "end": 76,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）"
+      ],
+      "textLines": 10,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-003",
+      "source": "15-工作流（3.2）.md",
+      "start": 77,
+      "end": 82,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-中试（3.1）（3.2）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-004",
+      "source": "15-工作流（3.2）.md",
+      "start": 83,
+      "end": 161,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-中试（3.1）（3.2）",
+        "步骤1－开始（3.1）"
+      ],
+      "textLines": 25,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-005",
+      "source": "15-工作流（3.2）.md",
+      "start": 162,
+      "end": 253,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-中试（3.1）（3.2）",
+        "步骤2－模式确认（3.1）（3.2）"
+      ],
+      "textLines": 36,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-006",
+      "source": "15-工作流（3.2）.md",
+      "start": 254,
+      "end": 350,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-中试（3.1）（3.2）",
+        "步骤3－手工连接补料管路和管路预填充（3.1）"
+      ],
+      "textLines": 28,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-007",
+      "source": "15-工作流（3.2）.md",
+      "start": 351,
+      "end": 356,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "更换料液-中试（3.1）（3.2）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-008",
+      "source": "15-工作流（3.2）.md",
+      "start": 357,
+      "end": 411,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "更换料液-中试（3.1）（3.2）",
+        "步骤1－开始（3.1）（3.2）"
+      ],
+      "textLines": 21,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-009",
+      "source": "15-工作流（3.2）.md",
+      "start": 412,
+      "end": 491,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "更换料液-中试（3.1）（3.2）",
+        "步骤2－更换液袋（3.1）（3.2）"
+      ],
+      "textLines": 31,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-010",
+      "source": "15-工作流（3.2）.md",
+      "start": 492,
+      "end": 583,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "更换料液-中试（3.1）（3.2）",
+        "步骤3－补料管路填充（3.1）（3.2）"
+      ],
+      "textLines": 24,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-011",
+      "source": "15-工作流（3.2）.md",
+      "start": 584,
+      "end": 589,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-小试（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-012",
+      "source": "15-工作流（3.2）.md",
+      "start": 590,
+      "end": 650,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-小试（3.1）",
+        "步骤1－开始（3.1）"
+      ],
+      "textLines": 19,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-013",
+      "source": "15-工作流（3.2）.md",
+      "start": 651,
+      "end": 714,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-小试（3.1）",
+        "步骤2－连接补料单元（3.1）（3.2）"
+      ],
+      "textLines": 21,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-014",
+      "source": "15-工作流（3.2）.md",
+      "start": 715,
+      "end": 802,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "连接补料单元-小试（3.1）",
+        "步骤3－补料管路预填充（3.1）（3.2）"
+      ],
+      "textLines": 26,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-015",
+      "source": "15-工作流（3.2）.md",
+      "start": 803,
+      "end": 808,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（其他）-小试（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-016",
+      "source": "15-工作流（3.2）.md",
+      "start": 809,
+      "end": 853,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（其他）-小试（3.1）",
+        "步骤1－开始（3.1）"
+      ],
+      "textLines": 17,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-017",
+      "source": "15-工作流（3.2）.md",
+      "start": 854,
+      "end": 901,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（其他）-小试（3.1）",
+        "步骤2－连接补料单元（3.1）"
+      ],
+      "textLines": 12,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-018",
+      "source": "15-工作流（3.2）.md",
+      "start": 902,
+      "end": 945,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（其他）-小试（3.1）",
+        "步骤3－补料管路填充（3.1）"
+      ],
+      "textLines": 20,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-019",
+      "source": "15-工作流（3.2）.md",
+      "start": 946,
+      "end": 1014,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（其他）-小试（3.1）",
+        "步骤4－补料（3.1）（3.2）"
+      ],
+      "textLines": 19,
+      "imageRefs": 4,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-020",
+      "source": "15-工作流（3.2）.md",
+      "start": 1015,
+      "end": 1024,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（手工）-小试（3.1）"
+      ],
+      "textLines": 5,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-021",
+      "source": "15-工作流（3.2）.md",
+      "start": 1025,
+      "end": 1078,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（手工）-小试（3.1）",
+        "步骤1－开始（3.1）"
+      ],
+      "textLines": 17,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-022",
+      "source": "15-工作流（3.2）.md",
+      "start": 1079,
+      "end": 1143,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "补料（手工）-小试（3.1）",
+        "步骤2-手工补料（3.1）（3.2）"
+      ],
+      "textLines": 19,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-023",
+      "source": "15-工作流（3.2）.md",
+      "start": 1144,
+      "end": 1149,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "液体补充（取样单元）-小试（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-024",
+      "source": "15-工作流（3.2）.md",
+      "start": 1150,
+      "end": 1207,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "液体补充（取样单元）-小试（3.1）",
+        "步骤1－开始（3.1）"
+      ],
+      "textLines": 22,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-025",
+      "source": "15-工作流（3.2）.md",
+      "start": 1208,
+      "end": 1278,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "液体补充（取样单元）-小试（3.1）",
+        "步骤2－更换液瓶（3.1）"
+      ],
+      "textLines": 28,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-026",
+      "source": "15-工作流（3.2）.md",
+      "start": 1279,
+      "end": 1284,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "液体补充（补料单元）-小试（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-027",
+      "source": "15-工作流（3.2）.md",
+      "start": 1285,
+      "end": 1349,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "液体补充（补料单元）-小试（3.1）",
+        "步骤1－开始（3.1）"
+      ],
+      "textLines": 22,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-028",
+      "source": "15-工作流（3.2）.md",
+      "start": 1350,
+      "end": 1413,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "液体补充（补料单元）-小试（3.1）",
+        "步骤2－更换液瓶（3.1）"
+      ],
+      "textLines": 27,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-029",
+      "source": "15-工作流（3.2）.md",
+      "start": 1414,
+      "end": 1514,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "液体补充（补料单元）-小试（3.1）",
+        "补料管路预填充（3.1）"
+      ],
+      "textLines": 30,
+      "imageRefs": 6,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-030",
+      "source": "15-工作流（3.2）.md",
+      "start": 1515,
+      "end": 1520,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "废液清理-小试（3.1）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-031",
+      "source": "15-工作流（3.2）.md",
+      "start": 1521,
+      "end": 1579,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "废液清理-小试（3.1）",
+        "步骤1－开始（3.1）"
+      ],
+      "textLines": 21,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-032",
+      "source": "15-工作流（3.2）.md",
+      "start": 1580,
+      "end": 1655,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "补液（3.1）",
+        "废液清理-小试（3.1）",
+        "步骤2－更换液瓶（3.1）"
+      ],
+      "textLines": 28,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-15-033",
+      "source": "15-工作流（3.2）.md",
+      "start": 1656,
+      "end": 1666,
+      "path": [
+        "实验室工作台",
+        "工作流（3.2）",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 7,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M04",
+        "M07",
+        "M03"
+      ],
+      "candidateDesigns": [
+        "04-工艺与方案管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "03-项目与培养管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-16-001",
+      "source": "16-任务队列（3.1）.md",
+      "start": 5,
+      "end": 42,
+      "path": [
+        "实验室工作台",
+        "任务队列（3.1）",
+        "任务查询及展示操作（3.1）"
+      ],
+      "textLines": 14,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-16-002",
+      "source": "16-任务队列（3.1）.md",
+      "start": 45,
+      "end": 96,
+      "path": [
+        "实验室工作台",
+        "任务队列（3.1）",
+        "任务新增（3.1）",
+        "补液任务－新增（3.1）（3.2）"
+      ],
+      "textLines": 18,
+      "imageRefs": 2,
+      "historical": false,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-17-001",
+      "source": "17-流程审批（3.1）.md",
+      "start": 5,
+      "end": 146,
+      "path": [
+        "实验室工作台",
+        "流程审批（3.1）",
+        "业务说明（3.1）"
+      ],
+      "textLines": 106,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M06"
+      ],
+      "candidateDesigns": [
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-17-002",
+      "source": "17-流程审批（3.1）.md",
+      "start": 147,
+      "end": 339,
+      "path": [
+        "实验室工作台",
+        "流程审批（3.1）",
+        "流程审批（3.1）（3.2）"
+      ],
+      "textLines": 63,
+      "imageRefs": 10,
+      "historical": false,
+      "owners": [
+        "M06"
+      ],
+      "candidateDesigns": [
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-17-003",
+      "source": "17-流程审批（3.1）.md",
+      "start": 340,
+      "end": 346,
+      "path": [
+        "实验室工作台",
+        "流程审批（3.1）",
+        "原图核对"
+      ],
+      "textLines": 1,
+      "imageRefs": 2,
+      "historical": true,
+      "owners": [
+        "M06"
+      ],
+      "candidateDesigns": [
+        "06-流程审批管理/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-18-001",
+      "source": "18-首页（4.0）.md",
+      "start": 1,
+      "end": 29,
+      "path": [
+        "首页（4.0）"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-19-001",
+      "source": "19-顶部导航栏（4.0）.md",
+      "start": 5,
+      "end": 8,
+      "path": [
+        "首页（4.0）",
+        "顶部导航栏（4.0）",
+        "菜单栏（4.0）"
+      ],
+      "textLines": 1,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-19-002",
+      "source": "19-顶部导航栏（4.0）.md",
+      "start": 9,
+      "end": 24,
+      "path": [
+        "首页（4.0）",
+        "顶部导航栏（4.0）",
+        "用户工具栏（4.0）"
+      ],
+      "textLines": 3,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-19-003",
+      "source": "19-顶部导航栏（4.0）.md",
+      "start": 25,
+      "end": 76,
+      "path": [
+        "首页（4.0）",
+        "顶部导航栏（4.0）",
+        "用户工具栏（4.0）",
+        "用户菜单（4.0）"
+      ],
+      "textLines": 15,
+      "imageRefs": 3,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-19-004",
+      "source": "19-顶部导航栏（4.0）.md",
+      "start": 77,
+      "end": 111,
+      "path": [
+        "首页（4.0）",
+        "顶部导航栏（4.0）",
+        "用户工具栏（4.0）",
+        "私信（4.0）"
+      ],
+      "textLines": 14,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-20-001",
+      "source": "20-个人工作台（4.0）.md",
+      "start": 3,
+      "end": 36,
+      "path": [
+        "首页（4.0）",
+        "个人工作台（4.0）"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M05",
+        "M06",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-20-002",
+      "source": "20-个人工作台（4.0）.md",
+      "start": 37,
+      "end": 48,
+      "path": [
+        "首页（4.0）",
+        "个人工作台（4.0）",
+        "个人信息展示（4.0）"
+      ],
+      "textLines": 8,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M05",
+        "M06",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-20-003",
+      "source": "20-个人工作台（4.0）.md",
+      "start": 49,
+      "end": 54,
+      "path": [
+        "首页（4.0）",
+        "个人工作台（4.0）",
+        "今日实验室概览（4.0）"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M05",
+        "M06",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-20-004",
+      "source": "20-个人工作台（4.0）.md",
+      "start": 55,
+      "end": 74,
+      "path": [
+        "首页（4.0）",
+        "个人工作台（4.0）",
+        "今日实验室概览（4.0）",
+        "培养概况（4.0）"
+      ],
+      "textLines": 17,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M05",
+        "M06",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-20-005",
+      "source": "20-个人工作台（4.0）.md",
+      "start": 75,
+      "end": 101,
+      "path": [
+        "首页（4.0）",
+        "个人工作台（4.0）",
+        "今日实验室概览（4.0）",
+        "任务队列（4.0）"
+      ],
+      "textLines": 19,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M05",
+        "M06",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-20-006",
+      "source": "20-个人工作台（4.0）.md",
+      "start": 102,
+      "end": 124,
+      "path": [
+        "首页（4.0）",
+        "个人工作台（4.0）",
+        "今日实验室概览（4.0）",
+        "待办事项（4.0）"
+      ],
+      "textLines": 21,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M01",
+        "M05",
+        "M06",
+        "M07",
+        "M09"
+      ],
+      "candidateDesigns": [
+        "01-系统管理/详细设计.md",
+        "05-检测与数据签批/详细设计.md",
+        "06-流程审批管理/详细设计.md",
+        "07-补液运行与任务执行/详细设计.md",
+        "09-告警与通知管理/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-21-001",
+      "source": "21-字段说明与计算公式（3.1）（3.2）.md",
+      "start": 3,
+      "end": 88,
+      "path": [
+        "补液任务相关总结（3.1）",
+        "字段说明与计算公式（3.1）（3.2）"
+      ],
+      "textLines": 60,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-21-002",
+      "source": "21-字段说明与计算公式（3.1）（3.2）.md",
+      "start": 89,
+      "end": 94,
+      "path": [
+        "补液任务相关总结（3.1）",
+        "字段说明与计算公式（3.1）（3.2）",
+        "✂️ 已剔除的删除线内容"
+      ],
+      "textLines": 2,
+      "imageRefs": 0,
+      "historical": true,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-22-001",
+      "source": "22-补料任务的记录信息（3.1）.md",
+      "start": 3,
+      "end": 19,
+      "path": [
+        "补液任务相关总结（3.1）",
+        "补料任务的记录信息（3.1）"
+      ],
+      "textLines": 14,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-22-002",
+      "source": "22-补料任务的记录信息（3.1）.md",
+      "start": 20,
+      "end": 24,
+      "path": [
+        "补液任务相关总结（3.1）",
+        "补料任务的记录信息（3.1）",
+        "原图核对"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": true,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-23-001",
+      "source": "23-补糖任务的记录信息（3.1）.md",
+      "start": 3,
+      "end": 13,
+      "path": [
+        "补液任务相关总结（3.1）",
+        "补糖任务的记录信息（3.1）"
+      ],
+      "textLines": 8,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "U",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-23-002",
+      "source": "23-补糖任务的记录信息（3.1）.md",
+      "start": 14,
+      "end": 18,
+      "path": [
+        "补液任务相关总结（3.1）",
+        "补糖任务的记录信息（3.1）",
+        "原图核对"
+      ],
+      "textLines": 1,
+      "imageRefs": 1,
+      "historical": true,
+      "owners": [
+        "M07"
+      ],
+      "candidateDesigns": [
+        "07-补液运行与任务执行/详细设计.md"
+      ],
+      "status": "R",
+      "gapIds": []
+    },
+    {
+      "id": "REQ-24-001",
+      "source": "24-药明方提供原系统参考文档（3.1）（3.2）.md",
+      "start": 1,
+      "end": 45,
+      "path": [
+        "药明方提供原系统参考文档（3.1）（3.2）"
+      ],
+      "textLines": 40,
+      "imageRefs": 0,
+      "historical": false,
+      "owners": [],
+      "candidateDesigns": [],
+      "status": "R",
+      "gapIds": []
+    }
+  ],
+  "otherHeadings": [
+    {
+      "source": "01-基本设置.md",
+      "line": 1,
+      "level": 1,
+      "title": "系统设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "01-基本设置.md",
+      "line": 3,
+      "level": 2,
+      "title": "基本设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "02-实验室设置.md",
+      "line": 1,
+      "level": 1,
+      "title": "系统设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "02-实验室设置.md",
+      "line": 3,
+      "level": 2,
+      "title": "实验室设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "02-实验室设置.md",
+      "line": 222,
+      "level": 3,
+      "title": "设备配置①",
+      "classification": "目录容器"
+    },
+    {
+      "source": "02-实验室设置.md",
+      "line": 224,
+      "level": 4,
+      "title": "台式反应器设置①",
+      "classification": "目录容器"
+    },
+    {
+      "source": "02-实验室设置.md",
+      "line": 1746,
+      "level": 3,
+      "title": "其他设备",
+      "classification": "目录容器"
+    },
+    {
+      "source": "02-实验室设置.md",
+      "line": 2368,
+      "level": 3,
+      "title": "状态告警②",
+      "classification": "目录容器"
+    },
+    {
+      "source": "02-实验室设置.md",
+      "line": 2535,
+      "level": 3,
+      "title": "告警查询②",
+      "classification": "目录容器"
+    },
+    {
+      "source": "03-资源管理.md",
+      "line": 1,
+      "level": 1,
+      "title": "系统设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "03-资源管理.md",
+      "line": 3,
+      "level": 2,
+      "title": "资源管理",
+      "classification": "目录容器"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1,
+      "level": 1,
+      "title": "系统设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 3,
+      "level": 2,
+      "title": "项目设置①",
+      "classification": "目录容器"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 613,
+      "level": 3,
+      "title": "培养ID管理①③",
+      "classification": "目录容器"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1033,
+      "level": 5,
+      "title": "Config关联设置（待后续补充）",
+      "classification": "无直接正文，待核对占位"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1035,
+      "level": 5,
+      "title": "灌注培养基方案（待后续补充）",
+      "classification": "无直接正文，待核对占位"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1037,
+      "level": 5,
+      "title": "自动控制方案（待后续补充）",
+      "classification": "无直接正文，待核对占位"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1039,
+      "level": 5,
+      "title": "取样方案（待后续补充）",
+      "classification": "无直接正文，待核对占位"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1041,
+      "level": 5,
+      "title": "测样方案（待后续补充）",
+      "classification": "无直接正文，待核对占位"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1103,
+      "level": 5,
+      "title": "澄清方案（待后续补充）",
+      "classification": "无直接正文，待核对占位"
+    },
+    {
+      "source": "04-项目设置①.md",
+      "line": 1105,
+      "level": 5,
+      "title": "结束策略（待后续补充）",
+      "classification": "无直接正文，待核对占位"
+    },
+    {
+      "source": "05-数据字典.md",
+      "line": 1,
+      "level": 1,
+      "title": "系统设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "06-工艺设置.md",
+      "line": 1,
+      "level": 1,
+      "title": "系统设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "06-工艺设置.md",
+      "line": 3,
+      "level": 2,
+      "title": "工艺设置",
+      "classification": "目录容器"
+    },
+    {
+      "source": "06-工艺设置.md",
+      "line": 483,
+      "level": 3,
+      "title": "灌注培养基方案模板（4.0）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "06-工艺设置.md",
+      "line": 781,
+      "level": 3,
+      "title": "取样测样方案模板（4.0）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "08-检测分析.md",
+      "line": 1,
+      "level": 1,
+      "title": "数据管理",
+      "classification": "目录容器"
+    },
+    {
+      "source": "08-检测分析.md",
+      "line": 3,
+      "level": 2,
+      "title": "检测分析",
+      "classification": "目录容器"
+    },
+    {
+      "source": "09-数据签名操作台①.md",
+      "line": 1,
+      "level": 1,
+      "title": "数据管理",
+      "classification": "目录容器"
+    },
+    {
+      "source": "10-签批记录①.md",
+      "line": 1,
+      "level": 1,
+      "title": "数据管理",
+      "classification": "目录容器"
+    },
+    {
+      "source": "11-在线数据②.md",
+      "line": 1,
+      "level": 1,
+      "title": "数据管理",
+      "classification": "目录容器"
+    },
+    {
+      "source": "12-离线数据②（3.2）.md",
+      "line": 1,
+      "level": 1,
+      "title": "数据管理",
+      "classification": "目录容器"
+    },
+    {
+      "source": "13-实验室工作台看板.md",
+      "line": 1,
+      "level": 1,
+      "title": "实验室工作台",
+      "classification": "目录容器"
+    },
+    {
+      "source": "14-反应器详情（3.1）.md",
+      "line": 1,
+      "level": 1,
+      "title": "实验室工作台",
+      "classification": "目录容器"
+    },
+    {
+      "source": "14-反应器详情（3.1）.md",
+      "line": 1100,
+      "level": 3,
+      "title": "任务队列（3.1）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "14-反应器详情（3.1）.md",
+      "line": 1160,
+      "level": 4,
+      "title": "补液任务（3.1）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "15-工作流（3.2）.md",
+      "line": 1,
+      "level": 1,
+      "title": "实验室工作台",
+      "classification": "目录容器"
+    },
+    {
+      "source": "16-任务队列（3.1）.md",
+      "line": 1,
+      "level": 1,
+      "title": "实验室工作台",
+      "classification": "目录容器"
+    },
+    {
+      "source": "16-任务队列（3.1）.md",
+      "line": 3,
+      "level": 2,
+      "title": "任务队列（3.1）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "16-任务队列（3.1）.md",
+      "line": 43,
+      "level": 3,
+      "title": "任务新增（3.1）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "17-流程审批（3.1）.md",
+      "line": 1,
+      "level": 1,
+      "title": "实验室工作台",
+      "classification": "目录容器"
+    },
+    {
+      "source": "17-流程审批（3.1）.md",
+      "line": 3,
+      "level": 2,
+      "title": "流程审批（3.1）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "19-顶部导航栏（4.0）.md",
+      "line": 1,
+      "level": 1,
+      "title": "首页（4.0）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "19-顶部导航栏（4.0）.md",
+      "line": 3,
+      "level": 2,
+      "title": "顶部导航栏（4.0）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "20-个人工作台（4.0）.md",
+      "line": 1,
+      "level": 1,
+      "title": "首页（4.0）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "21-字段说明与计算公式（3.1）（3.2）.md",
+      "line": 1,
+      "level": 1,
+      "title": "补液任务相关总结（3.1）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "22-补料任务的记录信息（3.1）.md",
+      "line": 1,
+      "level": 1,
+      "title": "补液任务相关总结（3.1）",
+      "classification": "目录容器"
+    },
+    {
+      "source": "23-补糖任务的记录信息（3.1）.md",
+      "line": 1,
+      "level": 1,
+      "title": "补液任务相关总结（3.1）",
+      "classification": "目录容器"
+    }
+  ],
+  "gapUpdates": [
+    {"id":"G06","status":"DESIGN_UPDATED_PENDING_REVIEW","priority":"P1","date":"2026-09-17","runtimeValidation":"NOT_RUN"},
+    {"id":"G07","status":"DESIGN_UPDATED_PENDING_REVIEW","priority":"P2","date":"2026-09-17","runtimeValidation":"NOT_RUN"},
+    {"id":"G08","status":"DESIGN_UPDATED_PENDING_REVIEW","priority":"P1","date":"2026-09-17","runtimeValidation":"NOT_RUN"},
+    {"id":"G09","status":"DESIGN_UPDATED_PENDING_REVIEW","priority":"P1","date":"2026-09-17","runtimeValidation":"NOT_RUN"},
+    {
+      "id": "G01",
+      "status": "DESIGN_UPDATED_PENDING_REVIEW",
+      "date": "2026-09-17",
+      "runtimeValidation": "NOT_RUN"
+    },
+    {
+      "id": "G02",
+      "status": "DESIGN_UPDATED_PENDING_REVIEW",
+      "date": "2026-09-17",
+      "runtimeValidation": "NOT_RUN"
+    },
+    {
+      "id": "G03",
+      "status": "DESIGN_UPDATED_PENDING_REVIEW",
+      "date": "2026-09-17",
+      "runtimeValidation": "NOT_RUN"
+    },
+    {
+      "id": "G04",
+      "status": "DESIGN_UPDATED_PENDING_REVIEW",
+      "date": "2026-09-17",
+      "runtimeValidation": "NOT_RUN"
+    },
+    {
+      "id": "G05",
+      "status": "DESIGN_UPDATED_PENDING_REVIEW",
+      "date": "2026-09-17",
+      "runtimeValidation": "NOT_RUN"
+    }
+  ],
+  "reviewRounds": [
+    {"id":"DEVSTART-G06-G09","date":"2026-09-17","report":"00-非M08开发启动交付.md","scope":"G06-G09 target contract closure; runtime not run; no full acceptance claim","designStatus":"DESIGN_UPDATED_PENDING_REVIEW","runtimeValidation":"NOT_RUN"},
+    {
+      "id":"COVERAGE-R3",
+      "date":"2026-09-17",
+      "report":"00-非M08第三轮覆盖审查.md",
+      "scope":"additional text and cross-module contract review; not full atomic or image acceptance",
+      "newOpenGaps":["G06","G07","G08","G09"],
+      "runtimeValidation":"NOT_RUN",
+      "fullCoverageAcceptance":"NOT_COMPLETE",
+      "imageReview":"NOT_FULLY_REVERIFIED",
+      "checkpoints":[
+        {"id":"R3-01","source":"REQ-06-030","scope":"inclusive backflow threshold across M04/M07","status":"GAP_OPEN","gapId":"G06"},
+        {"id":"R3-02","source":"REQ-02-022","scope":"sampling unit and liquid filters","status":"GAP_OPEN","gapId":"G07"},
+        {"id":"R3-03","source":"REQ-02-023","scope":"feeding unit and liquid filters","status":"GAP_OPEN","gapId":"G07"},
+        {"id":"R3-04","source":"REQ-14-006","scope":"B05-M approval branch request and response","status":"GAP_OPEN","gapId":"G08"},
+        {"id":"R3-05","source":"REQ-14-007","scope":"initial culture weight write and approval ownership","status":"GAP_OPEN","gapId":"G09"}
+      ]
+    },
+    {
+      "id": "BASIC-R2",
+      "date": "2026-09-17",
+      "scope": "selected textual checkpoints only; no whole-section acceptance",
+      "checkpoints": [
+        {
+          "id": "BAS-01",
+          "source": "REQ-01-001",
+          "scope": "场地名称/编码长度50、同级名称与有效记录校验",
+          "evidence": "M01 §15.1、VenueSave、ORG01—06/19、S-C01/03",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-02",
+          "source": "REQ-01-002",
+          "scope": "部门层级、默认排序1及下级引用删除保护",
+          "evidence": "M01 §15.1、DeptSave、ORG07—11/17/18/20、S-C02/03",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-03",
+          "source": "REQ-01-003",
+          "scope": "实验组多人负责人/成员、部门选择及去重人数",
+          "evidence": "M01 §15.1、GroupSave/Detail、ORG12—16/21/22、S-C05/06",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-04",
+          "source": "REQ-01-004",
+          "scope": "M/C/F差异字段、停用父节点后URL/API拒绝",
+          "evidence": "M01 §15.2、MenuSave、ACL01—04/11、S-C07",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-05",
+          "source": "REQ-01-005",
+          "scope": "多数据范围并集、本人=创建或负责、实验室授权交集",
+          "evidence": "M01 §15.2、RoleSave、ACL06/07/13、S-C08/09",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-06",
+          "source": "REQ-01-005",
+          "scope": "关联用户含停用用户时禁止角色禁用/删除",
+          "evidence": "M01 §15.2、ACL08/10、S-C10",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-07",
+          "source": "REQ-01-005",
+          "scope": "角色成员按关联时间排序，未知关联时间不伪造",
+          "evidence": "M01 UI15、ACL09、RoleMember",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-08",
+          "source": "REQ-01-006",
+          "scope": "账号新建格式、账号只读、显示名可由有权管理员改",
+          "evidence": "M01 §15.3、UserSave、USR03/04、S-C11",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-09",
+          "source": "REQ-01-006",
+          "scope": "用户保存联动角色/组/授权，禁用确认取消则全部不保存",
+          "evidence": "M01 §15.3、USR03/04、S-C12/13",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-10",
+          "source": "REQ-01-006",
+          "scope": "站内通知不可取消、邮箱手机号及授权候选受限",
+          "evidence": "M01 UserSave/Profile、USR07/09、S-C15；M02 Q04/Q05/Q09",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-11",
+          "source": "REQ-01-006",
+          "scope": "登录范围与次数过滤、强制下线版本防误踢新会话",
+          "evidence": "M01 USR01/10、UserRow、S-C14",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-12",
+          "source": "REQ-01-007",
+          "scope": "登录第7错锁定、改密第6错锁定、15分钟窗口与30分钟锁定",
+          "evidence": "M01 §2.1及C01；不同入口阈值不混用",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-13",
+          "source": "REQ-01-007",
+          "scope": "密码按最新10—18位、四类字符、连续限制及历史防重",
+          "evidence": "M01 §2.2、R04、API03/05；原10—16位被澄清覆盖",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-14",
+          "source": "REQ-01-007",
+          "scope": "首次/重置后强制改密、到期分支、单会话与旧logout保护",
+          "evidence": "M01 §2.3、UI02/03、API02—04/10、SEQ03",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-15",
+          "source": "REQ-01-008",
+          "scope": "管理员登录日志过滤/字段、PC/MAC未知与挑战不计登录成功",
+          "evidence": "M01 LoginLog、LOG01、§22、C16/S-C19",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-16",
+          "source": "REQ-01-009",
+          "scope": "操作日志管理员详情及请求/返回/变更证据脱敏",
+          "evidence": "M01 OperLog/OperDetail、LOG02/03、S-C19/20",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-17",
+          "source": "REQ-01-011",
+          "scope": "站内收件人和标题/内容独立联合筛选",
+          "evidence": "M09 API17参数由G05补齐",
+          "status": "DESIGN_UPDATED_PENDING_REVIEW"
+        },
+        {
+          "id": "BAS-18",
+          "source": "REQ-01-012",
+          "scope": "邮件用户名/显示名/邮箱与标题/内容独立联合筛选",
+          "evidence": "M09 API17参数及安全候选筛选由G05补齐",
+          "status": "DESIGN_UPDATED_PENDING_REVIEW"
+        },
+        {
+          "id": "BAS-19",
+          "source": "REQ-01-013",
+          "scope": "短信用户名/显示名/手机号与正文独立联合筛选",
+          "evidence": "M09 API17参数及安全候选筛选由G05补齐",
+          "status": "DESIGN_UPDATED_PENDING_REVIEW"
+        },
+        {
+          "id": "BAS-20",
+          "source": "REQ-01-011",
+          "scope": "站内标已读整批鉴权、首次已读时间和99+本人未读",
+          "evidence": "M09 API18/19、通知DTO、JSON命令结果",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-21",
+          "source": "REQ-01-012",
+          "scope": "外部通知FAILED才重发，UNKNOWN查单不盲重发",
+          "evidence": "M09 API20/21、投递恢复契约",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-22",
+          "source": "REQ-02-001",
+          "scope": "实验室字段/IPv4/端口及类型保留、按修改时间筛选",
+          "evidence": "M02 §8.1/8.2、LAB01—04、Q17/LAB-C01",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-23",
+          "source": "REQ-02-001",
+          "scope": "实验室禁用合并直接授权与负责人，未结束业务阻断",
+          "evidence": "M02 Q13、LAB05/06、LAB-C03/04；M03提供业务引用事实",
+          "status": "DESIGN_MATCHED"
+        },
+        {
+          "id": "BAS-24",
+          "source": "REQ-02-001",
+          "scope": "实验室授权用户按来源去重及关联时间排序",
+          "evidence": "M02 LAB-UI03、Q12、LAB07",
+          "status": "DESIGN_MATCHED"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SLMS Workflow 各步骤表字段操作说明</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #fff;
+      --text: #1a2332;
+      --muted: #5a6a7a;
+      --line: #e2e8f0;
+      --accent: #0d6e6e;
+      --accent-soft: #e6f4f4;
+      --insert: #0f766e;
+      --insert-bg: #ecfdf5;
+      --update: #b45309;
+      --update-bg: #fffbeb;
+      --delete: #b91c1c;
+      --delete-bg: #fef2f2;
+      --nav-w: 280px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    nav {
+      width: var(--nav-w);
+      flex-shrink: 0;
+      background: #0f2a2a;
+      color: #dce8e8;
+      padding: 20px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    nav h1 {
+      font-size: 15px;
+      margin: 0 16px 12px;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    nav .sub {
+      margin: 0 16px 18px;
+      font-size: 12px;
+      color: #8fb3b3;
+    }
+    nav a {
+      display: block;
+      padding: 8px 16px;
+      color: #c5dede;
+      text-decoration: none;
+      font-size: 13px;
+      border-left: 3px solid transparent;
+    }
+    nav a:hover, nav a.active {
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      border-left-color: #3dbdbd;
+    }
+    nav .sec {
+      margin: 16px 16px 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6a9090;
+    }
+    main {
+      flex: 1;
+      padding: 28px 36px 80px;
+      max-width: 1100px;
+    }
+    header.page {
+      margin-bottom: 28px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    header.page h1 { margin: 0 0 8px; font-size: 26px; }
+    header.page p { margin: 0; color: var(--muted); font-size: 14px; }
+    section.step {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 22px 24px 26px;
+      margin-bottom: 22px;
+      scroll-margin-top: 16px;
+    }
+    section.step h2 {
+      margin: 0 0 6px;
+      font-size: 20px;
+      color: var(--accent);
+    }
+    section.step .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    section.step .meta code {
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    h3 {
+      margin: 18px 0 8px;
+      font-size: 15px;
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+    }
+    p.desc { margin: 0 0 10px; font-size: 14px; color: var(--muted); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 8px 0 4px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: #f8fafc;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    td.table-name { font-family: Consolas, "Courier New", monospace; font-weight: 600; white-space: nowrap; }
+    td.fields { font-family: Consolas, "Courier New", monospace; font-size: 12px; }
+    .op {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+    }
+    .op-i { color: var(--insert); background: var(--insert-bg); }
+    .op-u { color: var(--update); background: var(--update-bg); }
+    .op-d { color: var(--delete); background: var(--delete-bg); }
+    .note {
+      background: #f8fafc;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .note strong { color: var(--text); }
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin: 12px 0 8px;
+    }
+    .overview-grid .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+    .overview-grid .card b { display: block; margin-bottom: 4px; color: var(--accent); }
+    .status-flow {
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      background: #0f2a2a;
+      color: #d4eeee;
+      padding: 12px 14px;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    @media (max-width: 900px) {
+      .layout { flex-direction: column; }
+      nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        max-height: 220px;
+      }
+      main { padding: 18px 14px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav>
+      <h1>Workflow 表字段说明</h1>
+      <p class="sub">按步骤梳理 Start / Mid / Finish / Cancel 对库表字段的操作</p>
+      <div class="sec">总览</div>
+      <a href="#overview">总览与状态流转</a>
+      <a href="#common">公共表约定</a>
+      <div class="sec">业务步骤</div>
+      <a href="#s1">1. Start Batch</a>
+      <a href="#s2">2. Inoculation</a>
+      <a href="#s3">3. Feeding Unit Connection</a>
+      <a href="#s4">4. Feeding (Other)</a>
+      <a href="#s5">5. Feeding (Manual)</a>
+      <a href="#s6">6. Sampling (Manual)</a>
+      <a href="#s7">7. Supply Liquid (Sampling)</a>
+      <a href="#s8">8. Supply Liquid (Feeding)</a>
+      <a href="#s9">9. Waste Clean</a>
+      <a href="#s10">10. Material Import</a>
+      <a href="#s11">11. Complete Batch</a>
+    </nav>
+
+    <main>
+      <header class="page">
+        <h1>SLMS Workflow 各步骤 · 表 / 字段操作说明</h1>
+        <p>
+          前端目录：<code>app/views/bio/dashboard/workflow</code>；
+          后端：<code>WorkflowController</code> + <code>WorkflowService</code>。
+          下文按页面步骤列出对数据库表字段的 INSERT / UPDATE / 软删操作。
+        </p>
+      </header>
+
+      <!-- OVERVIEW -->
+      <section class="step" id="overview">
+        <h2>总览与状态流转</h2>
+        <p class="desc">Workflow 为左侧导航自由选择（非强制线性向导）。核心枢纽是 <code>CDP_Workflow</code>，培养生命周期落在 <code>CDP_Batch.Status</code>。</p>
+
+        <div class="overview-grid">
+          <div class="card"><b>1 Start Batch</b>WorkflowType=1 · 建批并启动培养</div>
+          <div class="card"><b>2 Inoculation</b>WorkflowType=3 · 接种</div>
+          <div class="card"><b>3 Feeding Unit Connection</b>WorkflowType=5 · 补料单元连接</div>
+          <div class="card"><b>4 Feeding (Other)</b>WorkflowType=17 · 其他补料</div>
+          <div class="card"><b>5 Feeding (Manual)</b>WorkflowType=19 · 手动补料</div>
+          <div class="card"><b>6 Sampling (Manual)</b>WorkflowType=21 · 手动取样</div>
+          <div class="card"><b>7 Supply Liquid Sampling</b>WorkflowType=7 · 取样单元换液</div>
+          <div class="card"><b>8 Supply Liquid Feeding</b>WorkflowType=9 · 补料单元换液</div>
+          <div class="card"><b>9 Waste Clean</b>WorkflowType=11 · 废液清理</div>
+          <div class="card"><b>10 Material Import</b>WorkflowType=13 · 物料导入</div>
+          <div class="card"><b>11 Complete Batch</b>WorkflowType=15 · 结束培养</div>
+        </div>
+
+        <h3>CDP_Batch.Status 主线</h3>
+        <div class="status-flow">
+          1 New → 4 DisinfectantFill → 5 StartBatch → 7 Inoculation → 9 Producting → 10 Harvesting → 11 Completed &nbsp;|&nbsp; 99 Canceled
+        </div>
+        <div class="note" style="margin-top:12px">
+          <strong>体积约定：</strong>前端多为升(L)，入库时通常 ×1000 存为毫升。<br/>
+          <strong>流程约定：</strong>Start 插入 <code>CDP_Workflow</code>（+ 子表）；Finish 写 <code>Creation_FinishBy / Creation_FinishTime</code>；Cancel 多为 <code>IsDelete=true</code> + 子表 <code>Status=99</code>（物料导入例外）。
+        </div>
+      </section>
+
+      <section class="step" id="common">
+        <h2>公共表约定</h2>
+        <table>
+          <thead>
+            <tr><th>表</th><th>关键字段</th><th>说明</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td class="fields">WorkflowType, UserID, LocCombinationID, Created_by, Creation_time, Creation_FinishBy, Creation_FinishTime, IsDelete, IsSatellite</td>
+              <td>所有步骤的流程主表</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td class="fields">Status, CurrentVolume, StartBatch*, Inoculation*, Supplementary*, Complete*, Cancel*</td>
+              <td>培养批次生命周期</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td class="fields">Quantity, ItemStatus, BatchId, ItemSerialNumber</td>
+              <td>库存条码；Finish 时常经 WarehouseService 插入/替换/退役</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Location_Combinations / CDP_Location_Controls / CDP_LabDeviceSub</td>
+              <td class="fields">Status, ItemDefID, Speed 等</td>
+              <td>工位、控件、泵子设备配置</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note">
+          <strong>ItemStatus 常见值：</strong>0 在用空闲 · 2 反应器已绑定 · 28 已替换下架 · 30 培养结束后退役<br/>
+          <strong>旁路服务：</strong><code>_taskQueueService.InsertTaskQueueEntitys</code> 写操作 OP；硬件泵/消毒/冲洗多走 CoreService，不直接写业务主表。
+        </div>
+      </section>
+
+      <!-- 1 START BATCH -->
+      <section class="step" id="s1">
+        <h2>1. Start Batch</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 1</span>
+          页面：<code>startBatch/</code> · 服务：SaveWorkflow / AddStartBatch / SetBatchStatus / FinishStartBatch / CancelStartBatch / LastStep
+        </div>
+        <p class="desc">选择反应器工位，建批次、扫条码、消毒/冲洗确认后正式启动培养。</p>
+
+        <h3>Start — 创建流程壳</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=1, UserID, LocCombinationID, Created_by, Creation_time=now, IsDelete=false</td>
+              <td>完成字段为空</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Mid — 添加批次 AddStartBatch</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">IsSatellite</td>
+              <td>是否卫星批</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowID, LocCombinationID, ReactorSerialNo(=Barcode), BatchCode, BatchName, MediumVolume/CurrentVolume=Volume×1000, MediumLotNo, MediumName, MediumTemp, StartTime=now, <b>Status=1</b>, StartBatchTime, StartBatchUser, ProjectID, PreBatchID, CultureID, RefillVolume/RefillVolumeAtf×1000</td>
+              <td>草稿批次</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_PerfusionSure</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">ATFStatus, ScaleStatus, BasicMediumStatus, ControllerStatus, ATFControlStatus, ReactorStatus, ATFPillarStatus, PumpStatus, CreateTime</td>
+              <td>灌注确认项（若适用）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Mid — 消毒管线 SetBatchStatus</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=4</b> (DisinfectantPipelineFilling)</td>
+              <td>进入消毒管线灌充阶段</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishStartBatch</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime=now</td>
+              <td>关闭流程</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">StartBatchTime, StartBatchUser, <b>Status=5</b> (StartBatch)</td>
+              <td>正式启动培养</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_StartQueue</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">BatchID, Status=3</td>
+              <td>若存在 Status=1 的设备排队</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">反应器: ItemStatus=2, Quantity=Medium+Cells, BatchId；取样/补料桶: ItemStatus=0</td>
+              <td>经 WarehouseService.InsertStartBatchItemSerials</td>
+            </tr>
+            <tr>
+              <td class="table-name">Batch OP / TaskQueue</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">OP=CULTUREFLUIDFILLING, Mode=5, Status=5 + MEDIUM* 参数</td>
+              <td>经 taskQueueService</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note">Finish 后调用 <code>EnvRecHelper.StartCultureLabDevice()</code> 刷新环控采集设备列表。</div>
+
+        <h3>Cancel / LastStep</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+              <td>CancelStartBatch</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b>, CancelUser, CancelTime, CancelDescription</td>
+              <td>Cancel / LastStep</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 2 INOCULATION -->
+      <section class="step" id="s2">
+        <h2>2. Inoculation</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 3</span>
+          页面：<code>inoculation/</code> · 前提批次 Status=5 · 子表 Status：1接种 / 2手动填参 / 3完成 / 99取消
+        </div>
+
+        <h3>Start — AddInoculationWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=3, UserID, LocCombinationID, Created_by, Creation_time</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchInoculation</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">BatchID, <b>Status=1</b>, CellsVolume=0</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Mid — NextInoculationBatchInfo</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchInoculation</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">CellType, CellsVolume×1000, SampleID, InitialVCD, InitialViablity, AvgDiam, InitialCellLotNo, TargetViableCellNumber, <b>Status=2</b>, DisChargeStatus, DisChargeVolume</td>
+              <td>保存手动接种参数</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishBatchInoculation</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">CellType, CellsVolume×1000, CurrentVolume += Cells−Discharge, CurrentVCD, CurrentViability, InitialViableCellNumber, <b>Status=9</b>（若已有 SupplementaryUser）否则 <b>Status=7</b>, InoculationTime, InoculationUser</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Quantity += CellsVolume − DisChargeVolume×1000</td>
+              <td>反应器序列号体积</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchInoculation</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">PipeInstallationStatus, SoftwareStatus, <b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Testing_BGATask</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">SampleID（特殊 culture 时）</td>
+              <td>可选</td>
+            </tr>
+            <tr>
+              <td class="table-name">Batch OP</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">OP=INOCULATION, Mode=5, Status=5</td>
+              <td>taskQueue</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchInoculation</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b>（原 Status&lt;3）</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 3 SUPPLY CONNECTION -->
+      <section class="step" id="s3">
+        <h2>3. Feeding Unit Connection</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 5</span>
+          页面：<code>supplementaryConnection/</code> · 子表 Status：1连接中 / 2补料单元连接 / 3完成 / 99取消
+        </div>
+
+        <h3>Start — AddSpplyConnectionWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=5, UserID, LocCombinationID, Created_by, Creation_time</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchSupplyConnection</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">BatchID, <b>Status=1</b></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Mid — NextFeedingConnectionDtl / SetSupplyConnectionStatus</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Location_Combinations</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Status, Last_updated_by, Last_update_time</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Location_Controls</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">ControlType=1: Status + ItemDefID；ControlType=3: ItemDefID=携带物料 + 审计字段</td>
+              <td>液体/瓶控件</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_LabDeviceSub</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Status, 默认/最大速度（按 Fluid ItemDefID）, 审计字段</td>
+              <td>泵子设备</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchSupplyConnection</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=2</b>, MultiFeedStatus, VesselWeightStatus, HarvestPumpStatus</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchSupplyConnectionDtl</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">BatchID, LabDeviceID, LocCombinationID, Volume, Speed, LocationNo, Unit (+PumpNo/ItemDefId)</td>
+              <td>连接明细</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishBatchSupplyConnection</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchSupplyConnection</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">若 Status==7 → <b>Status=9</b> + SupplementaryUser/Time；否则只写 SupplementaryUser/Time</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">补料桶序列号</td>
+              <td>Warehouse.InsertSupplementaryConnectionItemSerials</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchSupplyConnection</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note">中间还有泵启停（start-pumping / abort-pumping），主要走 CoreService / PumpingService，业务表以事件为主。</div>
+      </section>
+
+      <!-- 4 FEEDING OTHER -->
+      <section class="step" id="s4">
+        <h2>4. Feeding (Other)</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 17</span>
+          页面：<code>feedingOther/</code>（labId=2 时前端隐藏）· 子表 Status：1开始 / 3已连接 / 5吹扫 / 7完成 / 99取消
+        </div>
+
+        <h3>Start / Connection / Purging</h3>
+        <table>
+          <thead><tr><th>阶段</th><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Start</td>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=17, UserID, LocCombinationID, Created_by, Creation_time, IsDelete=false</td>
+            </tr>
+            <tr>
+              <td>Start</td>
+              <td class="table-name">CDP_Workflow_LiquidOther</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">BatchID, LocCombinationID, <b>Status=1</b></td>
+            </tr>
+            <tr>
+              <td>Connection</td>
+              <td class="table-name">CDP_Workflow_LiquidOther</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=3</b></td>
+            </tr>
+            <tr>
+              <td>Purging</td>
+              <td class="table-name">CDP_Workflow_LiquidOther</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=5</b>, PurgingSpeed, PumpingName(=FluidName)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinshWorkflowLiquidOther</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidOther</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=7</b>, PumpingSpeed, PumpingVolume(=FluidVolume)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">Batch OP</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">OP=FEEDINGOTHER</td>
+              <td>若批次在流程开始后尚未记过该 OP</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidOther</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 5 FEEDING MANUAL -->
+      <section class="step" id="s5">
+        <h2>5. Feeding (Manual)</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 19</span>
+          页面：<code>feedingManual/</code> · Start 只建 Workflow，Finish 才写子表
+        </div>
+
+        <h3>Start</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=19, UserID, LocCombinationID, Created_by, Creation_time</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishFeedingManualWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Quantity += FluidVolume×1000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">CurrentVolume += FluidVolume×1000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_FeedingManual</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">BatchID, WorkflowID, LocCombinationID, FluidName, FluidVolume×1000, <b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">Batch OP</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">OP=FEEDINGMANUAL</td>
+              <td>taskQueue</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 6 SAMPLING MANUAL -->
+      <section class="step" id="s6">
+        <h2>6. Sampling (Manual)</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 21</span>
+          页面：<code>samplingManual/</code>
+        </div>
+
+        <h3>Start</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=21, UserID, LocCombinationID, Created_by, Creation_time</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishSamplingManualWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Quantity -= SampleVolume×1000</td>
+              <td>扣取样体积</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_SamplingManual</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">BatchID, WorkflowID, LocCombinationID, SampleVolume×1000, HarvestVolume×1000, <b>Status=3</b></td>
+              <td>本方法不直接改 CDP_Batch.CurrentVolume</td>
+            </tr>
+            <tr>
+              <td class="table-name">Batch OP</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">OP=SAMPLINGMANUAL</td>
+              <td>taskQueue</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+              <td>后端有 CancelSamplingManualWorkflow；前端取消目前误调 cancel-feedingManual-workflow</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 7 SAMPLING UNIT -->
+      <section class="step" id="s7">
+        <h2>7. Supply Liquid (Sampling Unit)</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 7</span>
+          页面：<code>supplyLiquidSampling/</code> · 子表 Status：1替换中 / 2换新 / 3完成 / 99取消
+        </div>
+
+        <h3>Start — AddSamplingUnitWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=7, UserID, LocCombinationID, Created_by, Creation_time</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidImport_SamplingUnit</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">LocCombinationID, ExportItemID, ExportItemDefID, ExportFluidDefID, ExportVolume=Residual×1000, <b>Status=1</b></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishSamplingUnitWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidImport_SamplingUnit</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">ImportItemID, ImportItemDefID, ImportFluidDefID, ImportVolume=CarriedQty×1000, BatchId, <b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span> + <span class="op op-i">INSERT</span></td>
+              <td class="fields">旧条码 ItemStatus=28；新条码 ItemStatus=0 + Quantity</td>
+              <td>Warehouse.ReplaceItemSerials</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidImport_SamplingUnit</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 8 FEEDING UNIT -->
+      <section class="step" id="s8">
+        <h2>8. Supply Liquid (Feeding Unit)</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 9</span>
+          页面：<code>supplyLiquidSupplementary/</code> · 含预灌 / 泵操作
+        </div>
+
+        <h3>Start — AddFeedingUnitWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=9, UserID, LocCombinationID, Created_by, Creation_time</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidImport_SupplyUnit</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">Export* 字段 + <b>Status=1</b></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishFeedingUnitWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">SupplementaryUnitTime=now, SupplementaryUser</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidImport_SupplyUnit</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Import* 字段, BatchId, <b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span> + <span class="op op-i">INSERT</span></td>
+              <td class="fields">旧 ItemStatus=28 → 新 ItemStatus=0</td>
+              <td>ReplaceItemSerials</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidImport_SupplyUnit</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 9 WASTE -->
+      <section class="step" id="s9">
+        <h2>9. Waste Clean</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 11</span>
+          页面：<code>wasteClean/</code>
+        </div>
+
+        <h3>Start — AddLiquidWasteWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=11, UserID, LocCombinationID, Created_by, Creation_time</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidWaste</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">LocCombinationID, ExportItemID, ExportItemDefID, ExportVolume×1000, <b>Status=1</b></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishLiquidWasteWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidWaste</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">ImportItemID, ImportItemDefID, ImportFluidDefID, ImportVolume×1000, BatchId, <b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span> + <span class="op op-i">INSERT</span></td>
+              <td class="fields">ReplaceItemSerials（WASTE 时数量可能为瓶容量或 0）</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_LiquidWaste</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 10 MATERIAL IMPORT -->
+      <section class="step" id="s10">
+        <h2>10. Material Import</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 13</span>
+          页面：<code>materialImport/</code> · 每 Lab 通常同时仅一个进行中流程 · 子表 Status：1开始 / 3完成 / 99取消
+        </div>
+
+        <h3>Start — StartMaterialImportWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=13, UserID, IsDelete=false, Created_by, Creation_time</td>
+              <td>主表一般不绑 LocCombinationID</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_Material_Import</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowID, LabId, <b>Status=1</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_Material_Import_Dtl</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">LocCombinationID（每个位置一行）</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishMaterialImportWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishTime, Creation_FinishBy</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_Material_Import</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_Material_Import_Dtl</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">ImportItemDefID, ImportBarcode, ExportItemID</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Location_Combinations</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">IsEmpty=false + 审计</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">原位置序列号 ItemStatus=28</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">新条码 ItemStatus=0（含板位/DPBS 等）</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Cancel — 特例：不软删 Workflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishTime, Creation_FinishBy</td>
+              <td>直接标记完成时间</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_Material_Import</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 11 COMPLETE -->
+      <section class="step" id="s11">
+        <h2>11. Complete Batch</h2>
+        <div class="meta">
+          <span class="badge">WorkflowType = 15</span>
+          页面：<code>completeBatch/</code> · UI 含消毒 / 冲洗 / 取样子步骤
+        </div>
+
+        <h3>Start — AddBatchCompleteWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">WorkflowType=15, UserID, LocCombinationID, Created_by, Creation_time</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchComplete</td>
+              <td><span class="op op-i">INSERT</span></td>
+              <td class="fields">BatchID, <b>Status=1</b>, ItemID(=反应器序列号)</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=10</b> (Harvesting)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Finish — FinishBatchCompleteWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">EndTime, <b>Status=11</b>, CompleteTime, CompleteUser, LastPH / LastDO / LastOxygenFlowRate / LastTemp / LastStirrer（来自 EnvRec）</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Creation_FinishBy, Creation_FinishTime</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchComplete</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=3</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Item_Serials</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">批次相关 ItemDefID≠10,12 且 Status≠28 → <b>ItemStatus=30</b> + 审计</td>
+              <td>退役库存</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Location_Combinations</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Status=true</td>
+              <td>仅 LABINDEX=2（二期）</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_LabDeviceSub</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Status=true</td>
+              <td>仅二期</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Location_Controls</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields">Status=true；ControlType=1 时 ItemDefID=19</td>
+              <td>仅二期重置控件</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note">
+          Finish 后：<code>EnvRecHelper.StartCultureLabDevice()</code> 刷新列表；Controller 侧清空 <code>_envStartCultureLabDevices</code>，并 <code>SaveIotDataProcessing</code>。
+          中间消毒/冲洗/取样走 CoreService / Sampling API / 硬件电磁阀。
+        </div>
+
+        <h3>Cancel — CancelBatchCompleteWorkflow</h3>
+        <table>
+          <thead><tr><th>表</th><th>操作</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="table-name">CDP_Workflow</td>
+              <td><span class="op op-d">SOFT DEL</span></td>
+              <td class="fields">IsDelete=true</td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Workflow_BatchComplete</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=99</b></td>
+            </tr>
+            <tr>
+              <td class="table-name">CDP_Batch</td>
+              <td><span class="op op-u">UPDATE</span></td>
+              <td class="fields"><b>Status=9</b> (Producting) 回退</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // highlight current nav item on scroll
+    const links = [...document.querySelectorAll('nav a')];
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const onScroll = () => {
+      let cur = sections[0];
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= 80) cur = s;
+      }
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur.id));
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>

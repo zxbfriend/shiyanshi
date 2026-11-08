@@ -1,0 +1,21 @@
+{
+  "checked": "DB preparation verified (5 tables, 19 columns); small batch and pilot single browser steps 1-4 verified; refresh/cancel and visit timing verified; user fixtures untouched; final save and hardware acceptance blocked pending confirmed readiness",
+  "upgradeStatements": 10,
+  "runtimeSupplementStatements": 1,
+  "seedStatements": 36,
+  "sha256": {
+    "00-precheck.sql": "3c76d7f4abf51520fa2e395eca47ebe3ff36e647a71f20fe102c9b05c2bda18a",
+    "03-verify.sql": "235fe3aca6cbdac7aa42e5e96aa2d5dd7b3ea120f2a0b58e3c8792a835b8f31b",
+    "执行记录.md": "3f627aa428d730b4f643d5ffee43e1828eff86fb9c6efd7e8b851510941dc872",
+    "hp测试权限检查.md": "deebe38ae781eec4ec52124ef2cc8130acd0eed4689e2608232739a6b57f385d",
+    "README.md": "75c461952eb78edf5a55dc375295f7ac037974275946ff230fd6ae29740639af",
+    "Run-Preparation.ps1": "d27176fcb5454a36a0d0f8fc979e71f8e6ef246fed2ce7e2ba907f5654d9ec2e",
+    "runtime-stream-supplement.sql": "af9a67db8c751522b91dc38a9cf07c4ac9b562d52c8d695d6ffa093e70ae72c1",
+    "ScDatabasePrepare.java": "d4bd54be9b3540325217fb3cce234c84475bbbe3cb52971beecb04957d412e78",
+    "ScDatabaseProbe.java": "c0cd5deb8a5ec3092d94e5434b8e8bc685f38960a84bfb37548cbf27aa993c54",
+    "ScHpTestAccess.java": "694f129590dc07cd1e2e1b1aae834a06b15c9716be3a62d709328fe358eeab21",
+    "ScRuntimeSupplement.java": "bbd3f576cc671718512fcbe7bba9b11f7b456e581c2d613437cdd6ac8f5939fa",
+    "test-environment-seed.sql": "27e1e21d6e59efe618f2173b6ff203ee406fda19d98b4ae8de480c24b3850c20",
+    "test-environment-upgrade.sql": "46af9a68a714b3bee8583e484b6fad25d923db5d16edd41025237be5b39701dd"
+  }
+}

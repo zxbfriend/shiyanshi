@@ -1,0 +1,65 @@
+-- M09 后置只读设计；预期15表286列。旧列逐主键与备份逐值核对，不只看计数。
+SHOW CREATE TABLE `alarm_mail_config`;
+SHOW CREATE TABLE `alarm_notify_receiver`;
+SHOW CREATE TABLE `alarm_notify_rule`;
+SHOW CREATE TABLE `alarm_record`;
+SHOW CREATE TABLE `lab_offline_alarm_config`;
+SHOW CREATE TABLE `lab_status_alarm_config`;
+SHOW CREATE TABLE `sys_notification`;
+SHOW CREATE TABLE `alarm_online_config`;
+SHOW CREATE TABLE `alarm_monitor_policy`;
+SHOW CREATE TABLE `alarm_config_revision`;
+SHOW CREATE TABLE `alarm_event`;
+SHOW CREATE TABLE `alarm_recipient`;
+SHOW CREATE TABLE `alarm_delivery`;
+SHOW CREATE TABLE `alarm_delivery_attempt`;
+SHOW CREATE TABLE `alarm_runtime`;
+SELECT table_name,constraint_name,enforced FROM information_schema.table_constraints WHERE constraint_schema=DATABASE() AND constraint_type='CHECK' AND table_name IN ('alarm_mail_config','alarm_notify_receiver','alarm_notify_rule','alarm_record','lab_offline_alarm_config','lab_status_alarm_config','sys_notification','alarm_online_config','alarm_monitor_policy','alarm_config_revision','alarm_event','alarm_recipient','alarm_delivery','alarm_delivery_attempt','alarm_runtime');
+SELECT 'ck_m09_close_mode' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_notify_rule` WHERE (notify_mode IN ('0','1','2')) IS FALSE;
+SELECT 'ck_m09_close_rule_ready' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_notify_rule` WHERE (active_revision_id IS NULL OR (window_policy IS NOT NULL AND window_policy='NO_CATCH_UP' AND rule_key IS NOT NULL AND (notify_mode='0' OR (notify_limit_count IS NOT NULL AND notify_limit_count BETWEEN 1 AND 98 AND notify_interval_min IS NOT NULL AND notify_interval_min BETWEEN 1 AND 1439)))) IS FALSE;
+SELECT 'ck_m09_close_port' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_mail_config` WHERE (server_port BETWEEN 1 AND 65535) IS FALSE;
+SELECT 'ck_m09_close_receiver_source' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_notify_receiver` WHERE (receiver_source IN ('1','2','3') AND (receiver_source<>'3' OR (source_id IS NOT NULL AND source_id>0))) IS FALSE;
+SELECT 'ck_m09_close_handle' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_record` WHERE (handle_status IN ('0','1')) IS FALSE;
+SELECT 'ck_m09_close_alarm_states' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_record` WHERE (row_version IS NULL OR (row_version>=1 AND event_id IS NOT NULL AND episode_no IS NOT NULL AND episode_no>=1 AND condition_state IS NOT NULL AND condition_state IN ('ACTIVE','RESOLVED') AND recipient_state IS NOT NULL AND recipient_state IN ('RESOLVED','KNOWN_EMPTY','UNKNOWN'))) IS FALSE;
+SELECT 'ck_m09_close_resolved' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_record` WHERE (row_version IS NULL OR condition_state<>'RESOLVED' OR resolved_at IS NOT NULL) IS FALSE;
+SELECT 'ck_m09_close_event_state' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_event` WHERE (process_state IN ('RECEIVED','APPLIED','IGNORED','BLOCKED') AND event_kind IN ('TRIGGER','RECOVER','BUSINESS','EXTERNAL_PUSH')) IS FALSE;
+SELECT 'ck_m09_close_condition' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_event` WHERE (event_kind NOT IN ('TRIGGER','RECOVER') OR (condition_key IS NOT NULL AND source_sequence IS NOT NULL AND source_sequence>=0)) IS FALSE;
+SELECT 'ck_m09_close_event_json' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_event` WHERE (JSON_TYPE(payload_json)='OBJECT' AND (result_ref IS NULL OR JSON_TYPE(result_ref)='OBJECT')) IS FALSE;
+SELECT 'ck_m09_close_delivery_state' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_delivery` WHERE (delivery_state IN ('PENDING','SENDING','SUCCEEDED','FAILED','UNKNOWN','SKIPPED','CANCELLED') AND round_no>=1 AND attempt_count>=0 AND row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_channel' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_delivery` WHERE ((target_kind='USER' AND channel IN ('site','email','sms')) OR (target_kind='SOUND' AND channel='sound') OR (target_kind='EXTERNAL' AND channel='external')) IS FALSE;
+SELECT 'ck_m09_close_delivery_lease' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_delivery` WHERE (((lease_token IS NULL AND lease_until IS NULL) OR (lease_token IS NOT NULL AND lease_until IS NOT NULL)) AND (delivery_state<>'SENDING' OR lease_token IS NOT NULL)) IS FALSE;
+SELECT 'ck_m09_close_cipher' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_delivery` WHERE (((address_cipher IS NULL AND address_key_version IS NULL) OR (address_cipher IS NOT NULL AND address_key_version IS NOT NULL)) AND ((content_cipher IS NULL AND content_key_version IS NULL) OR (content_cipher IS NOT NULL AND content_key_version IS NOT NULL))) IS FALSE;
+SELECT 'ck_m09_close_attempt' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_delivery_attempt` WHERE (attempt_state IN ('INVOKING','SUCCEEDED','FAILED','UNKNOWN') AND attempt_no>=1 AND (finished_at IS NULL OR finished_at>=started_at)) IS FALSE;
+SELECT 'ck_m09_close_attempt_terminal' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_delivery_attempt` WHERE (attempt_state NOT IN ('SUCCEEDED','FAILED') OR finished_at IS NOT NULL) IS FALSE;
+SELECT 'ck_m09_close_runtime' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_runtime` WHERE (condition_state IN ('NORMAL','ACTIVE','RESOLVED') AND notify_eligibility IN ('ELIGIBLE','RECORD_ONLY','STOPPED') AND latest_source_sequence>=0 AND episode_no>=0 AND rounds_created>=0 AND row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_active' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_runtime` WHERE (condition_state<>'ACTIVE' OR (active_alarm_id IS NOT NULL AND episode_no>=1 AND first_trigger_at IS NOT NULL)) IS FALSE;
+SELECT 'ck_m09_close_monitor' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_monitor_policy` WHERE (monitor_mode IN ('ON','TEMP_OFF','LONG_OFF') AND row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_revision' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_config_revision` WHERE (config_kind IN ('RULE','MAIL','ONLINE','OFFLINE','STATUS','MONITOR') AND revision_state IN ('PENDING','APPLIED','DISCARDED','CONFLICT') AND row_version>=1 AND JSON_TYPE(content_json)='OBJECT' AND (revision_state<>'APPLIED' OR applied_at IS NOT NULL)) IS FALSE;
+SELECT 'ck_m09_close_recipient' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_recipient` WHERE (user_id>0 AND JSON_TYPE(source_json)='OBJECT' AND COALESCE(JSON_TYPE(JSON_EXTRACT(source_json,'$.sources')),'MISSING')='ARRAY' AND JSON_TYPE(authorization_ref)='OBJECT') IS FALSE;
+SELECT 'ck_m09_close_online_scope' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_online_config` WHERE ((scope_kind='DEVICE' AND culture_id IS NULL) OR (scope_kind='CULTURE' AND culture_id IS NOT NULL AND culture_id>0)) IS FALSE;
+SELECT 'ck_m09_close_online_limits' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_online_config` WHERE ((lower_limit IS NULL OR upper_limit IS NULL OR lower_limit<upper_limit) AND (limit_percent IS NULL OR limit_percent>0)) IS FALSE;
+SELECT 'ck_m09_close_online_mode' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_online_config` WHERE (enabled IN ('0','1') AND cycle_enabled IN ('0','1') AND evaluation_state IN ('SAVE_ONLY','VERIFIED') AND (evaluation_state<>'VERIFIED' OR logic_profile_ref IS NOT NULL)) IS FALSE;
+SELECT 'ck_m09_close_online_time' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_online_config` WHERE ((stagnant_seconds IS NULL OR stagnant_seconds>=0) AND (upper_delay_seconds IS NULL OR upper_delay_seconds>=0) AND (lower_delay_seconds IS NULL OR lower_delay_seconds>=0) AND (cycle_seconds IS NULL OR cycle_seconds>=0) AND (cycle_enabled<>'1' OR (cycle_seconds IS NOT NULL AND cycle_seconds>0))) IS FALSE;
+SELECT 'ck_m09_close_ver_event' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_event` WHERE (row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_ver_monitor_policy' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_monitor_policy` WHERE (row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_ver_online_config' AS check_name,COUNT(*) AS invalid_rows FROM `alarm_online_config` WHERE (row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_ver_lab_offline_alarm_config' AS check_name,COUNT(*) AS invalid_rows FROM `lab_offline_alarm_config` WHERE (row_version IS NULL OR row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_ver_lab_status_alarm_config' AS check_name,COUNT(*) AS invalid_rows FROM `lab_status_alarm_config` WHERE (row_version IS NULL OR row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_ver_sys_notification' AS check_name,COUNT(*) AS invalid_rows FROM `sys_notification` WHERE (row_version IS NULL OR row_version>=1) IS FALSE;
+SELECT 'ck_m09_close_offline_ready' AS check_name,COUNT(*) AS invalid_rows FROM `lab_offline_alarm_config` WHERE (row_version IS NULL OR (culture_id IS NOT NULL AND culture_id>0 AND revision_id IS NOT NULL AND active_key IS NOT NULL AND enabled IS NOT NULL AND enabled IN ('0','1') AND (lower_limit IS NULL OR upper_limit IS NULL OR lower_limit<upper_limit))) IS FALSE;
+SELECT 'ck_m09_close_status_ready' AS check_name,COUNT(*) AS invalid_rows FROM `lab_status_alarm_config` WHERE (row_version IS NULL OR (revision_id IS NOT NULL AND (alarm_quantity IS NULL OR alarm_quantity>=0) AND alarm_operator IS NOT NULL AND alarm_operator='<')) IS FALSE;
+SELECT 'ck_m09_close_notification_read' AS check_name,COUNT(*) AS invalid_rows FROM `sys_notification` WHERE (is_read IS NULL OR is_read IN ('0','1')) IS FALSE;
+SELECT 'ck_m09_close_notification_ready' AS check_name,COUNT(*) AS invalid_rows FROM `sys_notification` WHERE (row_version IS NULL OR (target_user_id IS NOT NULL AND target_user_id>0 AND is_read IS NOT NULL)) IS FALSE;
+
+-- 收件人与兼容投影断言：均应返回0行；存量row_version=NULL不伪造核准。
+SELECT a.alarm_id,a.recipient_state,COUNT(r.recipient_id) AS recipient_count
+FROM alarm_record a LEFT JOIN alarm_recipient r ON r.alarm_id=a.alarm_id
+WHERE a.row_version IS NOT NULL
+GROUP BY a.alarm_id,a.recipient_state
+HAVING (a.recipient_state='RESOLVED' AND COUNT(r.recipient_id)=0)
+    OR (a.recipient_state='KNOWN_EMPTY' AND COUNT(r.recipient_id)<>0);
+SELECT alarm_id FROM alarm_record
+WHERE row_version IS NOT NULL AND COALESCE(notify_users,'')<>''
+AND CASE WHEN JSON_VALID(notify_users)=0 THEN TRUE
+         ELSE JSON_TYPE(CAST(notify_users AS JSON))<>'ARRAY' END;
+-- 超1000字符只能写空兼容值，不能截断recipient；部署验收另以原计划收件集合逐ID对比。

@@ -1,0 +1,484 @@
+[
+  {
+    "time": "2026-10-16T02:05:25.748Z",
+    "path": "/system/run/workflows/candidates?labId=11001&subflowCode=W03",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": [],
+      "requestId": "075f2d63-180a-452c-b7ce-843a7bf4bbaf",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:02.285Z",
+    "path": "/system/resource/culture/861016201",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "allowedActions": [
+          "VIEW",
+          "MEMBERS",
+          "SHARE",
+          "EDIT",
+          "DELETE",
+          "MODE",
+          "N_MARK"
+        ],
+        "audit": {
+          "createdAt": "2026-10-16 10:14:38",
+          "creator": {
+            "id": "1",
+            "name": null
+          },
+          "modifiedAt": "2026-10-16 10:14:38",
+          "modifier": {
+            "id": "1",
+            "name": null
+          }
+        },
+        "batch": {
+          "id": "861016010",
+          "name": "DEV-M07-1016"
+        },
+        "cultureAlias": "DEV-M07-1016 read fixture",
+        "cultureCode": "DEV-M07-1016-C1",
+        "cultureId": "861016201",
+        "cultureMode": "NORMAL",
+        "delayReasons": [],
+        "device": {
+          "availability": "UNKNOWN",
+          "name": "DEV-M07-1016-R1 / DEV-M07-1016-V1",
+          "reasonCodes": [],
+          "ref": {
+            "id": "861016101",
+            "kind": "BENCH_CONTROLLER",
+            "labId": null
+          },
+          "roomName": null
+        },
+        "endDeadline": null,
+        "factsStatus": "READY",
+        "lab": {
+          "id": "11001",
+          "name": "小试上游实验室"
+        },
+        "memberSetup": "NEVER",
+        "nMarked": false,
+        "planVersion": "0",
+        "plannedDurationDays": "14",
+        "plannedEndDate": "2026-10-29",
+        "plannedStartDate": "2026-10-16",
+        "project": {
+          "id": "99001",
+          "name": "SIM-PROJ-001"
+        },
+        "runtimeVersion": "0",
+        "startDeadline": null,
+        "state": "RUNNING",
+        "version": "1"
+      },
+      "requestId": "d58f0a82-6852-45c2-9810-6db3198196b3",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:02.436Z",
+    "path": "/system/resource/culture/861016201/initial-weight",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "allowedActions": [
+          "VIEW",
+          "CHANGE"
+        ],
+        "cultureId": "861016201",
+        "cultureVersion": "1",
+        "displayUnit": "g",
+        "effectiveAt": "2026-10-16 10:14:38",
+        "initialWeightG": "1250",
+        "issues": [],
+        "sourceCandidateId": "861016301",
+        "unit": "g",
+        "weightRevision": "1"
+      },
+      "requestId": "90d18ace-8844-4864-b0b8-1626bc03a7b6",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:02.683Z",
+    "path": "/system/run/cultures/861016201/balance",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "bagRemainingGrams": null,
+        "cultureId": "861016201",
+        "currentNetGrams": null,
+        "evidenceSources": [
+          {
+            "contentHash": null,
+            "objectId": "861016201",
+            "objectKind": "CULTURE_RUNTIME",
+            "objectVersion": "1",
+            "ownerModule": "M07"
+          }
+        ],
+        "initialWeightGrams": 1250,
+        "objectVersion": "1",
+        "readiness": "BLOCKED",
+        "theoreticalNetGrams": null,
+        "todayFeedGrams": null,
+        "totalFeedGrams": 0,
+        "totalWithdrawalGrams": 0,
+        "windowWithdrawalGrams": null,
+        "writerMode": "UNKNOWN"
+      },
+      "requestId": "7f6a3faa-ca9f-48ba-90d9-92868a8fdc50"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:02.773Z",
+    "path": "/system/run/cultures/861016201/ledger?pageNum=1&pageSize=10",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "pageNum": 1,
+        "pageSize": 10,
+        "rows": [],
+        "total": "0"
+      },
+      "requestId": "250c1584-aefd-4ec6-93a2-7413d46fcf50"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:02.890Z",
+    "path": "/system/run/cultures/861016201/glucose-candidates?onlyConfirmed=true",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": [],
+      "requestId": "46d56abc-9166-42d8-8739-b7c02c4d37b6",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.016Z",
+    "path": "/system/run/cultures/861016201/glucose-history",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": [],
+      "requestId": "331380d8-05c5-4c36-a261-33b8ceddbf5e"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.124Z",
+    "path": "/system/resource/culture/861016202",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "allowedActions": [
+          "VIEW",
+          "MEMBERS",
+          "SHARE",
+          "EDIT",
+          "DELETE",
+          "MODE",
+          "N_MARK"
+        ],
+        "audit": {
+          "createdAt": "2026-10-16 10:14:38",
+          "creator": {
+            "id": "1",
+            "name": null
+          },
+          "modifiedAt": "2026-10-16 10:14:38",
+          "modifier": {
+            "id": "1",
+            "name": null
+          }
+        },
+        "batch": {
+          "id": "861016010",
+          "name": "DEV-M07-1016"
+        },
+        "cultureAlias": "DEV-M07-1016 read fixture",
+        "cultureCode": "DEV-M07-1016-C2",
+        "cultureId": "861016202",
+        "cultureMode": "NORMAL",
+        "delayReasons": [],
+        "device": {
+          "availability": "UNKNOWN",
+          "name": "DEV-M07-1016-R2 / DEV-M07-1016-V2",
+          "reasonCodes": [],
+          "ref": {
+            "id": "861016102",
+            "kind": "BENCH_CONTROLLER",
+            "labId": null
+          },
+          "roomName": null
+        },
+        "endDeadline": null,
+        "factsStatus": "READY",
+        "lab": {
+          "id": "11001",
+          "name": "小试上游实验室"
+        },
+        "memberSetup": "NEVER",
+        "nMarked": false,
+        "planVersion": "0",
+        "plannedDurationDays": "14",
+        "plannedEndDate": "2026-10-29",
+        "plannedStartDate": "2026-10-16",
+        "project": {
+          "id": "99001",
+          "name": "SIM-PROJ-001"
+        },
+        "runtimeVersion": "0",
+        "startDeadline": null,
+        "state": "NOT_STARTED",
+        "version": "1"
+      },
+      "requestId": "edc62902-bb49-489b-8ddd-8b19f41b87e6",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.236Z",
+    "path": "/system/resource/culture/861016202/initial-weight",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "allowedActions": [
+          "VIEW",
+          "CHANGE"
+        ],
+        "cultureId": "861016202",
+        "cultureVersion": "1",
+        "displayUnit": "g",
+        "effectiveAt": null,
+        "initialWeightG": null,
+        "issues": [],
+        "sourceCandidateId": null,
+        "unit": "g",
+        "weightRevision": "0"
+      },
+      "requestId": "21873556-219b-4378-82e1-6d1ec91fbfef",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.385Z",
+    "path": "/system/run/cultures/861016202/balance",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "bagRemainingGrams": null,
+        "cultureId": "861016202",
+        "currentNetGrams": null,
+        "evidenceSources": [
+          {
+            "contentHash": null,
+            "objectId": "861016202",
+            "objectKind": "CULTURE_RUNTIME",
+            "objectVersion": "1",
+            "ownerModule": "M07"
+          }
+        ],
+        "initialWeightGrams": null,
+        "objectVersion": "1",
+        "readiness": "BLOCKED",
+        "theoreticalNetGrams": null,
+        "todayFeedGrams": null,
+        "totalFeedGrams": 0,
+        "totalWithdrawalGrams": 0,
+        "windowWithdrawalGrams": null,
+        "writerMode": "UNKNOWN"
+      },
+      "requestId": "00ed13bf-abce-4f2a-af84-ae68e853e6ee"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.448Z",
+    "path": "/system/run/cultures/861016202/ledger?pageNum=1&pageSize=10",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "pageNum": 1,
+        "pageSize": 10,
+        "rows": [],
+        "total": "0"
+      },
+      "requestId": "090e5d20-a7a0-4c26-bd52-f3e91280f696"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.599Z",
+    "path": "/system/run/cultures/861016202/glucose-candidates?onlyConfirmed=true",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": [],
+      "requestId": "60e08630-ab3d-46ec-992c-77df5f4979b3",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.703Z",
+    "path": "/system/run/cultures/861016202/glucose-history",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": [],
+      "requestId": "78108e9d-b207-46a3-a0fb-dc9b20e101cd"
+    }
+  },
+  {
+    "time": "2026-10-16T02:15:03.952Z",
+    "path": "/system/run/workflows/candidates?labId=11001&subflowCode=W03",
+    "method": "GET",
+    "headers": {},
+    "status": 503,
+    "response": {
+      "msg": "候选培养事实不完整或不一致",
+      "retryable": true,
+      "code": 503,
+      "requestId": "9ee10d3e-b41d-4a8f-9b7f-84bc124565ed",
+      "managementRevision": "215",
+      "errorCode": "DEPENDENCY_UNAVAILABLE"
+    }
+  },
+  {
+    "time": "2026-10-16T02:16:55.210Z",
+    "path": "/system/run/workflows/candidates?labId=11001&subflowCode=W03",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": [
+        {
+          "cultureId": "861016201",
+          "dayCount": null,
+          "deviceCode": null,
+          "memberDisplayNames": [],
+          "onlineValueReading": null,
+          "ownerDisplayName": null,
+          "planConfigured": false,
+          "selectable": false,
+          "specText": null,
+          "unavailableReason": "台式反应器未配置有效控制器连接"
+        },
+        {
+          "cultureId": "861016202",
+          "dayCount": null,
+          "deviceCode": null,
+          "memberDisplayNames": [],
+          "onlineValueReading": null,
+          "ownerDisplayName": null,
+          "planConfigured": false,
+          "selectable": false,
+          "specText": null,
+          "unavailableReason": "台式反应器未配置有效控制器连接"
+        }
+      ],
+      "requestId": "7014c18e-39f0-4e35-ba17-f4b508dbc849",
+      "managementRevision": "215"
+    }
+  },
+  {
+    "time": "2026-10-16T02:23:20.090Z",
+    "path": "/system/lab/labbenchreactor/861016101",
+    "method": "GET",
+    "headers": {},
+    "status": 200,
+    "response": {
+      "msg": "操作成功",
+      "code": 200,
+      "data": {
+        "assetNo": "DEV-M07-1016-A1",
+        "brand": "2",
+        "brandLabel": "Applikon",
+        "capacityUnit": "mL",
+        "category": "15L",
+        "categoryLabel": "15L",
+        "configurationIssues": [
+          "CONFIGURATION_INCOMPLETE"
+        ],
+        "configurationReady": false,
+        "connectivity": "UNKNOWN",
+        "controllerNo": "DEV-M07-1016-R1",
+        "createBy": "dev-fixture",
+        "createTime": "2026-10-16 10:14:38",
+        "description": "小试反应器15L Bio-reactor",
+        "enabled": null,
+        "iconPaths": [
+          "icons/image/500mL.png"
+        ],
+        "labId": "11001",
+        "labName": "小试上游实验室",
+        "maintenance": null,
+        "managementRevision": "215",
+        "maxCapacity": "15000",
+        "modelId": "1300175020131225600",
+        "occupancy": "IN_USE",
+        "reactorId": "861016101",
+        "remark": "DEV-M07-1016 synthetic, no IP or pump mapping",
+        "updateBy": "",
+        "updateTime": null,
+        "vesselNo": "DEV-M07-1016-V1"
+      },
+      "requestId": "330c8028-b024-4c2e-8ecd-be4a374703ae",
+      "managementRevision": "215"
+    }
+  }
+]

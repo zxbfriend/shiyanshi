@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>一期 / 二期 · 自动补料与手动补料取样</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #fff;
+      --text: #1a2332;
+      --muted: #5a6a7a;
+      --line: #e2e8f0;
+      --accent: #0d6e6e;
+      --accent-soft: #e6f4f4;
+      --lab1: #1d4ed8;
+      --lab1-bg: #eff6ff;
+      --lab2: #b45309;
+      --lab2-bg: #fffbeb;
+      --nav-w: 280px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    nav {
+      width: var(--nav-w);
+      flex-shrink: 0;
+      background: #0f2a2a;
+      color: #dce8e8;
+      padding: 20px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    nav h1 { font-size: 15px; margin: 0 16px 8px; color: #fff; font-weight: 600; }
+    nav .sub { margin: 0 16px 18px; font-size: 12px; color: #8fb3b3; }
+    nav a {
+      display: block; padding: 8px 16px; color: #c5dede;
+      text-decoration: none; font-size: 13px; border-left: 3px solid transparent;
+    }
+    nav a:hover, nav a.active {
+      background: rgba(255,255,255,0.06); color: #fff; border-left-color: #3dbdbd;
+    }
+    nav .sec {
+      margin: 16px 16px 6px; font-size: 11px; letter-spacing: 0.06em;
+      color: #6a9090; text-transform: uppercase;
+    }
+    main { flex: 1; padding: 28px 36px 80px; max-width: 1140px; }
+    header.page {
+      margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--line);
+    }
+    header.page h1 { margin: 0 0 8px; font-size: 24px; }
+    header.page p { margin: 0; color: var(--muted); font-size: 14px; }
+    section.block {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 22px 24px 26px;
+      margin-bottom: 18px;
+      scroll-margin-top: 14px;
+    }
+    section.block h2 { margin: 0 0 8px; font-size: 19px; color: var(--accent); }
+    h3 {
+      margin: 18px 0 8px; font-size: 15px;
+      border-left: 3px solid var(--accent); padding-left: 10px;
+    }
+    h4 { margin: 14px 0 6px; font-size: 14px; color: var(--text); }
+    p.desc { margin: 0 0 12px; font-size: 14px; color: var(--muted); }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0 4px;
+    }
+    th, td {
+      border: 1px solid var(--line); padding: 7px 9px;
+      vertical-align: top; text-align: left;
+    }
+    th { background: #f8fafc; font-weight: 600; white-space: nowrap; }
+    td.tn { font-family: Consolas, "Courier New", monospace; font-weight: 600; white-space: nowrap; }
+    td.fn { font-family: Consolas, "Courier New", monospace; font-size: 12px; }
+    .badge {
+      display: inline-block; font-size: 12px; padding: 2px 8px;
+      border-radius: 4px; margin-right: 6px; font-weight: 600;
+    }
+    .b1 { background: var(--lab1-bg); color: var(--lab1); }
+    .b2 { background: var(--lab2-bg); color: var(--lab2); }
+    .note {
+      background: #f8fafc; border: 1px dashed var(--line); border-radius: 8px;
+      padding: 10px 12px; font-size: 13px; color: var(--muted); margin-top: 10px;
+    }
+    .note strong { color: var(--text); }
+    .er {
+      font-family: Consolas, monospace; font-size: 12px;
+      background: #0f2a2a; color: #d4eeee;
+      padding: 14px 16px; border-radius: 8px;
+      overflow-x: auto; white-space: pre; line-height: 1.4;
+    }
+    .compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0;
+    }
+    .compare .card {
+      border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff;
+    }
+    .compare .card.l1 { border-top: 3px solid var(--lab1); }
+    .compare .card.l2 { border-top: 3px solid var(--lab2); }
+    .compare .card h4 { margin: 0 0 8px; }
+    .compare .card ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--muted); }
+    code {
+      background: var(--accent-soft); color: var(--accent);
+      padding: 1px 5px; border-radius: 3px; font-size: 12px;
+    }
+    ul.plain { margin: 0 0 10px; padding-left: 18px; font-size: 14px; color: var(--muted); }
+    @media (max-width: 960px) {
+      .layout { flex-direction: column; }
+      nav { width: 100%; height: auto; position: relative; max-height: 220px; }
+      main { padding: 16px 14px 50px; }
+      .compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav>
+      <h1>补料 / 取样</h1>
+      <p class="sub">一期、二期入口不同；表、字段与关系如下</p>
+      <div class="sec">总览</div>
+      <a href="#overview">产品分工</a>
+      <div class="sec">一期</div>
+      <a href="#l1-auto">自动补料（任务队列）</a>
+      <a href="#l1-manual">手动补料 / 手动取样</a>
+      <div class="sec">二期</div>
+      <a href="#l2-auto">自动补料（补料任务队列）</a>
+      <a href="#l2-sample">补料任务队列中的取样项</a>
+      <a href="#l2-manual">手动补料 / 手动取样</a>
+      <a href="#l2-master">地秤与默认连接</a>
+      <div class="sec">衔接</div>
+      <a href="#workflow">与工作流</a>
+      <a href="#dict">全量表字典</a>
+    </nav>
+
+    <main>
+      <header class="page">
+        <h1>一期 / 二期 · 自动补料与手动补料取样</h1>
+        <p>说明一期、二期自动补料与手动补料/取样的入口、用到的表、字段含义，以及表与表之间的关系。</p>
+      </header>
+
+      <!-- 1 OVERVIEW -->
+      <section class="block" id="overview">
+        <h2>1. 产品分工</h2>
+        <table>
+          <thead>
+            <tr><th></th><th>一期</th><th>二期</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>自动补料</strong></td>
+              <td>在「任务队列」中创建</td>
+              <td>在「补料任务队列」中创建</td>
+            </tr>
+            <tr>
+              <td><strong>手动补料</strong></td>
+              <td colspan="2" style="text-align:center">「手动补料」页面（两端同一入口，执行链路不同）</td>
+            </tr>
+            <tr>
+              <td><strong>手动取样</strong></td>
+              <td colspan="2" style="text-align:center">「手动取样」页面（冲洗 / 取样 / 消毒等）</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="compare">
+          <div class="card l1">
+            <h4><span class="badge b1">一期</span></h4>
+            <ul>
+              <li>自动补料 → 任务队列 → <code>CDP_TaskQueue</code> + <code>CDP_Batch_OP</code>（FEEDING，Mode=3）</li>
+              <li>手动补料 → 手动操作记录表 → 下层设备服务</li>
+              <li>泵速主数据 → 速度设置（非默认连接页）</li>
+            </ul>
+          </div>
+          <div class="card l2">
+            <h4><span class="badge b2">二期</span></h4>
+            <ul>
+              <li>自动补料 → 补料任务队列 → <code>CDP_Batch_FixedFeedingTask</code></li>
+              <li>任务队列里不再作为自动补料入口（自动 FEEDING 选项隐藏）</li>
+              <li>手动补料 → 同样写入固定补料任务表（Mode=手动）并驱动地秤状态</li>
+              <li>地秤 / 泵默认 → 「地秤」「默认连接」页配置</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 LAB1 AUTO -->
+      <section class="block" id="l1-auto">
+        <h2>2. 一期：自动补料（任务队列）</h2>
+        <p class="desc">
+          <span class="badge b1">一期</span>
+          自动补料只在「任务队列」创建。本节只讲自动补料，不涉及取测。
+        </p>
+
+        <h3>做什么</h3>
+        <ul class="plain">
+          <li>选择培养批次 / 反应器，选择操作类型为自动补料（FEEDING）</li>
+          <li>勾选泵位子操作、填写计划时间、体积、速度等参数后保存</li>
+          <li>系统按自动模式调度执行，并可查看补料实测曲线</li>
+        </ul>
+
+        <h3>表与表的关系</h3>
+        <div class="er">CDP_OP_Definition (OP 主数据, Code=FEEDING)
+        ↑ OPID
+CDP_Batch  ←—— BatchID ——  CDP_Batch_OP (Mode=3 自动, LabId=1)
+   │                              │
+   │ LocCombinationID             ├── 1:N  CDP_Batch_OP_Sub (泵位子操作)
+   ↓                              │              │
+CDP_Location_Combinations         │              └── 1:N  CDP_Batch_OP_ParameterValue
+   │ LabDeviceID                  │                          (计划时间、体积、速度等)
+   ↓                              ├── 1:N  CDP_Batch_OP_Exec (实测 ActualValue)
+CDP_LabDevice                     │
+                                  └── 1:1  CDP_TaskQueue (队列头, BatchOPID)</div>
+
+        <h3>字段说明</h3>
+
+        <h4>CDP_TaskQueue（队列头）</h4>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>读 / 写</th><th>关联</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">TaskQueueID</td><td>主键</td><td>系统生成</td><td>—</td></tr>
+            <tr><td class="fn">BatchOPID</td><td>挂到哪次批次操作</td><td>创建时写</td><td>→ <code>CDP_Batch_OP.BatchOPID</code></td></tr>
+            <tr><td class="fn">Status</td><td>队列状态</td><td>创建 / 终止 / 重置时更新</td><td>—</td></tr>
+            <tr><td class="fn">IsDelete</td><td>软删</td><td>删除任务时</td><td>—</td></tr>
+            <tr><td class="fn">Created_by / Creation_time</td><td>创建人、时间</td><td>创建时写</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h4>CDP_Batch_OP（批次操作实例）</h4>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>读 / 写</th><th>关联</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">BatchOPID</td><td>主键</td><td>系统生成</td><td>← TaskQueue.BatchOPID；→ Sub / Exec</td></tr>
+            <tr><td class="fn">LabId</td><td>实验室</td><td>创建时写 1</td><td>一期过滤用</td></tr>
+            <tr><td class="fn">BatchID</td><td>培养批次</td><td>创建时写</td><td>→ <code>CDP_Batch.BatchID</code></td></tr>
+            <tr><td class="fn">OPID</td><td>操作定义</td><td>选 FEEDING 时写入对应 ID</td><td>→ <code>CDP_OP_Definition.OPID</code></td></tr>
+            <tr><td class="fn">Mode</td><td>1 手动 / <b>3 自动</b> / 5 工作流落库</td><td>任务队列建自动补料写 <b>3</b></td><td>—</td></tr>
+            <tr><td class="fn">Status</td><td>执行状态</td><td>创建、调度、结束时更新</td><td>—</td></tr>
+            <tr><td class="fn">StartTime / EndTime</td><td>起止时间</td><td>执行过程写</td><td>—</td></tr>
+            <tr><td class="fn">SequenceNumber</td><td>序号</td><td>创建时写</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h4>CDP_Batch_OP_Sub（子操作，如各泵位）</h4>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>关联</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">BatchOPSubID</td><td>主键</td><td>← ParameterValue.BatchSubOPID</td></tr>
+            <tr><td class="fn">BatchOPID</td><td>所属批次操作</td><td>→ Batch_OP</td></tr>
+            <tr><td class="fn">OPSubID</td><td>子操作定义（哪个泵位等）</td><td>→ OP 子定义表</td></tr>
+            <tr><td class="fn">Value</td><td>是否勾选</td><td>—</td></tr>
+            <tr><td class="fn">Status / StartTime / EndTime</td><td>子项执行状态与时间</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h4>CDP_Batch_OP_ParameterValue（参数）</h4>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>关联</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">OPParameterID</td><td>主键</td><td>—</td></tr>
+            <tr><td class="fn">BatchSubOPID</td><td>挂在哪个子操作下</td><td>→ <code>CDP_Batch_OP_Sub.BatchOPSubID</code></td></tr>
+            <tr><td class="fn">ParameterID</td><td>参数种类（计划时间、体积、速度等）</td><td>→ 参数主数据</td></tr>
+            <tr><td class="fn">Value</td><td>参数值（字符串存储）</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h4>CDP_Batch_OP_Exec（执行实测）</h4>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>关联</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">ExecID</td><td>主键</td><td>—</td></tr>
+            <tr><td class="fn">BatchID / BatchOPID / OPSubID</td><td>定位到哪次补料子项</td><td>→ Batch / Batch_OP</td></tr>
+            <tr><td class="fn">ActualValue</td><td>实际补料量</td><td>曲线展示读取</td></tr>
+            <tr><td class="fn">FeedingTime</td><td>实测对应时间</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h4>如何限定到一期实验室</h4>
+        <p class="desc">
+          列表经 <code>CDP_Batch_OP.BatchID</code> → <code>CDP_Batch.LocCombinationID</code> →
+          <code>CDP_Location_Combinations.LabID = 1</code>（或 Batch_OP.LabId）过滤。
+        </p>
+
+        <h3>创建到执行逻辑</h3>
+        <ol class="plain">
+          <li>任务队列保存 → 插入 Batch_OP（Mode=3，OP=FEEDING）+ Sub + ParameterValue + TaskQueue</li>
+          <li>调度按计划时间执行各泵位子项，更新 Status / 时间</li>
+          <li>执行结果写入 Batch_OP_Exec.ActualValue，供曲线查看</li>
+        </ol>
+      </section>
+
+      <!-- 3 LAB1 MANUAL -->
+      <section class="block" id="l1-manual">
+        <h2>3. 一期：手动补料 / 手动取样</h2>
+
+        <h3>3.1 手动补料</h3>
+        <p class="desc">在「手动补料」页选择补料单元与泵位，填写体积、速度后启动或中止。一期走手动操作记录，再下发给设备侧。</p>
+
+        <h4>表关系</h4>
+        <div class="er">CDP_Batch ← BatchID — CDP_ManualOP_Rec — LabDeviceID → CDP_LabDevice (补料单元)
+                              │
+                              ├── LocCombinationID → CDP_Location_Combinations
+                              │         ├── LabDeviceSubID → CDP_LabDeviceSub (泵)
+                              │         └── LocationControls → 料液/瓶 ItemDefID
+                              │
+                              └── 1:N CDP_ManualOP_Detail_Rec (过程重量等)
+
+CDP_ManualOP_Parmeter (按 LabDeviceID + OperationType 存默认体积/速度)</div>
+
+        <h4>CDP_ManualOP_Rec</h4>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>关联</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">ManualOPRecID</td><td>主键</td><td>← Detail_Rec.ManualOPRecID</td></tr>
+            <tr><td class="fn">LabDeviceID</td><td>补料设备</td><td>→ LabDevice</td></tr>
+            <tr><td class="fn">BatchID</td><td>当前培养</td><td>→ Batch</td></tr>
+            <tr><td class="fn">OperationType</td><td>操作类型（不同泵位/料液对应不同编号，如 11/13/15/17）</td><td>—</td></tr>
+            <tr><td class="fn">ExecParameters</td><td>JSON：体积、速度、位号、物料等</td><td>—</td></tr>
+            <tr><td class="fn">StartTime / EndTime</td><td>起止</td><td>—</td></tr>
+            <tr><td class="fn">Status</td><td>1 执行中等；结束/中止更新；异常可带 ErrorCode</td><td>—</td></tr>
+            <tr><td class="fn">Weight</td><td>汇总重量（如有）</td><td>—</td></tr>
+            <tr><td class="fn">LocCombinationID</td><td>工位组合</td><td>→ Location_Combinations</td></tr>
+          </tbody>
+        </table>
+
+        <h4>CDP_ManualOP_Parmeter / Detail_Rec</h4>
+        <table>
+          <thead><tr><th>表</th><th>关键字段</th><th>作用</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="tn">CDP_ManualOP_Parmeter</td>
+              <td class="fn">LabDeviceID, OperationType, PumpingType, DefaultParameters</td>
+              <td>该设备某类操作的默认参数</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_ManualOP_Detail_Rec</td>
+              <td class="fn">ManualOPRecID, Weight, PumpedTime, Speed, CurrentScaleValue</td>
+              <td>执行过程采样点</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>3.2 手动取样</h3>
+        <p class="desc">在「手动取样」页做冲洗、取样、消毒。一期同样写 <code>CDP_ManualOP_Rec</code>（OperationType：1 冲洗 / 3 取样 / 5 消毒），下发设备后回写结束状态；成功取样可回写批次操作上的取样体积类参数。</p>
+        <div class="note">
+          <strong>与「取样单元换液」工作流不同：</strong>本页是设备侧手动冲洗/取样/消毒；换液走工作流另一套表（见第 7 节）。
+        </div>
+      </section>
+
+      <!-- 4 LAB2 AUTO -->
+      <section class="block" id="l2-auto">
+        <h2>4. 二期：自动补料（补料任务队列）</h2>
+        <p class="desc">
+          <span class="badge b2">二期</span>
+          自动 / 计划补料在「补料任务队列」创建与管理。中心表是 <code>CDP_Batch_FixedFeedingTask</code>。
+        </p>
+
+        <h3>表与表的关系</h3>
+        <div class="er">CDP_Batch ← BatchID — CDP_Batch_FixedFeedingTask
+                              │
+                              ├── FeedingMediumID → CDP_Item_Def (补料介质)
+                              ├── FeedingPumpNo / 速度 对应同舱补料单元上的泵位
+                              │         (经 LabDevice Type=5 → LabDeviceSub / Location_Combinations)
+                              ├── ScaleId 链路：LabDevice(Type=5).ScaleId → CDP_EqumentScale
+                              │         执行时写 DeviceStatus；Batch.IsFeeding 同步
+                              └── 可选 TaskQueueID / OP 参数回写
+                                        ParameterID=49 存 BatchTaskID
+                                        ParameterID=41 存实际体积</div>
+
+        <h3>CDP_Batch_FixedFeedingTask 字段</h3>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">BatchTaskID</td><td>主键</td><td>—</td></tr>
+            <tr><td class="fn">TaskNo</td><td>任务编号</td><td>—</td></tr>
+            <tr><td class="fn">BatchID</td><td>培养批次</td><td>→ CDP_Batch</td></tr>
+            <tr><td class="fn">SoureType</td><td>来源</td><td>1 协议 / 3 人工创建 / 5 子系统等</td></tr>
+            <tr><td class="fn">Mode</td><td>模式</td><td><b>1 自动</b>（本队列计划）；3 手动（手动补料页也会插）</td></tr>
+            <tr><td class="fn">FeedingPumpNo</td><td>泵位号</td><td>对应位置组合上的泵</td></tr>
+            <tr><td class="fn">PumpSpeed</td><td>泵速</td><td>g/min 等</td></tr>
+            <tr><td class="fn">FeedingMediumID</td><td>介质</td><td>→ Item_Def</td></tr>
+            <tr><td class="fn">FeedingTime</td><td>计划执行时间</td><td>—</td></tr>
+            <tr><td class="fn">FeedingType</td><td>计量方式</td><td>1 按初始体积% / 3 固定体积 / 5 规则</td></tr>
+            <tr><td class="fn">FeedingVolumePercent / FeedingVolume</td><td>计划量</td><td>—</td></tr>
+            <tr><td class="fn">IsFeedingGlucose</td><td>是否糖补料</td><td>—</td></tr>
+            <tr><td class="fn">Confirm* / Review* / Approve*</td><td>确认、复核、批准人与时间</td><td>审批链</td></tr>
+            <tr><td class="fn">StartUserID / StartTime / EndTime</td><td>实际执行</td><td>—</td></tr>
+            <tr><td class="fn">Abort* / AbortReview*</td><td>中止及审核</td><td>—</td></tr>
+            <tr><td class="fn">TotalFeedingRealVolume 等 Before/After 重量体积</td><td>执行实测</td><td>—</td></tr>
+            <tr><td class="fn">Status</td><td>任务状态</td><td>见下方状态链</td></tr>
+            <tr><td class="fn">AbnormalCause / AbnormalCompleteVolume</td><td>异常原因与补量</td><td>异常处理写</td></tr>
+            <tr><td class="fn">LowerLimit / FeedingTo / LowerLimitOperator</td><td>规则补料下限等</td><td>FeedingType=5 时用</td></tr>
+            <tr><td class="fn">TaskQueueID</td><td>可选关联队列</td><td>→ TaskQueue（若有）</td></tr>
+            <tr><td class="fn">CedexSampleID</td><td>关联检测样</td><td>糖补料审核场景</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Status 状态链</h3>
+        <div class="er">3 待批准 → 5 待执行 → 7 执行中 → 19 已执行
+              ↘ 9 异常 → 11 异常已处理
+              ↘ 17 跳过 / 99 取消</div>
+
+        <h3>逻辑简述</h3>
+        <ol class="plain">
+          <li>在补料任务队列新建计划（Mode=1）→ 写入 FixedFeedingTask</li>
+          <li>确认 / 审核通过后进入待执行</li>
+          <li>到点执行：驱动泵；补料单元绑定的地秤 <code>DeviceStatus=2</code>，批次 <code>IsFeeding=true</code></li>
+          <li>结束或中止：回写实测字段与 Status；地秤恢复空闲</li>
+          <li>异常处理：补量、清 ErrorCode、释放地秤，并可回写 OP 参数（如实际体积）</li>
+        </ol>
+      </section>
+
+      <!-- 5 LAB2 SAMPLE IN FEEDING QUEUE -->
+      <section class="block" id="l2-sample">
+        <h2>5. 二期：补料任务队列中的取样项</h2>
+        <p class="desc">补料任务队列编辑时可勾选取样类项（如 Sampling Test）。保存时若介质类型为取样类，可带出取样体积，并旁路触发取样相关工作流，最终仍可能落到批次操作 / 任务队列记录上，但<strong>计划入口在补料任务队列</strong>，而不是一期那种在任务队列里建自动补料。</p>
+        <table>
+          <thead><tr><th>环节</th><th>涉及</th></tr></thead>
+          <tbody>
+            <tr><td>页面勾选</td><td>取样体积等字段随任务明细提交</td></tr>
+            <tr><td>保存旁路</td><td>可走取样手动类工作流（写工作流子表 / 再 Finish）</td></tr>
+            <tr><td>落库</td><td>FixedFeedingTask 侧任务 + 可能的 Batch_OP / TaskQueue 审计记录</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 6 LAB2 MANUAL -->
+      <section class="block" id="l2-manual">
+        <h2>6. 二期：手动补料 / 手动取样</h2>
+
+        <h3>6.1 手动补料（与一期同页，链路不同）</h3>
+        <table>
+          <thead><tr><th></th><th>一期</th><th>二期</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>主执行表</td>
+              <td><code>CDP_ManualOP_Rec</code></td>
+              <td><code>CDP_Batch_FixedFeedingTask</code>（Mode=3 手动，Status 进入待执行/执行）</td>
+            </tr>
+            <tr>
+              <td>地秤</td>
+              <td>弱依赖</td>
+              <td><code>LabDevice.ScaleId</code> → <code>EqumentScale.DeviceStatus</code> 2↔1；<code>Batch.IsFeeding</code></td>
+            </tr>
+            <tr>
+              <td>详情来源</td>
+              <td>ManualOP 历史</td>
+              <td>固定补料任务执行信息；灌注场景另有剂量记录表</td>
+            </tr>
+            <tr>
+              <td>预灌</td>
+              <td>工作流侧启动补料指令（一期路径）</td>
+              <td>工作流侧二期路径（与补料单元供液等共用）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>二期手动补料关系</h4>
+        <div class="er">手动补料页 Start
+  → INSERT CDP_Batch_FixedFeedingTask (Mode=手动)
+  → LabDevice(Type=5).ScaleId → CDP_EqumentScale.DeviceStatus=2
+  → CDP_Batch.IsFeeding=true
+Abort / 结束
+  → 任务 Status 更新；DeviceStatus=1；IsFeeding=false</div>
+
+        <h3>6.2 手动取样</h3>
+        <p class="desc">表结构与一期相同，仍为 <code>CDP_ManualOP_Rec</code>。二期界面多冲洗/消毒速度、灌注时多 ATF 冲洗/取样（OperationType 2 / 4）；请求会带上实验室与速度参数。</p>
+      </section>
+
+      <!-- 7 MASTER -->
+      <section class="block" id="l2-master">
+        <h2>7. 二期主数据：地秤与默认连接</h2>
+        <p class="desc">二期仓库菜单可见「地秤」「默认连接」。一期对应泵速走「速度设置」，不配置这两页。</p>
+
+        <h3>表关系</h3>
+        <div class="er">CDP_EqumentScale (地秤主数据 + DeviceStatus)
+        ↑ ScaleId
+CDP_LabDevice Type=5 (补料单元)  ←同舱 LabCabinID→  CDP_LabDevice Type=1 (反应器)
+        │
+        └── CDP_Location_Combinations (每个泵位一条)
+                  ├── LabDeviceSubID → CDP_LabDeviceSub
+                  │     DefaultSpeed / MaxSpeed / Status / StorageType=2(泵)
+                  └── CDP_Location_Controls
+                        ControlType=3 → 料液 ItemDefID
+                        ControlType=1 → 瓶   ItemDefID</div>
+
+        <h3>CDP_EqumentScale</h3>
+        <table>
+          <thead><tr><th>字段</th><th>含义</th><th>谁写</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">ScaleId</td><td>主键</td><td>地秤页新建</td></tr>
+            <tr><td class="fn">LabId / EquipmentNo / AssetNo / Model / Specification</td><td>归属与铭牌信息</td><td>地秤页</td></tr>
+            <tr><td class="fn">IP / Port</td><td>通讯</td><td>地秤页</td></tr>
+            <tr><td class="fn">Status</td><td>是否启用（维护勾选）</td><td>地秤页</td></tr>
+            <tr><td class="fn">DeviceStatus</td><td>1 空闲 / 2 补料中</td><td>手动补料启动中止、补料任务异常处理</td></tr>
+            <tr><td class="fn">ErrorCode / LastUsed_DeviceId / LastUsed_Time</td><td>故障与最近使用</td><td>补料任务异常处理等</td></tr>
+            <tr><td class="fn">ScalePrecision</td><td>精度</td><td>表有；页面未必编辑</td></tr>
+          </tbody>
+        </table>
+
+        <h3>默认连接保存写入</h3>
+        <table>
+          <thead><tr><th>表</th><th>字段</th><th>含义</th></tr></thead>
+          <tbody>
+            <tr><td class="tn">CDP_LabDevice</td><td class="fn">ScaleId, Remake</td><td>补料单元绑哪台秤、备注</td></tr>
+            <tr><td class="tn">CDP_Location_Controls</td><td class="fn">ItemDefID, Status（Type=1 瓶 / Type=3 料液）</td><td>泵位默认物料</td></tr>
+            <tr><td class="tn">CDP_LabDeviceSub</td><td class="fn">DefaultSpeed, MaxSpeed, Status</td><td>两速都空则 Status=false；都填则 true</td></tr>
+          </tbody>
+        </table>
+        <div class="note">
+          这些默认会被「补料单元连接」工作流读取；连接过程中的 Next 步骤也可能按扫描结果<strong>覆盖</strong>料液、瓶与速度。培养完成（二期）会重置控件 Status、瓶默认物料，但一般保留 DefaultSpeed / MaxSpeed。
+        </div>
+      </section>
+
+      <!-- 8 WORKFLOW -->
+      <section class="block" id="workflow">
+        <h2>8. 与工作流的衔接</h2>
+        <table>
+          <thead><tr><th>工作流</th><th>影响</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>补料单元连接</td>
+              <td>建立反应器与补料单元关系，写/改 Location_Controls、LabDeviceSub；批次写 SupplementaryUser。之后手动补料列表才有完整泵位与料液。</td>
+            </tr>
+            <tr>
+              <td>补料单元供液</td>
+              <td>换液；预灌与手动补料页共用二期补料启动路径。</td>
+            </tr>
+            <tr>
+              <td>取样单元供液</td>
+              <td>换液（<code>CDP_Workflow_LiquidImport_SamplingUnit</code>），不是手动取样页。</td>
+            </tr>
+            <tr>
+              <td>工作流内手动补料 / 取样 Finish</td>
+              <td>向任务队列体系插入 Mode=5 的批次操作记录（审计），不等于在任务队列里「建一期自动补料」。</td>
+            </tr>
+            <tr>
+              <td>完成培养（二期）</td>
+              <td>重置补料侧位置/控件 Status；瓶控件默认 ItemDefID；速度字段通常保留。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 9 DICT -->
+      <section class="block" id="dict">
+        <h2>9. 全量表字典</h2>
+        <table>
+          <thead>
+            <tr><th>表</th><th>作用</th><th>主要关联</th><th>一期自动补料</th><th>二期自动补料</th><th>手动补料</th><th>手动取样</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tn">CDP_TaskQueue</td><td>制造任务队列头</td><td>BatchOPID → Batch_OP</td>
+              <td>写</td><td>旁路/可选</td><td>—</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Batch_OP</td><td>批次操作实例</td><td>BatchID, OPID, Mode</td>
+              <td>写 Mode=3</td><td>异常/旁路可写</td><td>结果 OP 可能写</td><td>结果 OP 可能写</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Batch_OP_Sub</td><td>子操作（泵位等）</td><td>BatchOPID</td>
+              <td>写</td><td>—</td><td>—</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Batch_OP_ParameterValue</td><td>参数值</td><td>BatchSubOPID</td>
+              <td>写</td><td>回写 41/49 等</td><td>—</td><td>体积类参数</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Batch_OP_Exec</td><td>自动补料实测</td><td>BatchOPID</td>
+              <td>写/读曲线</td><td>—</td><td>—</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_OP_Definition</td><td>OP 主数据</td><td>OPID</td>
+              <td>读 FEEDING</td><td>读</td><td>读</td><td>读</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Batch_FixedFeedingTask</td><td>二期固定/计划补料任务</td><td>BatchID, Medium, 泵</td>
+              <td>—</td><td>主写</td><td>二期主写</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_ManualOP_Rec</td><td>手动设备操作</td><td>LabDevice, Batch</td>
+              <td>—</td><td>预灌等可能</td><td>一期主写</td><td>主写</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_ManualOP_Parmeter</td><td>手动默认参数</td><td>LabDeviceID</td>
+              <td>—</td><td>—</td><td>读写</td><td>读写</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_ManualOP_Detail_Rec</td><td>手动过程明细</td><td>ManualOPRecID</td>
+              <td>—</td><td>—</td><td>写</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_EqumentScale</td><td>地秤</td><td>ScaleId</td>
+              <td>—</td><td>运行态</td><td>二期运行态</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_LabDevice</td><td>设备（1 反应器 / 5 补料）</td><td>ScaleId, Cabin</td>
+              <td>过滤</td><td>绑秤</td><td>选设备</td><td>选设备</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_LabDeviceSub</td><td>泵子设备</td><td>LabDeviceID</td>
+              <td>—</td><td>默认速度</td><td>读泵位</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Location_Combinations</td><td>工位组合</td><td>LabDevice, Sub, LabID</td>
+              <td>Lab 过滤</td><td>泵位拓扑</td><td>读</td><td>读</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Location_Controls</td><td>工位物料控件</td><td>LocCombinationID</td>
+              <td>—</td><td>默认料/瓶</td><td>读</td><td>—</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Batch</td><td>培养批次</td><td>LocCombinationID</td>
+              <td>关联</td><td>IsFeeding 等</td><td>关联</td><td>关联</td>
+            </tr>
+            <tr>
+              <td class="tn">CDP_Item_Def</td><td>物料定义</td><td>ItemDefID</td>
+              <td>—</td><td>介质</td><td>料液名</td><td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+  <script>
+    const links = [...document.querySelectorAll('nav a')];
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const onScroll = () => {
+      let cur = sections[0];
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= 80) cur = s;
+      }
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur.id));
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>

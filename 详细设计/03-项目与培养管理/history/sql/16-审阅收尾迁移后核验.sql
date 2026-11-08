@@ -1,0 +1,22 @@
+-- M03 后置只读设计；预期19表276列。旧列逐主键与备份逐值核对，不只看计数。
+SHOW CREATE TABLE `res_project`;
+SHOW CREATE TABLE `res_project_leader`;
+SHOW CREATE TABLE `res_project_lab`;
+SHOW CREATE TABLE `res_project_tag`;
+SHOW CREATE TABLE `res_project_member`;
+SHOW CREATE TABLE `res_batch`;
+SHOW CREATE TABLE `res_batch_leader`;
+SHOW CREATE TABLE `res_batch_member`;
+SHOW CREATE TABLE `res_culture`;
+SHOW CREATE TABLE `res_culture_leader`;
+SHOW CREATE TABLE `res_culture_member`;
+SHOW CREATE TABLE `res_culture_occupancy`;
+SHOW CREATE TABLE `res_culture_notice_outbox`;
+SHOW CREATE TABLE `res_culture_parameter_application`;
+SHOW CREATE TABLE `res_culture_parameter_snapshot`;
+SHOW CREATE TABLE `res_culture_parameter_state`;
+SHOW CREATE TABLE `res_culture_workflow_reference`;
+SHOW CREATE TABLE `res_culture_runtime_event`;
+SHOW CREATE TABLE `res_culture_change_candidate`;
+SELECT table_name,constraint_name,enforced FROM information_schema.table_constraints WHERE constraint_schema=DATABASE() AND constraint_type='CHECK' AND table_name IN ('res_project','res_project_leader','res_project_lab','res_project_tag','res_project_member','res_batch','res_batch_leader','res_batch_member','res_culture','res_culture_leader','res_culture_member','res_culture_occupancy','res_culture_notice_outbox','res_culture_parameter_application','res_culture_parameter_snapshot','res_culture_parameter_state','res_culture_workflow_reference','res_culture_runtime_event','res_culture_change_candidate');
+SELECT COUNT(*) AS expected_zero_before_enable FROM `res_culture_change_candidate`;

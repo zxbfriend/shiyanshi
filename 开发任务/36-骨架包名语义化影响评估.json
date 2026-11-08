@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "title": "36-骨架包名语义化影响评估",
+    "date": "2026-09-20",
+    "task": "第9步暂停期专项评估：m01~m09 模块编号 Java 包是否应在业务开发前语义化重命名",
+    "mode": "READ_ONLY 评估：未修改任何 Java/XML/SQL/Vue 源码、26 清单、skeleton 资源、测试门禁；未执行任何 git 写操作",
+    "basis": [
+      "docs/开发任务/26-全系统接口契约骨架清单.json",
+      "docs/开发任务/30-TASK-SKELETON-全系统骨架待验收汇总.md",
+      "docs/开发任务/31-第8步全量骨架验收复核审计报告.md（合并定稿版）",
+      "docs/开发任务/33-第9步任务包生成基线规则.md（R1，12条规则）",
+      "futurefab-modules/futurefab-system/src/test/resources/contract/skeleton-m02..m07/m09.json",
+      "futurefab-modules/futurefab-system/src/test/resources/contract/port-closure-anchor.json",
+      "docs/详细设计/00-业务模块划分与设计目录.md（模块业务名权威）"
+    ],
+    "evidence": "统计由 _tmp_skelgen/gen/audit36.js 只读遍历产出（audit36-stats.json），本报告数字全部同源"
+  },
+  "currentPackages": {
+    "trees": {
+      "domain/dto": { "m01": 69, "m02": 253, "m03": 43, "m04": 16, "m05": 48, "m06": 15, "m07": 33, "m09": 18 },
+      "domain/vo": { "m01": 45, "m02": 186, "m03": 80, "m04": 171, "m05": 72, "m06": 59, "m07": 94, "m09": 78 },
+      "service/application": { "m01": 14, "m02": 35, "m03": 10, "m04": 1, "m05": 10, "m06": 6, "m07": 8, "m09": 10 },
+      "service/impl/application": { "m01": 14, "m02": 35, "m03": 10, "m04": 1, "m05": 10, "m06": 6, "m07": 8, "m09": 10 },
+      "service/port": { "m01": 9, "m02": 66, "m03": 57, "m04": 16, "m05": 21, "m06": 23, "m07": 34, "m09": 22 },
+      "service/impl/port": { "m01": 2 }
+    },
+    "perModuleTotals": { "m01": 153, "m02": 575, "m03": 200, "m04": 205, "m05": 161, "m06": 109, "m07": 177, "m09": 138 },
+    "systemModuleFilesInM0xPackages": 1718,
+    "systemModuleMainJavaTotal": 2366,
+    "m08": "无任何 m08 目录（第8步完全排除成立，31 审计 §6）",
+    "otherMainM0xDirs": "六棵树之外 main 无 m0x 包目录（controller 均在平铺 controller/ 与 controller/run/）",
+    "crossService": {
+      "futurefab-auth": {
+        "m0xPackages": ["service/application/m01(3)", "service/impl/application/m01(3)"],
+        "referrers": ["controller/TokenController.java(16 条 m0x import)", "test/.../TokenControllerSkeletonContractTest.java(11 FQCN 引用)"]
+      },
+      "gateway/common": "0 引用"
+    }
+  },
+  "referenceCounts": {
+    "skeletonJsonFqcnRefs": {
+      "total": 7170,
+      "distinctFqcn": 1119,
+      "perFile": {
+        "skeleton-m02.json": { "entries": 253, "refs": 2748, "distinct": 469 },
+        "skeleton-m03.json": { "entries": 43, "refs": 990, "distinct": 118 },
+        "skeleton-m04.json": { "entries": 16, "refs": 645, "distinct": 143 },
+        "skeleton-m05.json": { "entries": 58, "refs": 741, "distinct": 124 },
+        "skeleton-m06.json": { "entries": 15, "refs": 393, "distinct": 62 },
+        "skeleton-m07.json": { "entries": 33, "refs": 1055, "distinct": 113 },
+        "skeleton-m09.json": { "entries": 21, "refs": 598, "distinct": 90 }
+      },
+      "portClosureAnchor": "0 FQCN（纯 interface_id/计数锚点，包名变更对其数值无影响，但锚点再生链须重验）"
+    },
+    "javaSourceImports": {
+      "mainOutsideImporterFiles": 92,
+      "mainOutsideImportLines": 621,
+      "outsideImporterComposition": "Controller 84（含 controller/run 8）+ 存量 Mapper 6 + service/guard 2",
+      "mainInsideM0xFiles": 1718,
+      "mainInsideCrossTreeImportLines": 1876,
+      "testJavaFilesWithMtokens": 26,
+      "testJavaFilesWithFqcnImports": 15,
+      "testHeavyHolders": { "PortSignatureSnapshotTest.java": "147 个 m0x token（PORT_ROOT+module 字符串注册表）", "FullSystemSkeletonGateTest.java": "48 个（MODULES 常量 + (m\\d\\d) 路径/导入判定正则）" }
+    },
+    "manifests": {
+      "list26": { "fqcnRefs": 1602, "distinctFqcn": 797, "mdLowerTokens": 9 },
+      "list00Frozen": { "fqcnRefs": 200, "distinctFqcn": 52, "note": "00-全接口契约骨架清单.json 的 controller_class/service 路径同样内嵌 m0x；属已入库冻结任务文档，重命名波及即触发勘误流程" }
+    },
+    "generator": { "filesTotal": 40, "filesWithStaticMtokens": 11, "note": "另有动态拼接（'m0'+n、spec/brief 文件名以模块 token 命名），实际语义耦合覆盖全链" },
+    "docs": "27~35 报告共约 10 份含 m0x 小写包/资源 token（31 双版本合计 92 处）"
+  },
+  "renameImpact": {
+    "perCategory": {
+      "java_main_system": 1718,
+      "java_main_outside_importers": 92,
+      "java_auth_module": 8,
+      "java_test_system": 26,
+      "test_resources_skeleton_json": 7,
+      "manifest_26": 2,
+      "manifest_00_frozen": 1,
+      "generator_tmp_skelgen": 40,
+      "docs_26_to_35": 10
+    },
+    "approxTotal": "约 1924 个文件（源码 ~1844 + 资源/清单/生成器/文档 ~80），另有 463 测试全量回归、三处锚点重算、00 冻结清单勘误"
+  },
+  "mappingCorrection": {
+    "authority": "docs/详细设计/00-业务模块划分与设计目录.md §2",
+    "table": [
+      { "module": "M01", "business": "系统管理", "userSuggestion": "system|identity", "assessment": "system 与根包 com.futurefab.system 段重名（…system.domain.dto.system 拗口）；identity 覆盖不全（含字典/配置/日志）。备选 sysmgmt/admin" },
+      { "module": "M02", "business": "实验室与资源管理", "userSuggestion": "lab", "assessment": "可接受；资源(设备/耗材)域占比大，labresource 更准但冗长" },
+      { "module": "M03", "business": "项目与培养管理", "userSuggestion": "culture", "assessment": "可接受（培养为主对象）" },
+      { "module": "M04", "business": "工艺与方案管理", "userSuggestion": "workflow", "assessment": "不贴切：workflow 语义撞 M06『流程审批』；建议 process 或 plan" },
+      { "module": "M05", "business": "检测与数据签批", "userSuggestion": "detection", "assessment": "贴切" },
+      { "module": "M06", "business": "流程审批管理", "userSuggestion": "calculation|infusion", "assessment": "错误：M06 是审批流，不是计算/补液（calculation/infusion 分属他域）；应为 approval" },
+      { "module": "M07", "business": "补液运行与任务执行", "userSuggestion": "execution", "assessment": "可接受；infusion 反而是 M07 的半壁语义，不能给 M06" },
+      { "module": "M09", "business": "告警与通知管理", "userSuggestion": "alarm", "assessment": "贴切（通知面可选 alarmnotify）" }
+    ]
+  },
+  "options": {
+    "A": {
+      "name": "保持 m0x，文档层映射业务名",
+      "readability": "中：包名仍为编号，但 33 增补映射表 + package-info Javadoc 后 IDE/文档双通道可查",
+      "javaConvention": "中：m0x 非惯例但合法、一致；不少国内模块化项目采用同类编号包",
+      "changeScale": "0 源码改动；仅新增文档映射表",
+      "gateImpact": "零：463 测试、三锚点、生成器、00/26 清单全部不动",
+      "parallelDevImpact": "正向：interface_id(M0x-nnn)↔包(m0x)↔门禁资源(skeleton-m0x)↔任务包编号四位一体零换算，多包并行无歧义",
+      "risks": "长期可读性债务留在包层；新人需查表",
+      "recommended": true
+    },
+    "B": {
+      "name": "纯业务包名（lab/culture/process/detection/approval/execution/alarm）",
+      "readability": "高（改名完成后）",
+      "javaConvention": "高",
+      "changeScale": "约 1924 文件 + 1876+621 条 import 重写 + auth 跨服务 8 文件 + 00 冻结清单勘误",
+      "gateImpact": "全量：FullSystemSkeletonGateTest (m\\d\\d) 正则/MODULES 常量、PortSignatureSnapshotTest 147 token、SkeletonEngine 资源字段、7 个 skeleton JSON、26/00 清单、gen 全链、463 回归重跑；且 skeleton-m0x.json 资源名与包名出现两套标识——包名↔interface_id 映射改由正则字面量维系，正是 §9 禁止的失联风险高发形态",
+      "parallelDevImpact": "负：第9步开工当周即引入大重命名变更风暴，未提交基线（31 P1-1）之上再叠 1700+ 文件移动，评审/回滚粒度尽失；M04/M06 语义映射尚未与用户对齐（见 mappingCorrection）",
+      "risks": "高：重命名与业务接线并发时合并冲突；MyBatis typeAliases 扫描域不变但同名简名风险不变；回滚成本极高",
+      "recommended": false
+    },
+    "C": {
+      "name": "模块号+业务名（m02lab/m05detection/m09alarm）",
+      "readability": "中高：编号保锚点、业务名自解释",
+      "javaConvention": "中：混合段合法但非主流；(m\\d\\d) 判定正则须改为 m\\d\\d[a-z]*",
+      "changeScale": "与 B 几乎相同（照样移动全部 1718 文件+全链同步），仅多保留前缀收益",
+      "gateImpact": "同 B 量级；interface_id↔包前缀映射可机检（优于 B）",
+      "parallelDevImpact": "同 B：改动风暴时点错误",
+      "risks": "中高；若未来确要重命名，C 是阻力最小的目标形态",
+      "recommended": false,
+      "note": "作为『未来某模块真实实现稳定后单模块试点重命名』的推荐形态保留"
+    }
+  },
+  "recommendation": {
+    "renameBeforeStep9": false,
+    "blocksStep9": false,
+    "conclusion": "不建议在第9步业务开发前重命名；m0x 是习惯与可读性问题，不是正确性或契约缺陷，且其可追溯性（与 interface_id/门禁资源/任务包编号同 token）是当前门禁体系的一部分。",
+    "compensation": [
+      "① 33 文档增补『模块编号↔业务名权威映射表』（以 00-业务模块划分与设计目录.md 为准，修正 workflow/calculation 错位），第9步任务包标题与文件命名强制携带模块中文名",
+      "② 第9步各开发包触碰某 m0x 包时顺手补 package-info.java（Javadoc：模块正式名+职责+负责的 interface_id 段），零移动、IDE 悬停即得业务名",
+      "③ 开发任务包以 interface_id 区间圈定范围（33 规则 1/4），包名只作落点不作检索主键",
+      "④ 26 清单 md 视图增加模块名标题行（由 gen26.js 派生，不新造权威）",
+      "⑤ 若未来重命名：时点选在对应模块真实实现验收稳定之后、以单模块为单元做 IDE refactor + 全链同步（Java/skeleton JSON/26/生成器/门禁五处一体，缺一不得合入），目标形态推荐 C（m0x+业务名）；00 冻结清单同步勘误需用户裁决"
+    ]
+  },
+  "prohibitions": [
+    "不允许只改部分包名（半 m0x 半业务名 = 映射判定器双口径并存，门禁必漏检）",
+    "不允许只改 Java 不改 skeleton JSON（SkeletonEngine 以资源 FQCN 反射定位，不同步即 463 红）",
+    "不允许只改文档不改生成器（gen 链再生会把 m0x 写回，形成回潮性双源漂移）",
+    "不允许让包名和 interface_id 映射失联（任何形态下须保留可机检的 M0x↔包 对应，并纳入 FullSystemSkeletonGateTest 反例 fixture 证明可检出）"
+  ],
+  "verification": {
+    "jsonParse": true,
+    "impactFileCounts": "已给出（renameImpact.perCategory，approxTotal≈1924）",
+    "blocksStep9Statement": "不阻断（recommendation.blocksStep9=false）",
+    "sourceModified": false,
+    "gitDiffCheck": "PASS"
+  }
+}

@@ -1,0 +1,851 @@
+{
+ "name": "业务开发任务包-按人员分配建议",
+ "version": "1.0",
+ "generated_at": "2026-09-20",
+ "generator": "_tmp_skelgen/gen/genTaskPkg.js（分配＝角色×现场/远程分层程序结果：高级10年·远程承接状态机/工艺/旧路由治理裁决等可远程复杂包；涉外部系统包全部落现场（中级5年×2·新入组为主，初级3年·组员上限内承接小面包＋M01 存量回归）；中级另承接自包含新契约包；DEV-* 为编码非真实姓名）",
+ "policy": "仅建议分组与顺序；不实现业务逻辑、不改源码、不执行 git 动作；blocked 17 条与 M08 不派工。人员事实：高级 10 年·不在现场（远程）；中级 5 年×2·新加入项目组·在现场；初级 3 年·在现场（组员）。硬规则：涉外部系统（AAD/SDMS/Named Pipe/邮件短信/设备）联调的包只能由现场人员承接；若初级同为新人，M01 回归核验包需改派并重跑本生成器。",
+ "developers": [
+  {
+   "owner": "DEV-A",
+   "role": "高级开发·10 年（远程·不在现场）",
+   "on_site": false,
+   "interface_count": 93,
+   "package_count": 12,
+   "packages": [
+    {
+     "package_id": "TP-M03-01",
+     "package_name": "项目与培养管理 / G02-培养运行变更",
+     "module": "M03",
+     "tier": "SENIOR",
+     "interfaces": 5,
+     "write_interfaces": 1
+    },
+    {
+     "package_id": "TP-M03-02",
+     "package_name": "项目与培养管理 / G08-G09-模式与初始重量",
+     "module": "M03",
+     "tier": "SENIOR",
+     "interfaces": 3,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M03-03",
+     "package_name": "项目与培养管理 / OBS-观测时培养关联",
+     "module": "M03",
+     "tier": "SENIOR",
+     "interfaces": 1,
+     "write_interfaces": 0
+    },
+    {
+     "package_id": "TP-M03-06",
+     "package_name": "项目与培养管理 / UI03-培养列表与状态动作",
+     "module": "M03",
+     "tier": "SENIOR",
+     "interfaces": 10,
+     "write_interfaces": 8
+    },
+    {
+     "package_id": "TP-M03-07",
+     "package_name": "项目与培养管理 / UI04-成员分享与退出",
+     "module": "M03",
+     "tier": "SENIOR",
+     "interfaces": 8,
+     "write_interfaces": 6
+    },
+    {
+     "package_id": "TP-M04-01",
+     "package_name": "工艺与方案管理 / 工艺模板与方案配置（P02）",
+     "module": "M04",
+     "tier": "SENIOR",
+     "interfaces": 16,
+     "write_interfaces": 7
+    },
+    {
+     "package_id": "TP-M05-01",
+     "package_name": "检测与数据签批 / 检测记录与结果操作",
+     "module": "M05",
+     "tier": "SENIOR",
+     "interfaces": 18,
+     "write_interfaces": 12
+    },
+    {
+     "package_id": "TP-M05-02",
+     "package_name": "检测与数据签批 / 检测审核资格与签批人判定",
+     "module": "M05",
+     "tier": "SENIOR",
+     "interfaces": 4,
+     "write_interfaces": 4
+    },
+    {
+     "package_id": "TP-M05-06",
+     "package_name": "检测与数据签批 / 受控更正与双人审核",
+     "module": "M05",
+     "tier": "SENIOR",
+     "interfaces": 7,
+     "write_interfaces": 5
+    },
+    {
+     "package_id": "TP-M07-01",
+     "package_name": "补液运行与任务执行 / 旧运行交接兼容",
+     "module": "M07",
+     "tier": "SENIOR",
+     "interfaces": 2,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M07-02",
+     "package_name": "补液运行与任务执行 / 培养与计量运行执行",
+     "module": "M07",
+     "tier": "SENIOR",
+     "interfaces": 8,
+     "write_interfaces": 3
+    },
+    {
+     "package_id": "TP-M07-04",
+     "package_name": "补液运行与任务执行 / 运行任务管理",
+     "module": "M07",
+     "tier": "SENIOR",
+     "interfaces": 11,
+     "write_interfaces": 7
+    }
+   ],
+   "modules_covered": [
+    "M03",
+    "M04",
+    "M05",
+    "M07"
+   ]
+  },
+  {
+   "owner": "DEV-B",
+   "role": "中级开发·5 年（新加入项目组·现场）",
+   "on_site": true,
+   "interface_count": 148,
+   "package_count": 12,
+   "packages": [
+    {
+     "package_id": "TP-M02-01",
+     "package_name": "实验室与资源管理 / 工程资料与控制器能力核准",
+     "module": "M02",
+     "tier": "JUNIOR",
+     "interfaces": 5,
+     "write_interfaces": 3
+    },
+    {
+     "package_id": "TP-M02-04",
+     "package_name": "实验室与资源管理 / 设备实例管理（第2/4分包·按 Controller 聚类）",
+     "module": "M02",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 27,
+     "write_interfaces": 12
+    },
+    {
+     "package_id": "TP-M02-06",
+     "package_name": "实验室与资源管理 / 设备实例管理（第4/4分包·按 Controller 聚类）",
+     "module": "M02",
+     "tier": "MID",
+     "interfaces": 24,
+     "write_interfaces": 9
+    },
+    {
+     "package_id": "TP-M02-07",
+     "package_name": "实验室与资源管理 / 设备通讯配置",
+     "module": "M02",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 7,
+     "write_interfaces": 3
+    },
+    {
+     "package_id": "TP-M02-08",
+     "package_name": "实验室与资源管理 / 设备型号库（第1/3分包·按 Controller 聚类）",
+     "module": "M02",
+     "tier": "MID",
+     "interfaces": 26,
+     "write_interfaces": 10
+    },
+    {
+     "package_id": "TP-M02-10",
+     "package_name": "实验室与资源管理 / 设备型号库（第3/3分包·按 Controller 聚类）",
+     "module": "M02",
+     "tier": "MID",
+     "interfaces": 16,
+     "write_interfaces": 6
+    },
+    {
+     "package_id": "TP-M02-13",
+     "package_name": "实验室与资源管理 / 消耗配置",
+     "module": "M02",
+     "tier": "JUNIOR",
+     "interfaces": 10,
+     "write_interfaces": 4
+    },
+    {
+     "package_id": "TP-M02-14",
+     "package_name": "实验室与资源管理 / 在线业务观测",
+     "module": "M02",
+     "tier": "JUNIOR",
+     "interfaces": 5,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M03-04",
+     "package_name": "项目与培养管理 / UI01-项目管理",
+     "module": "M03",
+     "tier": "MID",
+     "interfaces": 8,
+     "write_interfaces": 5
+    },
+    {
+     "package_id": "TP-M03-05",
+     "package_name": "项目与培养管理 / UI02-批次与培养聚合",
+     "module": "M03",
+     "tier": "MID",
+     "interfaces": 8,
+     "write_interfaces": 5
+    },
+    {
+     "package_id": "TP-M07-03",
+     "package_name": "补液运行与任务执行 / 运行工作流编排",
+     "module": "M07",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 6,
+     "write_interfaces": 4
+    },
+    {
+     "package_id": "TP-M07-05",
+     "package_name": "补液运行与任务执行 / 运行受理与执行器分配",
+     "module": "M07",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 6,
+     "write_interfaces": 2
+    }
+   ],
+   "modules_covered": [
+    "M02",
+    "M03",
+    "M07"
+   ]
+  },
+  {
+   "owner": "DEV-C",
+   "role": "中级开发·5 年（新加入项目组·现场）",
+   "on_site": true,
+   "interface_count": 164,
+   "package_count": 16,
+   "packages": [
+    {
+     "package_id": "TP-M02-02",
+     "package_name": "实验室与资源管理 / 检测项目与检测规则配置",
+     "module": "M02",
+     "tier": "MID",
+     "interfaces": 13,
+     "write_interfaces": 5
+    },
+    {
+     "package_id": "TP-M02-03",
+     "package_name": "实验室与资源管理 / 设备实例管理（第1/4分包·按 Controller 聚类）",
+     "module": "M02",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 26,
+     "write_interfaces": 11
+    },
+    {
+     "package_id": "TP-M02-05",
+     "package_name": "实验室与资源管理 / 设备实例管理（第3/4分包·按 Controller 聚类）",
+     "module": "M02",
+     "tier": "MID",
+     "interfaces": 24,
+     "write_interfaces": 9
+    },
+    {
+     "package_id": "TP-M02-09",
+     "package_name": "实验室与资源管理 / 设备型号库（第2/3分包·按 Controller 聚类）",
+     "module": "M02",
+     "tier": "MID",
+     "interfaces": 24,
+     "write_interfaces": 9
+    },
+    {
+     "package_id": "TP-M02-11",
+     "package_name": "实验室与资源管理 / 实验室管理",
+     "module": "M02",
+     "tier": "MID",
+     "interfaces": 12,
+     "write_interfaces": 5
+    },
+    {
+     "package_id": "TP-M05-03",
+     "package_name": "检测与数据签批 / 七型号发送与能力快照",
+     "module": "M05",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 4,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M05-04",
+     "package_name": "检测与数据签批 / 签名台与不可变快照",
+     "module": "M05",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 12,
+     "write_interfaces": 9
+    },
+    {
+     "package_id": "TP-M05-05",
+     "package_name": "检测与数据签批 / 签批记录与报告导出",
+     "module": "M05",
+     "tier": "MID",
+     "interfaces": 7,
+     "write_interfaces": 1
+    },
+    {
+     "package_id": "TP-M05-07",
+     "package_name": "检测与数据签批 / 暂存重发与清空",
+     "module": "M05",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 6,
+     "write_interfaces": 6
+    },
+    {
+     "package_id": "TP-M06-01",
+     "package_name": "流程审批管理 / 对账单审批",
+     "module": "M06",
+     "tier": "MID",
+     "interfaces": 5,
+     "write_interfaces": 3
+    },
+    {
+     "package_id": "TP-M06-02",
+     "package_name": "流程审批管理 / 流程审批执行",
+     "module": "M06",
+     "tier": "MID",
+     "interfaces": 6,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M06-03",
+     "package_name": "流程审批管理 / 审批策略配置",
+     "module": "M06",
+     "tier": "MID",
+     "interfaces": 4,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M09-01",
+     "package_name": "告警与通知管理 / 告警规则与监控策略",
+     "module": "M09",
+     "tier": "JUNIOR",
+     "interfaces": 4,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M09-02",
+     "package_name": "告警与通知管理 / 告警记录与消音",
+     "module": "M09",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 4,
+     "write_interfaces": 2
+    },
+    {
+     "package_id": "TP-M09-03",
+     "package_name": "告警与通知管理 / 通知策略配置",
+     "module": "M09",
+     "tier": "JUNIOR",
+     "interfaces": 8,
+     "write_interfaces": 4
+    },
+    {
+     "package_id": "TP-M09-04",
+     "package_name": "告警与通知管理 / 通知发送与投递",
+     "module": "M09",
+     "tier": "EXTERNAL_ONSITE",
+     "interfaces": 5,
+     "write_interfaces": 2
+    }
+   ],
+   "modules_covered": [
+    "M02",
+    "M05",
+    "M06",
+    "M09"
+   ]
+  },
+  {
+   "owner": "DEV-D",
+   "role": "初级开发·3 年（现场·组员）",
+   "on_site": true,
+   "interface_count": 110,
+   "package_count": 8,
+   "packages": [
+    {
+     "package_id": "TP-M01-01",
+     "package_name": "系统管理 / 场地、部门、实验组",
+     "module": "M01",
+     "tier": "LEGACY_REGRESSION",
+     "interfaces": 22,
+     "write_interfaces": 10
+    },
+    {
+     "package_id": "TP-M01-02",
+     "package_name": "系统管理 / 登录、密码和会话",
+     "module": "M01",
+     "tier": "LEGACY_REGRESSION",
+     "interfaces": 12,
+     "write_interfaces": 10
+    },
+    {
+     "package_id": "TP-M01-03",
+     "package_name": "系统管理 / 功能与角色",
+     "module": "M01",
+     "tier": "LEGACY_REGRESSION",
+     "interfaces": 13,
+     "write_interfaces": 7
+    },
+    {
+     "package_id": "TP-M01-04",
+     "package_name": "系统管理 / 日志查询、权限上下文与兼容入口",
+     "module": "M01",
+     "tier": "LEGACY_REGRESSION",
+     "interfaces": 5,
+     "write_interfaces": 0
+    },
+    {
+     "package_id": "TP-M01-05",
+     "package_name": "系统管理 / 数据字典与参数",
+     "module": "M01",
+     "tier": "LEGACY_REGRESSION",
+     "interfaces": 14,
+     "write_interfaces": 7
+    },
+    {
+     "package_id": "TP-M01-06",
+     "package_name": "系统管理 / 用户、个人资料及跨模块授权",
+     "module": "M01",
+     "tier": "LEGACY_REGRESSION",
+     "interfaces": 10,
+     "write_interfaces": 6
+    },
+    {
+     "package_id": "TP-M02-12",
+     "package_name": "实验室与资源管理 / 台式打印排版与液瓶配置",
+     "module": "M02",
+     "tier": "LEGACY_CONTEXT",
+     "interfaces": 8,
+     "write_interfaces": 4
+    },
+    {
+     "package_id": "TP-M02-15",
+     "package_name": "实验室与资源管理 / 资源主数据（校准对象/液袋/培养基/耗材）",
+     "module": "M02",
+     "tier": "LEGACY_CONTEXT",
+     "interfaces": 26,
+     "write_interfaces": 12
+    }
+   ],
+   "modules_covered": [
+    "M01",
+    "M02"
+   ]
+  }
+ ],
+ "load": {
+  "DEV-D": 110,
+  "DEV-B": 148,
+  "DEV-C": 164,
+  "DEV-A": 93
+ },
+ "load_spread": 71,
+ "parallel_notes": [
+  "同模块多分包按 Controller 聚类切分，包间无共享 Controller/Service/Impl/Mapper 文件（共享文件清单见 shared_file_conflicts，命中包需串行或协调）。",
+  "跨模块包可完全并行：只经 Port 契约交互；消费方不得等待提供方实现猜形状。",
+  "命中 shared_file_conflicts 的包对必须串行提交或先冻结文件所有权（34 报告提交分组同样适用）。",
+  "两名中级（5 年·新加入项目组·现场）承接：自包含新契约包（MID）＋涉外部系统需现场联调的包（EXTERNAL_ONSITE）。后者以现场联调为主，其契约裁决/方案设计由远程高级评审后冻结；建议首包从 shared_file_conflicts=0 且 depends_on_packages=0 的包起步。",
+  "高级（10 年）不在现场：只承接可远程完成的复杂包（M04/M07 状态机、M05 受控更正·签名台·大写面、ResCulture 旧路由治理裁决）；外部设备/通道现场联调不由其承接，但作为这些包的设计评审人。",
+  "初级（3 年·现场组员）承接 M01 存量回归核验与小包时，其写接口守卫接线（@ManagementGuardedWrite/Executor/AuditIntent）与 Port 接线部分须由高级（远程评审）或中级结对评审后合入（39§6）。"
+ ],
+ "shared_file_conflicts": [
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/SysUserMapper.java",
+   "packages": [
+    "TP-M01-01",
+    "TP-M01-02",
+    "TP-M01-03",
+    "TP-M01-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/SysProfileController.java",
+   "packages": [
+    "TP-M01-02",
+    "TP-M01-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/SysUserController.java",
+   "packages": [
+    "TP-M01-02",
+    "TP-M01-04",
+    "TP-M01-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/ISysConfigService.java",
+   "packages": [
+    "TP-M01-02",
+    "TP-M01-05"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/ISysUserService.java",
+   "packages": [
+    "TP-M01-02",
+    "TP-M01-03",
+    "TP-M01-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/SysConfigMapper.java",
+   "packages": [
+    "TP-M01-02",
+    "TP-M01-05"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/SysUserAuthStateMapper.java",
+   "packages": [
+    "TP-M01-02",
+    "TP-M01-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/SysMenuController.java",
+   "packages": [
+    "TP-M01-03",
+    "TP-M01-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/ISysMenuService.java",
+   "packages": [
+    "TP-M01-03",
+    "TP-M01-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/SysMenuMapper.java",
+   "packages": [
+    "TP-M01-03",
+    "TP-M01-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/LabBenchReactorControllerController.java",
+   "packages": [
+    "TP-M02-01",
+    "TP-M02-12"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m02/LabBenchReactorControllerApplicationService.java",
+   "packages": [
+    "TP-M02-01",
+    "TP-M02-12"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m02/LabBenchReactorControllerApplicationServiceImpl.java",
+   "packages": [
+    "TP-M02-01",
+    "TP-M02-12"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/LabBenchReactorControllerMapper.java",
+   "packages": [
+    "TP-M02-01",
+    "TP-M02-12"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/LabPrinterController.java",
+   "packages": [
+    "TP-M02-06",
+    "TP-M02-12"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/ResCultureController.java",
+   "packages": [
+    "TP-M03-01",
+    "TP-M03-02",
+    "TP-M03-03",
+    "TP-M03-06",
+    "TP-M03-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m03/CultureApplicationService.java",
+   "packages": [
+    "TP-M03-01",
+    "TP-M03-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m03/CultureChangeApplicationService.java",
+   "packages": [
+    "TP-M03-01",
+    "TP-M03-02"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m03/CultureApplicationServiceImpl.java",
+   "packages": [
+    "TP-M03-01",
+    "TP-M03-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m03/CultureChangeApplicationServiceImpl.java",
+   "packages": [
+    "TP-M03-01",
+    "TP-M03-02"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/ResCultureChangeCandidateMapper.java",
+   "packages": [
+    "TP-M03-01",
+    "TP-M03-02"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/ResCultureMapper.java",
+   "packages": [
+    "TP-M03-01",
+    "TP-M03-02",
+    "TP-M03-06",
+    "TP-M03-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m03/LegacyResourceEndpointGuard.java",
+   "packages": [
+    "TP-M03-04",
+    "TP-M03-05",
+    "TP-M03-06",
+    "TP-M03-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m03/LegacyResourceEndpointGuardImpl.java",
+   "packages": [
+    "TP-M03-04",
+    "TP-M03-05",
+    "TP-M03-06",
+    "TP-M03-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/ResProjectMapper.java",
+   "packages": [
+    "TP-M03-04",
+    "TP-M03-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/ResBatchController.java",
+   "packages": [
+    "TP-M03-05",
+    "TP-M03-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/ResBatchMapper.java",
+   "packages": [
+    "TP-M03-05",
+    "TP-M03-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/DetWorkbenchController.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-03",
+    "TP-M05-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m05/DetWorkbenchApplicationService.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-03"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m05/LegacyDetectionEndpointGuard.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-02",
+    "TP-M05-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m05/DetWorkbenchApplicationServiceImpl.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-03"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m05/LegacyDetectionEndpointGuardImpl.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-02",
+    "TP-M05-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/DetResultMapper.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-03",
+    "TP-M05-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/DetResultRevisionMapper.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-04",
+    "TP-M05-06"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/DetWorkbenchMapper.java",
+   "packages": [
+    "TP-M05-01",
+    "TP-M05-03"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m05/DetSampleApplicationService.java",
+   "packages": [
+    "TP-M05-03",
+    "TP-M05-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m05/DetSampleApplicationServiceImpl.java",
+   "packages": [
+    "TP-M05-03",
+    "TP-M05-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/DetSampleMapper.java",
+   "packages": [
+    "TP-M05-03",
+    "TP-M05-07"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/AprDeliveryMapper.java",
+   "packages": [
+    "TP-M06-01",
+    "TP-M06-02"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/run/RunEventMapper.java",
+   "packages": [
+    "TP-M07-01",
+    "TP-M07-02",
+    "TP-M07-03",
+    "TP-M07-04",
+    "TP-M07-05"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/run/RunCalculationMapper.java",
+   "packages": [
+    "TP-M07-02",
+    "TP-M07-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/run/RunLedgerMapper.java",
+   "packages": [
+    "TP-M07-02",
+    "TP-M07-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/run/RunCommandMapper.java",
+   "packages": [
+    "TP-M07-03",
+    "TP-M07-04",
+    "TP-M07-05"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/run/RunResourceGuardMapper.java",
+   "packages": [
+    "TP-M07-03",
+    "TP-M07-04"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/run/RunExecutionMapper.java",
+   "packages": [
+    "TP-M07-04",
+    "TP-M07-05"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/run/RunExecutionSegmentMapper.java",
+   "packages": [
+    "TP-M07-04",
+    "TP-M07-05"
+   ]
+  },
+  {
+   "file": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/mapper/AlarmDeliveryMapper.java",
+   "packages": [
+    "TP-M09-02",
+    "TP-M09-04"
+   ]
+  }
+ ],
+ "non_parallelizable": [
+  {
+   "item": "非 M01 管理写 operationCode 审计策略登记（AuditPolicyRegistry 当前仅 29 项 M01）",
+   "affects": "全部含写接口包",
+   "reason": "登记属共享文件（AuditPolicyRegistry.java），多包并行改必冲突；建议每模块一个登记小批次先行合入"
+  },
+  {
+   "item": "Port provider 接线（解除 portAdaptersStayUnwiredExceptM01Actor）",
+   "affects": "跨模块依赖对（见 depends_on_packages）",
+   "reason": "按模块逐步解除（33§11），provider 包先行、consumer 包其后"
+  },
+  {
+   "item": "17 条 blocked 设计裁决",
+   "affects": "M02/M04/M05/M07 相关包（blocked_refs）",
+   "reason": "仅进 32 清单设计裁决阻塞包；裁决回补后重跑 gen26/gen32/genTaskPkg 再生任务包"
+  },
+  {
+   "item": "TASK-ROUTE 旧路由治理（35 清单）",
+   "affects": "route_governance_refs 命中的包",
+   "reason": "裁决前不触碰旧端点/死注入（35§4）"
+  },
+  {
+   "item": "FullSystemSkeletonGateTest/契约资源（skeleton-m0x.json）随 501 替换的再生",
+   "affects": "全部包",
+   "reason": "属生成链共享资产；每包合入时重跑对应模块 testgen＋门禁，禁止批量放开"
+  }
+ ],
+ "sequencing": [
+  "第 0 层（前置基础设施）：审计策略登记小批次、网关前缀联调核验（30§6-4）先行。",
+  "第 1 层：各模块查询包（低风险、无守卫接线）可与写包的 Port/审计登记准备并行。",
+  "第 2 层：写包按模块推进，Provider 模块先于 Consumer 模块接线对应 Port。",
+  "第 3 层：COMPAT/旧路由项待 35/32 裁决后回补。"
+ ]
+}

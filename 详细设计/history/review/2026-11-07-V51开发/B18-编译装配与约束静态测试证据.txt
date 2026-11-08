@@ -1,0 +1,1053 @@
+Maven compile（原退出0）
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]
+[INFO] futurefab                                                          [pom]
+[INFO] futurefab-common                                                   [pom]
+[INFO] futurefab-common-core                                              [jar]
+[INFO] futurefab-api                                                      [pom]
+[INFO] futurefab-api-system                                               [jar]
+[INFO] futurefab-common-redis                                             [jar]
+[INFO] futurefab-common-security                                          [jar]
+[INFO] futurefab-api-feeding-safety                                       [jar]
+[INFO] futurefab-feeding-gateway                                          [jar]
+[INFO] futurefab-feeding-monitor                                          [jar]
+[INFO] futurefab-feeding-customer-adapter                                 [jar]
+[INFO] futurefab-common-datasource                                        [jar]
+[INFO] futurefab-common-datascope                                         [jar]
+[INFO] futurefab-common-log                                               [jar]
+[INFO] futurefab-common-swagger                                           [jar]
+[INFO] futurefab-sdms-client                                              [jar]
+[INFO] futurefab-namedpipe-client                                         [jar]
+[INFO] futurefab-modules                                                  [pom]
+[INFO] futurefab-modules-system                                           [jar]
+[INFO]
+[INFO] ----------------------< com.futurefab:futurefab >-----------------------
+[INFO] Building futurefab 3.6.8                                          [1/19]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] -------------------< com.futurefab:futurefab-common >-------------------
+[INFO] Building futurefab-common 3.6.8                                   [2/19]
+[INFO]   from futurefab-common\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-common-core >-----------------
+[INFO] Building futurefab-common-core 3.6.8                              [3/19]
+[INFO]   from futurefab-common\futurefab-common-core\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-core ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --------------------< com.futurefab:futurefab-api >---------------------
+[INFO] Building futurefab-api 3.6.8                                      [4/19]
+[INFO]   from futurefab-api\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] -----------------< com.futurefab:futurefab-api-system >-----------------
+[INFO] Building futurefab-api-system 3.6.8                               [5/19]
+[INFO]   from futurefab-api\futurefab-api-system\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-api-system ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-api-system ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-common-redis >----------------
+[INFO] Building futurefab-common-redis 3.6.8                             [6/19]
+[INFO]   from futurefab-common\futurefab-common-redis\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-redis ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-redis ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-common-security >---------------
+[INFO] Building futurefab-common-security 3.6.8                          [7/19]
+[INFO]   from futurefab-common\futurefab-common-security\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-security ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-security ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] -------------< com.futurefab:futurefab-api-feeding-safety >-------------
+[INFO] Building futurefab-api-feeding-safety 3.6.8                       [8/19]
+[INFO]   from futurefab-api\futurefab-api-feeding-safety\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-api-feeding-safety ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-api\futurefab-api-feeding-safety\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-api-feeding-safety ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-feeding-gateway >---------------
+[INFO] Building futurefab-feeding-gateway 3.6.8                          [9/19]
+[INFO]   from futurefab-feeding-gateway\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-gateway ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-gateway\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-gateway ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-feeding-monitor >---------------
+[INFO] Building futurefab-feeding-monitor 3.6.8                         [10/19]
+[INFO]   from futurefab-feeding-monitor\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-monitor ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-monitor\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-monitor ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] ----------< com.futurefab:futurefab-feeding-customer-adapter >----------
+[INFO] Building futurefab-feeding-customer-adapter 3.6.8                [11/19]
+[INFO]   from futurefab-feeding-customer-adapter\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-customer-adapter ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-customer-adapter\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-customer-adapter ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] -------------< com.futurefab:futurefab-common-datasource >--------------
+[INFO] Building futurefab-common-datasource 3.6.8                       [12/19]
+[INFO]   from futurefab-common\futurefab-common-datasource\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-datasource ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-datasource\src\main\resources
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-datasource ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-common-datascope >--------------
+[INFO] Building futurefab-common-datascope 3.6.8                        [13/19]
+[INFO]   from futurefab-common\futurefab-common-datascope\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-datascope ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-datascope ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] -----------------< com.futurefab:futurefab-common-log >-----------------
+[INFO] Building futurefab-common-log 3.6.8                              [14/19]
+[INFO]   from futurefab-common\futurefab-common-log\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-log ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-log ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] ---------------< com.futurefab:futurefab-common-swagger >---------------
+[INFO] Building futurefab-common-swagger 3.6.8                          [15/19]
+[INFO]   from futurefab-common\futurefab-common-swagger\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-swagger ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-swagger ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-sdms-client >-----------------
+[INFO] Building futurefab-sdms-client 3.6.8                             [16/19]
+[INFO]   from futurefab-sdms-client\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-sdms-client ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-sdms-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-namedpipe-client >--------------
+[INFO] Building futurefab-namedpipe-client 3.6.8                        [17/19]
+[INFO]   from futurefab-namedpipe-client\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-namedpipe-client ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-namedpipe-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] ------------------< com.futurefab:futurefab-modules >-------------------
+[INFO] Building futurefab-modules 3.6.8                                 [18/19]
+[INFO]   from futurefab-modules\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] ---------------< com.futurefab:futurefab-modules-system >---------------
+[INFO] Building futurefab-modules-system 3.6.8                          [19/19]
+[INFO]   from futurefab-modules\futurefab-system\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-modules-system ---
+[INFO] Copying 321 resources from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-modules-system ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 4103 source files with javac [debug target 17] to target\classes
+[WARNING] 未与 -source 17 一起设置系统模块路径
+[INFO] /D:/Code/zhixianweilai/yaoming-cloud/futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/guard/ManagementGuardExecutor.java: 某些输入文件使用或覆盖了已过时的 API。
+[INFO] /D:/Code/zhixianweilai/yaoming-cloud/futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/guard/ManagementGuardExecutor.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] /D:/Code/zhixianweilai/yaoming-cloud/futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m03/CultureFeedingPlanApplicationServiceImpl.java: D:\Code\zhixianweilai\yaoming-cloud\futurefab-modules\futurefab-system\src\main\java\com\futurefab\system\service\impl\application\m03\CultureFeedingPlanApplicationServiceImpl.java使用了未经检查或不安全的操作。
+[INFO] /D:/Code/zhixianweilai/yaoming-cloud/futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m03/CultureFeedingPlanApplicationServiceImpl.java: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for futurefab 3.6.8:
+[INFO]
+[INFO] futurefab .......................................... SUCCESS [  0.003 s]
+[INFO] futurefab-common ................................... SUCCESS [  0.001 s]
+[INFO] futurefab-common-core .............................. SUCCESS [  4.163 s]
+[INFO] futurefab-api ...................................... SUCCESS [  0.002 s]
+[INFO] futurefab-api-system ............................... SUCCESS [  0.392 s]
+[INFO] futurefab-common-redis ............................. SUCCESS [  0.747 s]
+[INFO] futurefab-common-security .......................... SUCCESS [  0.376 s]
+[INFO] futurefab-api-feeding-safety ....................... SUCCESS [  0.388 s]
+[INFO] futurefab-feeding-gateway .......................... SUCCESS [  0.051 s]
+[INFO] futurefab-feeding-monitor .......................... SUCCESS [  0.052 s]
+[INFO] futurefab-feeding-customer-adapter ................. SUCCESS [  0.035 s]
+[INFO] futurefab-common-datasource ........................ SUCCESS [  0.672 s]
+[INFO] futurefab-common-datascope ......................... SUCCESS [  0.278 s]
+[INFO] futurefab-common-log ............................... SUCCESS [  0.269 s]
+[INFO] futurefab-common-swagger ........................... SUCCESS [  0.309 s]
+[INFO] futurefab-sdms-client .............................. SUCCESS [  0.392 s]
+[INFO] futurefab-namedpipe-client ......................... SUCCESS [  0.355 s]
+[INFO] futurefab-modules .................................. SUCCESS [  0.001 s]
+[INFO] futurefab-modules-system ........................... SUCCESS [01:26 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:36 min
+[INFO] Finished at: 2026-11-07T15:38:49+08:00
+[INFO] ------------------------------------------------------------------------
+
+Maven 定向test（原退出0，25通过）
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]
+[INFO] futurefab                                                          [pom]
+[INFO] futurefab-common                                                   [pom]
+[INFO] futurefab-common-core                                              [jar]
+[INFO] futurefab-api                                                      [pom]
+[INFO] futurefab-api-system                                               [jar]
+[INFO] futurefab-common-redis                                             [jar]
+[INFO] futurefab-common-security                                          [jar]
+[INFO] futurefab-api-feeding-safety                                       [jar]
+[INFO] futurefab-feeding-gateway                                          [jar]
+[INFO] futurefab-feeding-monitor                                          [jar]
+[INFO] futurefab-feeding-customer-adapter                                 [jar]
+[INFO] futurefab-common-datasource                                        [jar]
+[INFO] futurefab-common-datascope                                         [jar]
+[INFO] futurefab-common-log                                               [jar]
+[INFO] futurefab-common-swagger                                           [jar]
+[INFO] futurefab-sdms-client                                              [jar]
+[INFO] futurefab-namedpipe-client                                         [jar]
+[INFO] futurefab-modules                                                  [pom]
+[INFO] futurefab-modules-system                                           [jar]
+[INFO]
+[INFO] ----------------------< com.futurefab:futurefab >-----------------------
+[INFO] Building futurefab 3.6.8                                          [1/19]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] -------------------< com.futurefab:futurefab-common >-------------------
+[INFO] Building futurefab-common 3.6.8                                   [2/19]
+[INFO]   from futurefab-common\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-common-core >-----------------
+[INFO] Building futurefab-common-core 3.6.8                              [3/19]
+[INFO]   from futurefab-common\futurefab-common-core\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-core ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-core ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-core\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-core ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-core ---
+[INFO]
+[INFO] --------------------< com.futurefab:futurefab-api >---------------------
+[INFO] Building futurefab-api 3.6.8                                      [4/19]
+[INFO]   from futurefab-api\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] -----------------< com.futurefab:futurefab-api-system >-----------------
+[INFO] Building futurefab-api-system 3.6.8                               [5/19]
+[INFO]   from futurefab-api\futurefab-api-system\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-api-system ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-api-system ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-api-system ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-api\futurefab-api-system\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-api-system ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-api-system ---
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-common-redis >----------------
+[INFO] Building futurefab-common-redis 3.6.8                             [6/19]
+[INFO]   from futurefab-common\futurefab-common-redis\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-redis ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-redis ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-redis ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-redis\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-redis ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-redis ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-common-security >---------------
+[INFO] Building futurefab-common-security 3.6.8                          [7/19]
+[INFO]   from futurefab-common\futurefab-common-security\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-security ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-security ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-security ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-security\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-security ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-security ---
+[INFO]
+[INFO] -------------< com.futurefab:futurefab-api-feeding-safety >-------------
+[INFO] Building futurefab-api-feeding-safety 3.6.8                       [8/19]
+[INFO]   from futurefab-api\futurefab-api-feeding-safety\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-api-feeding-safety ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-api\futurefab-api-feeding-safety\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-api-feeding-safety ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-api-feeding-safety ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-api\futurefab-api-feeding-safety\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-api-feeding-safety ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-api-feeding-safety ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-feeding-gateway >---------------
+[INFO] Building futurefab-feeding-gateway 3.6.8                          [9/19]
+[INFO]   from futurefab-feeding-gateway\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-gateway ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-gateway\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-gateway ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-feeding-gateway ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-gateway\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-feeding-gateway ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-feeding-gateway ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-feeding-monitor >---------------
+[INFO] Building futurefab-feeding-monitor 3.6.8                         [10/19]
+[INFO]   from futurefab-feeding-monitor\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-monitor ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-monitor\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-monitor ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-feeding-monitor ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-monitor\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-feeding-monitor ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-feeding-monitor ---
+[INFO]
+[INFO] ----------< com.futurefab:futurefab-feeding-customer-adapter >----------
+[INFO] Building futurefab-feeding-customer-adapter 3.6.8                [11/19]
+[INFO]   from futurefab-feeding-customer-adapter\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-customer-adapter ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-customer-adapter\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-customer-adapter ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-feeding-customer-adapter ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-customer-adapter\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-feeding-customer-adapter ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-feeding-customer-adapter ---
+[INFO]
+[INFO] -------------< com.futurefab:futurefab-common-datasource >--------------
+[INFO] Building futurefab-common-datasource 3.6.8                       [12/19]
+[INFO]   from futurefab-common\futurefab-common-datasource\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-datasource ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-datasource\src\main\resources
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-datasource ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-datasource ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-datasource\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-datasource ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-datasource ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-common-datascope >--------------
+[INFO] Building futurefab-common-datascope 3.6.8                        [13/19]
+[INFO]   from futurefab-common\futurefab-common-datascope\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-datascope ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-datascope ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-datascope ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-datascope\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-datascope ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-datascope ---
+[INFO]
+[INFO] -----------------< com.futurefab:futurefab-common-log >-----------------
+[INFO] Building futurefab-common-log 3.6.8                              [14/19]
+[INFO]   from futurefab-common\futurefab-common-log\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-log ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-log ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-log ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-log\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-log ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-log ---
+[INFO]
+[INFO] ---------------< com.futurefab:futurefab-common-swagger >---------------
+[INFO] Building futurefab-common-swagger 3.6.8                          [15/19]
+[INFO]   from futurefab-common\futurefab-common-swagger\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-swagger ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-swagger ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-swagger ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-swagger\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-swagger ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-swagger ---
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-sdms-client >-----------------
+[INFO] Building futurefab-sdms-client 3.6.8                             [16/19]
+[INFO]   from futurefab-sdms-client\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-sdms-client ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-sdms-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-sdms-client ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-sdms-client\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-sdms-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-sdms-client ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-namedpipe-client >--------------
+[INFO] Building futurefab-namedpipe-client 3.6.8                        [17/19]
+[INFO]   from futurefab-namedpipe-client\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-namedpipe-client ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-namedpipe-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-namedpipe-client ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-namedpipe-client\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-namedpipe-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-namedpipe-client ---
+[INFO]
+[INFO] ------------------< com.futurefab:futurefab-modules >-------------------
+[INFO] Building futurefab-modules 3.6.8                                 [18/19]
+[INFO]   from futurefab-modules\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] ---------------< com.futurefab:futurefab-modules-system >---------------
+[INFO] Building futurefab-modules-system 3.6.8                          [19/19]
+[INFO]   from futurefab-modules\futurefab-system\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-modules-system ---
+[INFO] Copying 321 resources from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-modules-system ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-modules-system ---
+[INFO] Copying 8 resources from src\test\resources to target\test-classes
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-modules-system ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-modules-system ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.futurefab.system.contract.M01ManagementRevisionPortWiringTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (D:\Programs\Maven\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.770 s -- in com.futurefab.system.contract.M01ManagementRevisionPortWiringTest
+[INFO] Running com.futurefab.system.contract.M05DeviceUsageApplicationServiceTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.440 s -- in com.futurefab.system.contract.M05DeviceUsageApplicationServiceTest
+[INFO] Running com.futurefab.system.contract.M05DeviceUsageControllerTest
+15:41:18.062 [main] INFO  o.h.v.i.util.Version - [<clinit>,18] - HV000001: Hibernate Validator 9.0.1.Final
+15:41:20.523 [main] WARN  c.f.c.s.h.RequestMetaExceptionHandler - [handleRequestMetaInvalidException,37] - 请求地址'/detect/device-usage/export',公共请求元数据非法：管理写接口必须携带请求头 X-Management-Revision（十进制非负整数字符串）
+15:41:20.537 [main] WARN  c.f.c.s.h.RequestMetaExceptionHandler - [handleRequestMetaInvalidException,37] - 请求地址'/detect/device-usage/export',公共请求元数据非法：managementRevision 必须为十进制非负整数字符串（long 值域内）
+15:41:20.540 [main] WARN  c.f.c.s.h.RequestMetaExceptionHandler - [handleRequestMetaInvalidException,37] - 请求地址'/detect/device-usage/export',公共请求元数据非法：managementRevision 必须为十进制非负整数字符串（long 值域内）
+15:41:20.575 [main] WARN  c.f.c.s.f.RequestMetadataFilter - [doFilterInternal,55] - 请求地址'/detect/device-usage/export',请求头 X-Request-Id 非法（值不回显），以400 INPUT_INVALID拒绝
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.364 s -- in com.futurefab.system.contract.M05DeviceUsageControllerTest
+[INFO] Running com.futurefab.system.service.guard.M01ManagementRevisionSourceAdapterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.futurefab.system.service.guard.M01ManagementRevisionSourceAdapterTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for futurefab 3.6.8:
+[INFO]
+[INFO] futurefab .......................................... SUCCESS [  0.003 s]
+[INFO] futurefab-common ................................... SUCCESS [  0.001 s]
+[INFO] futurefab-common-core .............................. SUCCESS [  2.713 s]
+[INFO] futurefab-api ...................................... SUCCESS [  0.002 s]
+[INFO] futurefab-api-system ............................... SUCCESS [  0.256 s]
+[INFO] futurefab-common-redis ............................. SUCCESS [  0.627 s]
+[INFO] futurefab-common-security .......................... SUCCESS [  0.235 s]
+[INFO] futurefab-api-feeding-safety ....................... SUCCESS [  0.656 s]
+[INFO] futurefab-feeding-gateway .......................... SUCCESS [  0.071 s]
+[INFO] futurefab-feeding-monitor .......................... SUCCESS [  0.074 s]
+[INFO] futurefab-feeding-customer-adapter ................. SUCCESS [  0.094 s]
+[INFO] futurefab-common-datasource ........................ SUCCESS [  0.628 s]
+[INFO] futurefab-common-datascope ......................... SUCCESS [  0.308 s]
+[INFO] futurefab-common-log ............................... SUCCESS [  0.282 s]
+[INFO] futurefab-common-swagger ........................... SUCCESS [  0.302 s]
+[INFO] futurefab-sdms-client .............................. SUCCESS [  0.462 s]
+[INFO] futurefab-namedpipe-client ......................... SUCCESS [  0.410 s]
+[INFO] futurefab-modules .................................. SUCCESS [  0.000 s]
+[INFO] futurefab-modules-system ........................... SUCCESS [ 15.574 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  23.512 s
+[INFO] Finished at: 2026-11-07T15:41:20+08:00
+[INFO] ------------------------------------------------------------------------
+
+Python静态规则测试（原退出0，6通过）
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.501s
+
+OK
+
+分批提交前补充：m09-test.log（原退出1，未通过，不代表M01回归失败）
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]
+[INFO] futurefab                                                          [pom]
+[INFO] futurefab-common                                                   [pom]
+[INFO] futurefab-common-core                                              [jar]
+[INFO] futurefab-api                                                      [pom]
+[INFO] futurefab-api-system                                               [jar]
+[INFO] futurefab-common-redis                                             [jar]
+[INFO] futurefab-common-security                                          [jar]
+[INFO] futurefab-api-feeding-safety                                       [jar]
+[INFO] futurefab-feeding-gateway                                          [jar]
+[INFO] futurefab-feeding-monitor                                          [jar]
+[INFO] futurefab-feeding-customer-adapter                                 [jar]
+[INFO] futurefab-common-datasource                                        [jar]
+[INFO] futurefab-common-datascope                                         [jar]
+[INFO] futurefab-common-log                                               [jar]
+[INFO] futurefab-common-swagger                                           [jar]
+[INFO] futurefab-sdms-client                                              [jar]
+[INFO] futurefab-namedpipe-client                                         [jar]
+[INFO] futurefab-modules                                                  [pom]
+[INFO] futurefab-modules-system                                           [jar]
+[INFO]
+[INFO] ----------------------< com.futurefab:futurefab >-----------------------
+[INFO] Building futurefab 3.6.8                                          [1/19]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] -------------------< com.futurefab:futurefab-common >-------------------
+[INFO] Building futurefab-common 3.6.8                                   [2/19]
+[INFO]   from futurefab-common\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-common-core >-----------------
+[INFO] Building futurefab-common-core 3.6.8                              [3/19]
+[INFO]   from futurefab-common\futurefab-common-core\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-core ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-core ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-core\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-core ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-core ---
+[INFO]
+[INFO] --------------------< com.futurefab:futurefab-api >---------------------
+[INFO] Building futurefab-api 3.6.8                                      [4/19]
+[INFO]   from futurefab-api\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] -----------------< com.futurefab:futurefab-api-system >-----------------
+[INFO] Building futurefab-api-system 3.6.8                               [5/19]
+[INFO]   from futurefab-api\futurefab-api-system\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-api-system ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-api-system ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-api-system ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-api\futurefab-api-system\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-api-system ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-api-system ---
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-common-redis >----------------
+[INFO] Building futurefab-common-redis 3.6.8                             [6/19]
+[INFO]   from futurefab-common\futurefab-common-redis\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-redis ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-redis ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-redis ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-redis\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-redis ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-redis ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-common-security >---------------
+[INFO] Building futurefab-common-security 3.6.8                          [7/19]
+[INFO]   from futurefab-common\futurefab-common-security\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-security ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-security ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-security ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-security\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-security ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-security ---
+[INFO]
+[INFO] -------------< com.futurefab:futurefab-api-feeding-safety >-------------
+[INFO] Building futurefab-api-feeding-safety 3.6.8                       [8/19]
+[INFO]   from futurefab-api\futurefab-api-feeding-safety\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-api-feeding-safety ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-api\futurefab-api-feeding-safety\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-api-feeding-safety ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-api-feeding-safety ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-api\futurefab-api-feeding-safety\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-api-feeding-safety ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-api-feeding-safety ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-feeding-gateway >---------------
+[INFO] Building futurefab-feeding-gateway 3.6.8                          [9/19]
+[INFO]   from futurefab-feeding-gateway\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-gateway ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-gateway\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-gateway ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-feeding-gateway ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-gateway\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-feeding-gateway ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-feeding-gateway ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-feeding-monitor >---------------
+[INFO] Building futurefab-feeding-monitor 3.6.8                         [10/19]
+[INFO]   from futurefab-feeding-monitor\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-monitor ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-monitor\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-monitor ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-feeding-monitor ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-monitor\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-feeding-monitor ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-feeding-monitor ---
+[INFO]
+[INFO] ----------< com.futurefab:futurefab-feeding-customer-adapter >----------
+[INFO] Building futurefab-feeding-customer-adapter 3.6.8                [11/19]
+[INFO]   from futurefab-feeding-customer-adapter\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-feeding-customer-adapter ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-customer-adapter\src\main\resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ futurefab-feeding-customer-adapter ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-feeding-customer-adapter ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-feeding-customer-adapter\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ futurefab-feeding-customer-adapter ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.4:test (default-test) @ futurefab-feeding-customer-adapter ---
+[INFO]
+[INFO] -------------< com.futurefab:futurefab-common-datasource >--------------
+[INFO] Building futurefab-common-datasource 3.6.8                       [12/19]
+[INFO]   from futurefab-common\futurefab-common-datasource\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-datasource ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-datasource\src\main\resources
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-datasource ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-datasource ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-datasource\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-datasource ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-datasource ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-common-datascope >--------------
+[INFO] Building futurefab-common-datascope 3.6.8                        [13/19]
+[INFO]   from futurefab-common\futurefab-common-datascope\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-datascope ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-datascope ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-datascope ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-datascope\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-datascope ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-datascope ---
+[INFO]
+[INFO] -----------------< com.futurefab:futurefab-common-log >-----------------
+[INFO] Building futurefab-common-log 3.6.8                              [14/19]
+[INFO]   from futurefab-common\futurefab-common-log\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-log ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-log ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-log ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-log\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-log ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-log ---
+[INFO]
+[INFO] ---------------< com.futurefab:futurefab-common-swagger >---------------
+[INFO] Building futurefab-common-swagger 3.6.8                          [15/19]
+[INFO]   from futurefab-common\futurefab-common-swagger\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-common-swagger ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-common-swagger ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-common-swagger ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-common\futurefab-common-swagger\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-common-swagger ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-common-swagger ---
+[INFO]
+[INFO] ----------------< com.futurefab:futurefab-sdms-client >-----------------
+[INFO] Building futurefab-sdms-client 3.6.8                             [16/19]
+[INFO]   from futurefab-sdms-client\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-sdms-client ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-sdms-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-sdms-client ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-sdms-client\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-sdms-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-sdms-client ---
+[INFO]
+[INFO] --------------< com.futurefab:futurefab-namedpipe-client >--------------
+[INFO] Building futurefab-namedpipe-client 3.6.8                        [17/19]
+[INFO]   from futurefab-namedpipe-client\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-namedpipe-client ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-namedpipe-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-namedpipe-client ---
+[INFO] skip non existing resourceDirectory D:\Code\zhixianweilai\yaoming-cloud\futurefab-namedpipe-client\src\test\resources
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-namedpipe-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-namedpipe-client ---
+[INFO]
+[INFO] ------------------< com.futurefab:futurefab-modules >-------------------
+[INFO] Building futurefab-modules 3.6.8                                 [18/19]
+[INFO]   from futurefab-modules\pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] ---------------< com.futurefab:futurefab-modules-system >---------------
+[INFO] Building futurefab-modules-system 3.6.8                          [19/19]
+[INFO]   from futurefab-modules\futurefab-system\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ futurefab-modules-system ---
+[INFO] Copying 321 resources from src\main\resources to target\classes
+[INFO]
+[INFO] --- compiler:3.11.0:compile (default-compile) @ futurefab-modules-system ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ futurefab-modules-system ---
+[INFO] Copying 8 resources from src\test\resources to target\test-classes
+[INFO]
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ futurefab-modules-system ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- surefire:3.2.5:test (default-test) @ futurefab-modules-system ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.futurefab.system.contract.M09WiredStatusOnlineConfigContractTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (D:\Programs\Maven\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+15:53:28.513 [main] INFO  o.h.v.i.util.Version - [<clinit>,18] - HV000001: Hibernate Validator 9.0.1.Final
+15:53:30.275 [main] WARN  c.f.c.s.h.RequestMetaExceptionHandler - [handleRequestMetaInvalidException,37] - 请求地址'/alarm/v2/status-config',公共请求元数据非法：管理写接口必须携带请求头 X-Management-Revision（十进制非负整数字符串）
+[ERROR] Tests run: 60, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.314 s <<< FAILURE! -- in com.futurefab.system.contract.M09WiredStatusOnlineConfigContractTest
+[ERROR] com.futurefab.system.contract.M09WiredStatusOnlineConfigContractTest.statusUnitCodeSpanningMultipleRowsIsRejectedInsteadOfFirstPicked -- Time elapsed: 0.017 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <2> but was: <1>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+	at com.futurefab.system.contract.M09WiredStatusOnlineConfigContractTest.statusUnitCodeSpanningMultipleRowsIsRejectedInsteadOfFirstPicked(M09WiredStatusOnlineConfigContractTest.java:767)
+
+[INFO]
+[INFO] Results:
+[INFO]
+[ERROR] Failures:
+[ERROR]   M09WiredStatusOnlineConfigContractTest.statusUnitCodeSpanningMultipleRowsIsRejectedInsteadOfFirstPicked:767 expected: <2> but was: <1>
+[INFO]
+[ERROR] Tests run: 60, Failures: 1, Errors: 0, Skipped: 0
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for futurefab 3.6.8:
+[INFO]
+[INFO] futurefab .......................................... SUCCESS [  0.005 s]
+[INFO] futurefab-common ................................... SUCCESS [  0.001 s]
+[INFO] futurefab-common-core .............................. SUCCESS [  1.998 s]
+[INFO] futurefab-api ...................................... SUCCESS [  0.001 s]
+[INFO] futurefab-api-system ............................... SUCCESS [  0.219 s]
+[INFO] futurefab-common-redis ............................. SUCCESS [  0.482 s]
+[INFO] futurefab-common-security .......................... SUCCESS [  0.193 s]
+[INFO] futurefab-api-feeding-safety ....................... SUCCESS [  0.453 s]
+[INFO] futurefab-feeding-gateway .......................... SUCCESS [  0.052 s]
+[INFO] futurefab-feeding-monitor .......................... SUCCESS [  0.056 s]
+[INFO] futurefab-feeding-customer-adapter ................. SUCCESS [  0.048 s]
+[INFO] futurefab-common-datasource ........................ SUCCESS [  0.437 s]
+[INFO] futurefab-common-datascope ......................... SUCCESS [  0.176 s]
+[INFO] futurefab-common-log ............................... SUCCESS [  0.183 s]
+[INFO] futurefab-common-swagger ........................... SUCCESS [  0.206 s]
+[INFO] futurefab-sdms-client .............................. SUCCESS [  0.303 s]
+[INFO] futurefab-namedpipe-client ......................... SUCCESS [  0.280 s]
+[INFO] futurefab-modules .................................. SUCCESS [  0.000 s]
+[INFO] futurefab-modules-system ........................... FAILURE [ 11.192 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  16.994 s
+[INFO] Finished at: 2026-11-07T15:53:31+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project futurefab-modules-system: There are test failures.
+[ERROR]
+[ERROR] Please refer to D:\Code\zhixianweilai\yaoming-cloud\futurefab-modules\futurefab-system\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :futurefab-modules-system
+
+分批提交前补充：settings-types.log（原退出1，未通过，不代表M01回归失败）
+
+> @futurefab/ui-app-smp-settings@1.0.0 type-check D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-settings
+> vue-tsc --noEmit --composite false
+
+src/views/lab-statusalarm/index.vue(414,60): error TS2353: Object literal may only specify known properties, and 'unitCode' does not exist in type '{ labId: any; tab: any; unitId?: string | undefined; liquidType?: string | undefined; }'.
+undefined
+D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-settings:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @futurefab/ui-app-smp-settings@1.0.0 type-check: `vue-tsc --noEmit --composite false`
+Exit status 2

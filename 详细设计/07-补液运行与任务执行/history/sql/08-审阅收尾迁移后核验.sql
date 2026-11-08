@@ -1,0 +1,24 @@
+-- M07 后置只读设计；预期20表344列。旧列逐主键与备份逐值核对，不只看计数。
+SHOW CREATE TABLE `run_culture_runtime`;
+SHOW CREATE TABLE `run_workflow_instance`;
+SHOW CREATE TABLE `run_workflow_step`;
+SHOW CREATE TABLE `run_material_session`;
+SHOW CREATE TABLE `run_manual_result`;
+SHOW CREATE TABLE `run_confirmation`;
+SHOW CREATE TABLE `run_calculation`;
+SHOW CREATE TABLE `run_task`;
+SHOW CREATE TABLE `run_task_candidate`;
+SHOW CREATE TABLE `run_generation`;
+SHOW CREATE TABLE `run_execution`;
+SHOW CREATE TABLE `run_execution_segment`;
+SHOW CREATE TABLE `run_command`;
+SHOW CREATE TABLE `run_resource_guard`;
+SHOW CREATE TABLE `run_execution_sample`;
+SHOW CREATE TABLE `run_exception_handling`;
+SHOW CREATE TABLE `run_ledger`;
+SHOW CREATE TABLE `run_event`;
+SHOW CREATE TABLE `run_executor_assignment`;
+SHOW CREATE TABLE `run_legacy_handover`;
+SELECT table_name,constraint_name,enforced FROM information_schema.table_constraints WHERE constraint_schema=DATABASE() AND constraint_type='CHECK' AND table_name IN ('run_culture_runtime','run_workflow_instance','run_workflow_step','run_material_session','run_manual_result','run_confirmation','run_calculation','run_task','run_task_candidate','run_generation','run_execution','run_execution_segment','run_command','run_resource_guard','run_execution_sample','run_exception_handling','run_ledger','run_event','run_executor_assignment','run_legacy_handover');
+SELECT COUNT(*) AS expected_zero_before_enable FROM `run_executor_assignment`;
+SELECT COUNT(*) AS expected_zero_before_enable FROM `run_legacy_handover`;

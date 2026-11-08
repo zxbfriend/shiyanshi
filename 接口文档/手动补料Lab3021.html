@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>一期手动补料</title>
+  <style>
+    :root {
+      --bg: #f6f7f9; --card: #fff; --text: #1a1d23; --muted: #5c6570;
+      --border: #e2e6eb; --accent: #0d6e6e; --accent-soft: #e6f3f3;
+      --code-bg: #eef1f4; --thead: #f0f3f6; --warn: #fff8e6; --warn-border: #e6b800;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; font-size: 15px; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+    h1 { font-size: 24px; margin: 0 0 8px; }
+    h2 { font-size: 20px; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+    h3 { font-size: 16px; margin: 24px 0 10px; color: var(--accent); }
+    .sub { color: var(--muted); margin-bottom: 24px; }
+    .lead { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+    .note { border-left: 3px solid var(--warn-border); background: var(--warn); padding: 10px 14px; margin: 14px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 12px 0 20px; font-size: 13.5px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 9px 12px; text-align: left; vertical-align: top; }
+    th { background: var(--thead); font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    code { font-family: ui-monospace, Consolas, monospace; background: var(--code-bg); padding: 1px 6px; border-radius: 3px; font-size: 12.5px; }
+    .api-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin: 16px 0 24px; }
+    .api-card .method { display: inline-block; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 12px; padding: 2px 8px; border-radius: 4px; margin-right: 8px; }
+    .api-card .url { font-family: ui-monospace, Consolas, monospace; font-size: 13px; word-break: break-all; }
+    ul { padding-left: 22px; }
+    li { margin-bottom: 6px; }
+    .flow { background: var(--accent-soft); border-radius: 8px; padding: 14px 18px; font-size: 14px; margin: 12px 0; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>一期手动补料</h1>
+
+  <h2>一、调用总览</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Controller 接口</th>
+        <th>内部方法</th>
+        <th>Core Service action</th>
+        <th>Lab=1 时客户端</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><code>POST api/pumping/start-pumping</code></td>
+        <td><code>GetPumpingInfoFromCoreServiceByDeviceNo</code></td>
+        <td><code>pumping_getinfo</code></td>
+        <td>CoreServiceHttpClient1</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><code>POST api/pumping/start-pumping</code></td>
+        <td>（同上方法内联调用）</td>
+        <td><code>start_pumping</code></td>
+        <td>CoreServiceHttpClient1</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><code>GET api/pumping/abort-pumping</code></td>
+        <td><code>GetPumpingInfoFromCoreServiceByDeviceNo</code></td>
+        <td><code>pumping_getinfo</code></td>
+        <td>CoreServiceHttpClient1</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><code>GET api/pumping/abort-pumping</code></td>
+        <td>（同上方法内联调用）</td>
+        <td><code>abort_pumping</code></td>
+        <td>CoreServiceHttpClient1</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>二、公共响应结构</h2>
+  <h3>BaseCoreServiceResponse / BaseCoreServiceResponse&lt;T&gt;</h3>
+  <table>
+    <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>Result_Code</td><td>long?</td><td>Core Service 错误码（原始值）</td></tr>
+      <tr><td>Result / ResultMessage</td><td>string</td><td>由 <code>Result_Code</code> 经 <code>CoreServiceErrorCode</code> 转换的描述</td></tr>
+      <tr><td>ResultCode</td><td>int</td><td>业务成功标志：<code>Result=="Success"</code> 时为 <strong>1</strong>，否则为 <strong>0</strong></td></tr>
+      <tr><td>ResultMessageCode</td><td>string</td><td>消息码</td></tr>
+      <tr><td>Data</td><td>T</td><td>泛型数据（仅 <code>pumping_getinfo</code> 有）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>PumingResponseData（pumping_getinfo 的 Data）</h3>
+  <table>
+    <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>ManualOPRecID</td><td>int?</td><td>手动操作记录 ID</td></tr>
+      <tr><td>PumpingType</td><td>int?</td><td>补料类型</td></tr>
+      <tr><td>WorkStage</td><td>string</td><td>工作状态：<code>Pumping</code>（补料中）/ <code>Done</code>（已完成）</td></tr>
+      <tr><td>TimeInProcess</td><td>string</td><td>进行中时长</td></tr>
+      <tr><td>Volume</td><td>decimal?</td><td>体积</td></tr>
+      <tr><td>Speed</td><td>decimal?</td><td>速度</td></tr>
+    </tbody>
+  </table>
+
+  <h2>三、Core Service 接口明细（Lab=1）</h2>
+
+  <!-- API 1 -->
+  <div class="api-card">
+    <h3>1. pumping_getinfo — 查询反应器补料状态</h3>
+    <p><span class="method">GET</span> <span class="url">{CoreServiceAddress}manual/operation/bioreactor?action=pumping_getinfo&amp;deviceno={deviceNo}</span></p>
+    <p><strong>封装方法：</strong><code>GetPumpingInfoFromCoreServiceByDeviceNo(string deviceNo, int labId)</code></p>
+    <p><strong>被谁调用：</strong><code>StartPumping</code>、<code>AbortPumping</code>（发送指令前先查设备状态）</p>
+
+    <h4>入参（Query String）</h4>
+    <table>
+      <thead><tr><th>参数</th><th>来源</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>action</td><td>固定</td><td><code>pumping_getinfo</code></td></tr>
+        <tr><td>deviceno</td><td><code>_pumpingService.GetLabDeviceNoByID(labDeviceID)</code></td><td>反应器设备编号</td></tr>
+      </tbody>
+    </table>
+
+    <h4>出参</h4>
+    <p><code>BaseCoreServiceResponse&lt;PumingResponseData&gt;</code></p>
+
+    <h4>业务逻辑</h4>
+    <ul>
+      <li><strong>StartPumping：</strong>若 <code>Data.WorkStage == "Pumping"</code>，认为该设备正在补料，直接返回错误 <code>SE500204</code>，不再发 <code>start_pumping</code>。</li>
+      <li><strong>AbortPumping：</strong>若 <code>Data.WorkStage == "Done"</code>，认为补料已结束，本地更新 ManualOPRec 为取消状态，返回 <code>SE5004816</code>，不再发 <code>abort_pumping</code>。</li>
+    </ul>
+  </div>
+
+  <!-- API 2 -->
+  <div class="api-card">
+    <h3>2. start_pumping — 开始手动补料</h3>
+    <p><span class="method">GET</span> <span class="url">{CoreServiceAddress}manual/operation/bioreactor?action=start_pumping&amp;deviceno=...&amp;sourceid=...&amp;type=...&amp;speed=...&amp;locationcode=...&amp;itemcode=...[&amp;volume=...]</span></p>
+    <p><strong>被谁调用：</strong><code>POST api/pumping/start-pumping</code>（<code>request.LabId == 1</code> 时走 Client1）</p>
+
+    <h4>Controller 入参 — PumpingRequestParam</h4>
+    <table>
+      <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>LabId</td><td>int</td><td><strong>传 1 时路由到 CoreServiceHttpClient1</strong></td></tr>
+        <tr><td>LabDeviceID</td><td>int</td><td>反应器设备 ID → 转 deviceno</td></tr>
+        <tr><td>BatchID</td><td>int</td><td>批次 ID</td></tr>
+        <tr><td>PumpingType</td><td>int?</td><td>11=FM1 / 13=FM2 / 15=Glucose / 17=FM3</td></tr>
+        <tr><td>Volume</td><td>decimal?</td><td>补料体积（&gt;0 时传给 Core）</td></tr>
+        <tr><td>Speed</td><td>decimal?</td><td>泵速（转 int 传给 Core）</td></tr>
+        <tr><td>LocationCode</td><td>string</td><td>库位编码</td></tr>
+        <tr><td>ItemCode</td><td>string</td><td>物料编码</td></tr>
+        <tr><td>PreFillVolume</td><td>decimal?</td><td>预填充体积（仅本地校验，不传 Core）</td></tr>
+      </tbody>
+    </table>
+
+    <h4>传给 Core Service 的 Query 参数</h4>
+    <table>
+      <thead><tr><th>参数</th><th>来源</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>action</td><td>固定</td><td><code>start_pumping</code></td></tr>
+        <tr><td>deviceno</td><td>LabDeviceID → deviceNo</td><td>反应器编号</td></tr>
+        <tr><td>sourceid</td><td>新建 ManualOPRec 的 ManualOPRecID</td><td>手动操作记录主键，供回调关联</td></tr>
+        <tr><td>type</td><td>PumpingType</td><td>补料类型 11/13/15/17</td></tr>
+        <tr><td>volume</td><td>Volume（可选）</td><td>仅当 Volume&gt;0 时追加</td></tr>
+        <tr><td>speed</td><td>Speed</td><td>泵速（int）</td></tr>
+        <tr><td>locationcode</td><td>LocationCode</td><td>库位</td></tr>
+        <tr><td>itemcode</td><td>ItemCode</td><td>物料</td></tr>
+      </tbody>
+    </table>
+
+    <h4>出参</h4>
+    <p><code>BaseCoreServiceResponse</code>（无 Data 泛型）</p>
+    <p>Controller 对外返回：<code>BaseResponse&lt;PumingResponseData&gt;</code>，成功时 <code>Data.ManualOPRecID</code> 为新建记录 ID。</p>
+
+    <h4>业务逻辑</h4>
+    <div class="flow">
+      权限校验 → 库存/反应器容量校验 → <strong>pumping_getinfo</strong>（防重复补料）→ 写 ManualOPRec(Status=Start) → <strong>start_pumping</strong>
+    </div>
+    <ul>
+      <li><code>ResultCode == 0</code>（失败）：更新 ManualOPRec 的 ErrorCode/EndTime，写 Event 日志（Error），返回 <code>SE500050</code> 或 <code>SE500051</code>（缺液）。</li>
+      <li><code>ResultCode == 1</code>（成功）：记录操作日志；补料结果由 Core Service 回调 <code>POST api/pumping/get-pumping-result</code> 异步回写。</li>
+    </ul>
+  </div>
+
+  <!-- API 3 -->
+  <div class="api-card">
+    <h3>3. abort_pumping — 中止手动补料</h3>
+    <p><span class="method">GET</span> <span class="url">{CoreServiceAddress}manual/operation/bioreactor?action=abort_pumping&amp;deviceno=...&amp;sourceid=...&amp;type=...&amp;locationcode=...&amp;itemcode=...</span></p>
+    <p><strong>被谁调用：</strong><code>GET api/pumping/abort-pumping</code>（<code>labId == 1</code> 时走 Client1）</p>
+
+    <h4>Controller 入参（Query / Route）</h4>
+    <table>
+      <thead><tr><th>参数</th><th>类型</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>labId</td><td>int</td><td><strong>传 1 时路由到 CoreServiceHttpClient1</strong></td></tr>
+        <tr><td>labDeviceID</td><td>int</td><td>反应器设备 ID</td></tr>
+        <tr><td>batchID</td><td>int</td><td>批次 ID（仅日志）</td></tr>
+        <tr><td>pumpingType</td><td>int</td><td>补料类型 11/13/15/17</td></tr>
+        <tr><td>locationCode</td><td>string</td><td>库位编码</td></tr>
+        <tr><td>itemCode</td><td>string</td><td>物料编码</td></tr>
+        <tr><td>manualOPRecId</td><td>int?</td><td>手动记录 ID；未传时由服务按设备+类型查询</td></tr>
+      </tbody>
+    </table>
+
+    <h4>传给 Core Service 的 Query 参数</h4>
+    <table>
+      <thead><tr><th>参数</th><th>来源</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>action</td><td>固定</td><td><code>abort_pumping</code></td></tr>
+        <tr><td>deviceno</td><td>labDeviceID → deviceNo</td><td>反应器编号</td></tr>
+        <tr><td>sourceid</td><td>manualOPRecId</td><td>手动操作记录 ID</td></tr>
+        <tr><td>type</td><td>pumpingType</td><td>补料类型</td></tr>
+        <tr><td>locationcode</td><td>locationCode</td><td>库位</td></tr>
+        <tr><td>itemcode</td><td>itemCode</td><td>物料</td></tr>
+      </tbody>
+    </table>
+
+    <h4>出参</h4>
+    <p><code>BaseCoreServiceResponse</code></p>
+    <p>Controller 对外返回：<code>BaseResponse&lt;List&lt;PumingResponseData&gt;&gt;</code></p>
+
+    <h4>业务逻辑</h4>
+    <div class="flow">
+      权限校验 → <strong>pumping_getinfo</strong>（若已 Done 则本地取消记录）→ <strong>abort_pumping</strong> → 更新 ManualOPRec Status=Canceled
+    </div>
+    <ul>
+      <li>无论 Core 返回成功或失败（<code>ResultCode==0</code>），多数分支都会把 ManualOPRec 更新为取消(99)。</li>
+      <li>成功时记录「Abort Pumping」操作日志。</li>
+    </ul>
+  </div>
+
+  <h2>四、补料类型对照</h2>
+  <table>
+    <thead><tr><th>PumpingType / type</th><th>枚举</th><th>OperationType</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td>11</td><td>EnumPumpingType.FM1</td><td>PumpingFM1</td><td>大补料</td></tr>
+      <tr><td>13</td><td>EnumPumpingType.FM2</td><td>PumpingFM2</td><td>小补料</td></tr>
+      <tr><td>15</td><td>EnumPumpingType.Glucose</td><td>PumpingGlucose</td><td>糖补料</td></tr>
+      <tr><td>17</td><td>EnumPumpingType.FM3</td><td>PumpingFM3</td><td>其他补料</td></tr>
+    </tbody>
+  </table>
+
+  <h2>五、相关但非 CoreServiceHttpClient 出向调用</h2>
+  <p>以下接口与补料流程相关，但方向是 <strong>Core Service → WebAPI 回调</strong>，或 <strong>不走 CoreServiceHttpClient</strong>：</p>
+  <table>
+    <thead><tr><th>接口</th><th>方向</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>POST api/pumping/get-pumping-result</code></td>
+        <td>Core → WebAPI</td>
+        <td>手动补料完成回调；入参 <code>SamplingFeedingResult</code>（sourceid、errorCode、weight、LabId）；更新 ManualOPRec、写 Event、保存 BatchOP</td>
+      </tr>
+      <tr>
+        <td><code>POST api/pumping/get-pumped-weight</code></td>
+        <td>Core → WebAPI</td>
+        <td>补料过程重量回调；保存补料明细重量</td>
+      </tr>
+      <tr>
+        <td><code>POST api/pumping/auto-pumping-result</code></td>
+        <td>Core → WebAPI</td>
+        <td>自动补料结果；<code>SaveBatchOPExec</code></td>
+      </tr>
+      <tr>
+        <td><code>POST start-pumpingV2</code> / <code>GET abort-pumpingV2</code></td>
+        <td>Lab2 流程</td>
+        <td>通过 <code>PumpingService.StartFeeding</code> / <code>AbortPump</code>，走 OPC/IOT，<strong>不调用 CoreServiceHttpClient</strong></td>
+      </tr>
+      <tr>
+        <td><code>GET get-dose</code> / <code>POST set-dose</code></td>
+        <td>外部 OPC</td>
+        <td>调用 <code>SystemConstant.PumpingDose</code> 的 OPC 服务，非 Core Service</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>六、Lab=1 完整调用时序</h2>
+  <div class="flow">
+    <strong>开始补料</strong><br>
+    前端 POST start-pumping (LabId=1) → pumping_getinfo → 写 DB ManualOPRec → start_pumping → Core 执行补料 → 回调 get-pumping-result / get-pumped-weight
+  </div>
+  <div class="flow">
+    <strong>中止补料</strong><br>
+    前端 GET abort-pumping (labId=1) → pumping_getinfo → abort_pumping → 更新 ManualOPRec 为 Canceled
+  </div>
+
+
+</div>
+</body>
+</html>

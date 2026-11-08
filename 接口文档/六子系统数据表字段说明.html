@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>六子系统数据表与字段说明</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --border: #dde3ea;
+    --text: #1a2332;
+    --muted: #5a6a7a;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --header-bg: #1e3a5f;
+    --table-head: #e8eef5;
+    --tag-bga: #dc2626;
+    --tag-osmo: #059669;
+    --tag-vicell: #7c3aed;
+    --tag-cedex: #d97706;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 24px;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+  header {
+    background: var(--header-bg);
+    color: #fff;
+    padding: 32px 40px;
+    border-radius: 12px;
+    margin-bottom: 28px;
+  }
+  header h1 { font-size: 1.75rem; margin-bottom: 8px; }
+  header p { opacity: .85; font-size: .95rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .meta span {
+    background: rgba(255,255,255,.12);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: .85rem;
+  }
+  nav.toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 32px;
+    margin-bottom: 28px;
+  }
+  nav.toc h2 { font-size: 1.1rem; margin-bottom: 12px; color: var(--accent); }
+  nav.toc ol { padding-left: 24px; }
+  nav.toc li { margin: 6px 0; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  section.subsystem {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 28px;
+  }
+  .sub-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .sub-header h2 { font-size: 1.35rem; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: .75rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .badge-bga { background: var(--tag-bga); }
+  .badge-osmo6060 { background: #047857; }
+  .badge-osmopro { background: var(--tag-osmo); }
+  .badge-vicell { background: var(--tag-vicell); }
+  .badge-cedex { background: var(--tag-cedex); }
+  .badge-cedexorder { background: #92400e; }
+  .sub-info {
+    padding: 16px 28px;
+    background: var(--accent-light);
+    border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+  }
+  .sub-info code {
+    background: rgba(0,0,0,.06);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: .85rem;
+  }
+  .sub-body { padding: 20px 28px 28px; }
+  .feature-block {
+    margin-bottom: 28px;
+    border-left: 4px solid var(--accent);
+    padding-left: 18px;
+  }
+  .feature-block h3 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    color: var(--accent);
+  }
+  .feature-block .desc {
+    color: var(--muted);
+    font-size: .88rem;
+    margin-bottom: 12px;
+  }
+  .feature-block .files {
+    font-size: .82rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .86rem;
+    margin-bottom: 8px;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: var(--table-head); font-weight: 600; white-space: nowrap; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .op-r { color: #059669; }
+  .op-w { color: #d97706; }
+  .op-rw { color: #2563eb; }
+  .tbl-name {
+    font-family: Consolas, "Courier New", "Microsoft YaHei", monospace;
+    font-weight: 600;
+    color: #1e40af;
+    font-size: .84rem;
+  }
+  td.tbl-name {
+    white-space: normal;
+    word-break: break-word;
+    min-width: 120px;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
+  .table-wrap table { margin-bottom: 0; }
+  .detail-table th:nth-child(1) { width: 10%; }
+  .detail-table th:nth-child(2) { width: 18%; }
+  .detail-table th:nth-child(3) { width: 32%; }
+  .detail-table th:nth-child(4) { width: 40%; min-width: 220px; }
+  .detail-table td:last-child {
+    white-space: normal;
+    word-break: break-word;
+    min-width: 200px;
+  }
+  .shared-note .tbl-name { font-size: inherit; }
+  .shared-note {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: .88rem;
+    margin: 16px 0;
+  }
+  .no-db {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 12px 0;
+  }
+  .summary-table { margin-top: 8px; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: .82rem;
+    padding: 24px 0 8px;
+  }
+  @media print {
+    body { padding: 0; background: #fff; }
+    section.subsystem { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>六子系统数据表与字段说明</h1>
+  <p>梳理 BGA、Osmo6060、OsmoPro、Vicell、Cedex、CedexOrder 六个实验室检测设备子系统在代码中实际读写的 MySQL 数据表及字段，并标注所属功能模块与源文件。</p>
+</header>
+
+<nav class="toc">
+  <h2>目录</h2>
+  <ol>
+    <li><a href="#bga">BGA — 血气分析仪子系统</a></li>
+    <li><a href="#osmo6060">Osmo6060 — OSMO 6060 渗透压仪（串口）</a></li>
+    <li><a href="#osmopro">OsmoPro — OSMO Pro 渗透压仪（Socket）</a></li>
+    <li><a href="#vicell">Vicell — Vi-CELL XR 细胞计数子系统</a></li>
+    <li><a href="#cedex">Cedex — Cedex 生化分析子系统</a></li>
+    <li><a href="#cedexorder">CedexOrder — Cedex 下单/启动辅助子系统</a></li>
+    <li><a href="#cross">跨项目共享表对照</a></li>
+  </ol>
+</nav>
+
+<!-- ===================== BGA ===================== -->
+<section class="subsystem" id="bga">
+  <div class="sub-header">
+    <span class="badge badge-bga">BGA</span>
+    <h2>血气分析仪子系统</h2>
+  </div>
+  <div class="sub-info">
+    <strong>项目路径：</strong><code>BGA/SubDeviceService.BGA</code><br>
+    <strong>核心文件：</strong><code>BGAService.cs</code>（Named Pipe 服务层）、<code>ComPortClient.cs</code>（串口协议与结果回写）<br>
+    <strong>间接调用：</strong><code>BGAToolForm.cs</code>、<code>Confirm.cs</code>
+  </div>
+  <div class="sub-body">
+
+    <div class="feature-block">
+      <h3>1. 设备注册与串口配置</h3>
+      <div class="desc">按本机 MAC 定位子系统，维护串口参数；仪器回传 ID_DATA 时同步 DeviceNo / DeviceModel。</div>
+      <div class="files">BGAService.TestingBGADeviceByMac / TestingBGADeviceByDeviceNo / InsertTestingBGADevice / UpdateTestingBGADevice · ComPortClient.AnalyzeDeviceData</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>BGADeviceID</td><td class="op-rw">R/W</td><td>主键；UPDATE WHERE 条件</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>SubSystemMAC</td><td class="op-rw">R/W</td><td>本机 MAC，设备定位核心字段</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>SubSystemIP</td><td class="op-w">W</td><td>子系统 IP</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>TestingEquipmentID</td><td class="op-rw">R/W</td><td>关联检测设备台账</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>DeviceNo</td><td class="op-w">W</td><td>仪器 IID（串口 ID_DATA 回写）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>DeviceModel</td><td class="op-w">W</td><td>仪器型号（串口 aMOD 回写）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>SerialPortName / SerialPortBaudRate / SerialPortDataBits / SerialPortStopBits / SerialPortParity / SerialPortFlowType</td><td class="op-rw">R/W</td><td>串口通信参数</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>IsDelete</td><td class="op-rw">R/W</td><td>软删除标志，查询均过滤 =0</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>Created_by / Creation_time</td><td class="op-w">W</td><td>新建审计</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGADevice</td><td>Last_updated_by / Last_update_time</td><td class="op-w">W</td><td>更新审计</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>2. 样品下单（Order + Task 创建）</h3>
+      <div class="desc">UI 下单时写入 BGAOrder（可选）并创建 BGATask；Core 自动下单不保存 Order 信息。</div>
+      <div class="files">BGAService.InsertSampleOrder · SendOrderRequest · CheckBGATestingOrderHadSample</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGAOrder</td><td>TestingBGAOrderID</td><td class="op-rw">R/W</td><td>主键；=0 时 INSERT，&gt;0 时 UPDATE</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGAOrder</td><td>SampleID</td><td class="op-w">W</td><td>样品编号</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGAOrder</td><td>Position</td><td class="op-w">W</td><td>样品位号</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGAOrder</td><td>TEMP</td><td class="op-w">W</td><td>温度参数</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGAOrder</td><td>BGADeviceID</td><td class="op-w">W</td><td>所属 BGA 设备</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGAOrder</td><td>Status</td><td class="op-w">W</td><td>是否保存订单信息（SaveStatus）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGAOrder</td><td>IsDelete / Created_by / Creation_time</td><td class="op-w">W</td><td>软删与审计</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>TestingBGATaskID</td><td class="op-r">R</td><td>主键（查询/关联）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>SampleID / BatchID / BatchOPID</td><td class="op-w">W</td><td>样品与批次关联</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>BGADeviceID</td><td class="op-w">W</td><td>设备 ID</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>SEQNo</td><td class="op-w">W</td><td>仪器序列号（串口回写）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>Status</td><td class="op-rw">R/W</td><td>任务状态：1 新建 → 3 开始 → 5/7/9 完成 → 15 异常 → 99 取消</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>Mode</td><td class="op-w">W</td><td>1 手动 / 3 自动 / 5 QC</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>StartTime / EndTime</td><td class="op-w">W</td><td>检测起止时间</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>IsDelete</td><td class="op-rw">R/W</td><td>软删除</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-w">W</td><td>审计字段</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>3. 串口检测生命周期与结果回写</h3>
+      <div class="desc">解析 SMP_START / SMP_NEW_AV / SMP_NEW_DATA 等串口消息，推进 Task 状态并写入结果明细。</div>
+      <div class="files">ComPortClient.AnalyzeReceivedData · UpdateSampleOrderStatus / UpdateSampleOrderNewAV / UpdateSampleOrderDetection</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>Status, SEQNo, StartTime, EndTime, Last_update_time, SampleID(SampleId)</td><td class="op-w">W</td><td>按串口事件更新任务状态与时间</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>TestingBGATaskID</td><td class="op-w">W</td><td>关联任务；刷新时先 DELETE 再 INSERT</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>Name</td><td class="op-w">W</td><td>检测项名称</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>Value</td><td class="op-w">W</td><td>检测值</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>Unit</td><td class="op-w">W</td><td>单位</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>Description</td><td class="op-w">W</td><td>描述</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-w">W</td><td>完整样品结果路径写入审计</td></tr>
+        <tr><td class="tbl-name">Auth_Culture</td><td>CultureCode, IsDelete</td><td class="op-r">R</td><td>CheckSampleIdIsCulterId：判断是否为培养物样品（Status 9 vs 7）</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>4. QC 质控数据</h3>
+      <div class="desc">QC_NEW_DATA 消息直接插入完成态 Task（Mode=5, Status=7）及结果行。</div>
+      <div class="files">ComPortClient.InsertQCOrderDetection</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>BGADeviceID, SEQNo, SampleID, Status, Mode, StartTime, EndTime, Creation_time, Last_update_time</td><td>QC 任务一次性 INSERT</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>TestingBGATaskID, Name, Value, Unit, Description</td><td>QC 结果（无审计字段）</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>5. 校准记录</h3>
+      <div class="desc">SYS_CAL_PEND / CAL_START / CAL_ABORT / CAL_NEW_DATA 等校准串口消息维护校准时间窗。</div>
+      <div class="files">ComPortClient.InsertBGACalibrationRec / CalUpdateCalibrationRec / CalUpdateClosedCalibrationRec · BGAService.CheckCal / CheckTestingBGACalibrationRecOfFiveTip</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGACalibrationRec</td><td>BGACalibrationRecID</td><td class="op-r">R</td><td>主键；可用性检查 ORDER BY</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGACalibrationRec</td><td>BGADeviceID</td><td class="op-rw">R/W</td><td>所属设备</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGACalibrationRec</td><td>StartTime / EndTime / NextStartTime</td><td class="op-rw">R/W</td><td>校准起止与下次计划时间</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGACalibrationRec</td><td>Status</td><td class="op-rw">R/W</td><td>1 待校准 / 3 进行中 / 5 完成 / 9 中止</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGACalibrationRec</td><td>CalibrationType</td><td class="op-rw">R/W</td><td>1 一点 / 3 两点 / 5 Tip / null 待定</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGACalibrationRec</td><td>Creation_time</td><td class="op-w">W</td><td>创建时间</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>6. 实验室设备状态 &amp; 用户认证 &amp; 可用性检查</h3>
+      <div class="files">ComPortClient.UpdateLabDeviceStatus · BGAService.CheckAvailability · Confirm.CheckUserAccount</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_LabDevice</td><td>LabDeviceNo(='BGA'), DeviceStatus</td><td>0 离线 / 1 空闲 / 2 忙碌 / 3 错误</td></tr>
+        <tr><td class="tbl-name">Auth_User</td><td>Account, Pwd, IsDelete</td><td>退出确认对话框登录校验（Confirm.cs）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGATask</td><td>Status, EndTime, SampleID, BGADeviceID, IsDelete</td><td>下单前冲突/间隔/重复样品检查</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_BGACalibrationRec</td><td>EndTime, CalibrationType, Status, NextStartTime, BGACalibrationRecID</td><td>校准窗口与 Tip 校准可用性检查</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== Osmo6060 ===================== -->
+<section class="subsystem" id="osmo6060">
+  <div class="sub-header">
+    <span class="badge badge-osmo6060">Osmo6060</span>
+    <h2>OSMO 6060 渗透压仪子系统（串口）</h2>
+  </div>
+  <div class="sub-info">
+    <strong>项目路径：</strong><code>OSMO/OSMO6060/SubDeviceService.OsmoSix</code><br>
+    <strong>核心文件：</strong><code>OsmoSixService.cs</code>（Named Pipe）、<code>ComPortClient.cs</code>（串口结果回写）<br>
+    <strong>特征：</strong>设备表过滤 <code>OSMOType=3</code>；LabDeviceNo = <code>OSMO6060</code>
+  </div>
+  <div class="sub-body">
+
+    <div class="feature-block">
+      <h3>1. 设备注册（OSMOType=3 + 串口参数）</h3>
+      <div class="files">OsmoSixService.TestingOsmoSixDeviceByMac / InsertDevice / UpdateDevice · Pipe: saveDevice</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>OSMODeviceID</td><td class="op-rw">R/W</td><td>主键</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>SubSystemMAC / SubSystemIP</td><td class="op-rw">R/W</td><td>本机定位</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>TestingEquipmentID</td><td class="op-rw">R/W</td><td>检测设备台账</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>OSMOIP / OSMOPort</td><td class="op-w">W</td><td>网络参数（主通信为串口）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>OSMOType</td><td class="op-rw">R/W</td><td>固定 =3，区分 6060 型号</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>SerialPortName / SerialPortBaudRate / SerialPortDataBits / SerialPortStopBits / SerialPortParity / SerialPortFlowType</td><td class="op-rw">R/W</td><td>串口参数</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>IsDelete / Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-rw">R/W</td><td>软删与审计</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>2. 订单队列（Order）</h3>
+      <div class="desc">SendOrderRequest 写入孔位样品；DeleteOrderRequest 软删除。</div>
+      <div class="files">OsmoSixService.DBInserOrder / GetOSMOOrderByPositionNo / DeleteOrderRequest / QueryOnTestingOrder · Pipe: order, del_order</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>TestingOSMOOrderID</td><td class="op-r">R</td><td>主键</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>OSMODeviceID</td><td class="op-rw">R/W</td><td>所属设备</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>SampleID</td><td class="op-rw">R/W</td><td>样品编号</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>PositionNo</td><td class="op-rw">R/W</td><td>孔位号</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>IsDelete</td><td class="op-rw">R/W</td><td>软删除（del_order 置 1）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>Created_by / Creation_time</td><td class="op-w">W</td><td>审计</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>3. 任务生命周期（Task + TaskDtl）</h3>
+      <div class="desc">LogIn 创建 Task/Dtl；Start 推进 Status=3；Cancel 置 99；串口收结果后关闭 Task。</div>
+      <div class="files">OsmoSixService.DBLogInSample / DBStart / DBCancel / SearchLasterTestingResult · Pipe: log_in, start, cancel, result</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>TestingOSMOTaskID</td><td class="op-rw">R/W</td><td>主键；LAST_INSERT_ID</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>OrderParameter</td><td class="op-w">W</td><td>下单 JSON 快照</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>Mode</td><td class="op-w">W</td><td>1 手动 / 3 自动</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>OSMODeviceID</td><td class="op-rw">R/W</td><td>设备 ID</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>Status</td><td class="op-rw">R/W</td><td>1 新建 / 3 开始 / 5 完成 / 99 取消</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>StartTime / EndTime</td><td class="op-w">W</td><td>起止时间</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>IsDelete / Creation_time / Last_update_time</td><td class="op-rw">R/W</td><td>软删与审计</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>TestingOSMOTaskDtlID</td><td class="op-r">R</td><td>主键</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>TestingOSMOTaskID</td><td class="op-rw">R/W</td><td>父任务 FK</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>PositionNo / SampleID</td><td class="op-rw">R/W</td><td>孔位与样品</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>ItemID / BatchID / BatchOPID</td><td class="op-w">W</td><td>批次关联（有则写入）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>Status</td><td class="op-rw">R/W</td><td>1/3/5/9/99</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>OSMO</td><td class="op-w">W</td><td>渗透压结果值</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>StartTime / EndTime</td><td class="op-w">W</td><td>明细起止</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>Created_by / Creation_time / Last_update_time</td><td class="op-w">W</td><td>审计</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>IsDelete</td><td class="op-rw">R/W</td><td>软删除</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>4. 结果回写与批次更新</h3>
+      <div class="desc">串口解析结果后更新 Dtl.OSMO，并按 SampleID 解析批次回写 CurrentOSMO；培养物样品 Status=9。</div>
+      <div class="files">ComPortClient.UpdateOsmoResult</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>OSMO, BatchID, Status, EndTime, Last_update_time</td><td>写入渗透压结果；PositionNo+SampleID 定位</td></tr>
+        <tr><td class="tbl-name">CDP_Batch</td><td>BatchCode, BatchID, CurrentOSMO, IsDelete</td><td>按 SampleID 前缀解析 BatchCode，回写 CurrentOSMO</td></tr>
+        <tr><td class="tbl-name">Auth_Culture</td><td>CultureCode, IsDelete</td><td>培养物校验 → Status 9（Uploaded）vs 5（Tested）</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>5. 实验室设备状态 &amp; 用户认证</h3>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_LabDevice</td><td>LabDeviceNo(='OSMO6060'), DeviceStatus</td><td>0 断开 / 1 空闲 / 2 检测中 / 3 错误</td></tr>
+        <tr><td class="tbl-name">Auth_User</td><td>Account, Pwd, IsDelete</td><td>Confirm.cs 退出登录</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== OsmoPro ===================== -->
+<section class="subsystem" id="osmopro">
+  <div class="sub-header">
+    <span class="badge badge-osmopro">OsmoPro</span>
+    <h2>OSMO Pro 渗透压仪子系统（Socket）</h2>
+  </div>
+  <div class="sub-info">
+    <strong>项目路径：</strong><code>SubDeviceService.OsmoPro</code><br>
+    <strong>核心文件：</strong><code>OsmoProService.cs</code>、<code>OsmoPROSocketClient.cs</code><br>
+    <strong>差异：</strong>无 OSMOType/串口字段；LabDeviceNo = <code>OSMO</code>；UI 勾选 ckbUseDB 可关闭 Order/Task 写入（结果/设备/删除始终写库）
+  </div>
+  <div class="sub-body">
+
+    <div class="shared-note">
+      OsmoPro 与 Osmo6060 共用 <span class="tbl-name">CDP_Testing_OSMO*</span> 全套表，字段含义相同。以下仅列出与 6060 的差异点。
+    </div>
+
+    <div class="feature-block">
+      <h3>1. 设备注册（仅 IP/Port，无 OSMOType）</h3>
+      <div class="files">OsmoProService.GetOSMODeviceByMac / InsertDevice / UpdateDevice · Pipe: save_subsystem_setting</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMODevice</td><td>OSMODeviceID, SubSystemMAC, SubSystemIP, TestingEquipmentID, OSMOIP, OSMOPort, IsDelete, Created_by, Creation_time, Last_updated_by, Last_update_time</td><td>不读写 OSMOType 及 SerialPort* 列</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>2. 订单 / 任务（_isUseDB 门控）</h3>
+      <div class="files">OsmoProService.DBInserOrder / DBLogInSample / DBStart / DBCancel（需 _isUseDB=true）· DeleteOrderRequest（始终执行）</div>
+      <table>
+        <tr><th>数据表</th><th>涉及字段</th><th>说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>全部字段同 Osmo6060</td><td>order 命令写入；del_order 软删</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>全部字段同 Osmo6060</td><td>log_in/start/cancel 写入（门控）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>全部字段同 Osmo6060</td><td>log_in 插入；结果回写始终执行</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>3. Socket 结果回写</h3>
+      <div class="files">OsmoPROSocketClient.UpdateOsmoResult</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>与 6060 差异</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTaskDtl</td><td>OSMO, BatchID, Status, EndTime, Last_update_time</td><td>WHERE 仅用 TestingOSMOTaskID + SampleID（无 PositionNo）</td></tr>
+        <tr><td class="tbl-name">CDP_Batch</td><td>BatchCode, BatchID, CurrentOSMO, IsDelete</td><td>同 6060</td></tr>
+        <tr><td class="tbl-name">Auth_Culture</td><td>CultureCode, IsDelete</td><td>同 6060</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_OSMOTask</td><td>Status, EndTime, Last_update_time</td><td>全部样品有结果后立即关闭（无延迟）</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>4. 实验室设备状态 &amp; 认证</h3>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_LabDevice</td><td>LabDeviceNo(='OSMO'), DeviceStatus</td><td>IsNeedLabDevice=True 时更新</td></tr>
+        <tr><td class="tbl-name">Auth_User</td><td>Account, Pwd, IsDelete</td><td>Confirm.cs 退出登录</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== Vicell ===================== -->
+<section class="subsystem" id="vicell">
+  <div class="sub-header">
+    <span class="badge badge-vicell">Vicell</span>
+    <h2>Vi-CELL XR 细胞计数子系统</h2>
+  </div>
+  <div class="sub-info">
+    <strong>项目路径：</strong><code>Vicell/ViCellXR</code>（仓库根 SubDeviceService.Vi-CELLUI 为解决方案容器）<br>
+    <strong>核心文件：</strong><code>ViCellService.cs</code>（几乎全部 SQL）、<code>ViCellToolFrm.cs</code>（编排/UI）
+  </div>
+  <div class="sub-body">
+
+    <div class="feature-block">
+      <h3>1. 设备配置</h3>
+      <div class="files">ViCellService.GetViCellDeviceBySubSystemMAC / InsertViCellDevice / UpdateViCellDevice · Pipe: save_subsysytem_setting</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellDevice</td><td>VicellDeviceID</td><td class="op-rw">R/W</td><td>主键</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellDevice</td><td>TestingEquipmentID</td><td class="op-rw">R/W</td><td>台账关联；唯一性检查</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellDevice</td><td>SubSystemMAC / SubSystemIP</td><td class="op-rw">R/W</td><td>本机定位</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellDevice</td><td>ExcelPath</td><td class="op-rw">R/W</td><td>Excel 结果文件目录</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellDevice</td><td>WasteUpperLimit / CurrentWasteCount</td><td class="op-rw">R/W</td><td>废液上限与当前计数（每次结果 +1）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellDevice</td><td>IsDelete / Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-rw">R/W</td><td>软删与审计</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>2. 登录与订单（Task + TaskDtl + Order）</h3>
+      <div class="files">ViCellService.DBLogInSample / DBLogInSampleInsert / DBLogInSampleInsertNew · Pipe: log_in, log_in_manual, log_in_check</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTask</td><td>TestingVicellTaskID</td><td class="op-rw">R/W</td><td>主键</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTask</td><td>OrderParameter</td><td class="op-w">W</td><td>样品列表 JSON</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTask</td><td>VicellDeviceID / Mode / Status</td><td class="op-rw">R/W</td><td>设备、模式；1→3→5→7 或 99</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTask</td><td>StartTime / EndTime</td><td class="op-w">W</td><td>任务起止</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTask</td><td>IsDelete / Created_by / Creation_time / Last_update_time</td><td class="op-rw">R/W</td><td>软删与审计</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>TestingVicellTaskDtlID / TestingVicellTaskID</td><td class="op-rw">R/W</td><td>明细主键与父任务</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>PositionNo / SampleID / OriginalSampleID</td><td class="op-rw">R/W</td><td>孔位与样品；OriginalSampleID 用于 QuaryUnExecSamples</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>CellType / DilutionFactor</td><td class="op-w">W</td><td>细胞类型与稀释倍数</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>ItemID / BatchID / BatchOPID</td><td class="op-w">W</td><td>批次关联</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>Status</td><td class="op-rw">R/W</td><td>1/3/5/9/99</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>VCD / Viability / AvgDiam</td><td class="op-w">W</td><td>活细胞密度、存活率、平均直径</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>ExcelFileLocation / ErrorMsg</td><td class="op-w">W</td><td>结果文件路径 / 错误信息</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>StartTime / EndTime</td><td class="op-w">W</td><td>明细起止</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>Created_by / Creation_time / Last_update_time / IsDelete</td><td class="op-rw">R/W</td><td>审计与软删</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellOrder</td><td>VicellDeviceID / SampleID</td><td class="op-rw">R/W</td><td>设备与样品</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellOrder</td><td>IsDelete / IsClosed</td><td class="op-w">W</td><td>软删与关闭标志</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellOrder</td><td>Created_by / Creation_time / Last_update_time / LastUpdateTime</td><td class="op-w">W</td><td>审计（存在两种列名写法）</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>3. 结果回写与批次联动</h3>
+      <div class="files">ViCellService.DBUpdateResult · CheckSampleIdIsCulterId · GetBatchIDBySampleId · ViCellToolFrm 文件扫描线程</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTaskDtl</td><td>VCD, Viability, AvgDiam, ExcelFileLocation, Status, EndTime</td><td>写入细胞计数结果</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellDevice</td><td>CurrentWasteCount</td><td>每次结果 +1</td></tr>
+        <tr><td class="tbl-name">CDP_Batch</td><td>BatchID, BatchCode, ReactorSerialNo, CultureID, Status, CurrentVCD, CurrentViability</td><td>按 SampleID 解析批次并回写当前 VCD/Viability</td></tr>
+        <tr><td class="tbl-name">Auth_Culture</td><td>CultureID, CultureCode, IsDelete</td><td>培养物校验 → Status 9 vs 5</td></tr>
+        <tr><td class="tbl-name">CDP_Item_Serials</td><td>Quantity, ItemSerialNumber, BatchId</td><td>关联反应器体积，计算细胞总数</td></tr>
+        <tr><td class="tbl-name">CDP_Batch_CellsData</td><td>BatchID, BatchOPID, TestingVicellTaskDtlID, TotalVolume, ItemID, TotalViableNumber, TotalCellsNumber, Created_By, Creation_Time</td><td>DBInsertBatchCellsData 已实现但当前主流程未调用</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellOrder</td><td>IsClosed</td><td>结果完成后异步关闭订单</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>4. 结果文件索引</h3>
+      <div class="files">ViCellService.GetRepeatSampleIDByFileName / GetLastNewVicellFile / GetVicellFileByNames / AsyncFileInfo</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellFile</td><td>SystemMac, Path, Extension, ShortName, FileCreationTime, CreationTime, IsDelete</td><td>重复样品校验、最新文件查询、批量文件同步 INSERT</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>5. 细胞类型下拉 &amp; 废液检查 &amp; 实验室状态</h3>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_CellTypeSetting</td><td>CellTypeNo, CellTypeName, IsDelete</td><td>IsReadByDict=N 时 GetCellTypeList</td></tr>
+        <tr><td class="tbl-name">cdp_dict / cdp_dictdtl</td><td>DictNo='CELLTYPE', DictDtlNo, DictDtlName, DictId, IsDelete</td><td>IsReadByDict=Y 时 GetCellTypeList</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_Equipment</td><td>TestingEquipmentID, EquipmentNo</td><td>CheckWasteLimit 超限提示设备号</td></tr>
+        <tr><td class="tbl-name">CDP_LabDevice</td><td>LabDeviceNo(='VICELL'), DeviceStatus, ErrorCode</td><td>忙碌/空闲/错误码</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>6. 取消/删除/清空 &amp; 错误事件</h3>
+      <div class="files">ViCellService.DBCancel / DBDelete / ClearSample · DBUpdateErrorEvent / UpdateErrorEventStatus · ViCellToolFrm 弹窗监控</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_VicellTask / TaskDtl / Order</td><td>Status, IsDelete, EndTime 等</td><td>cancel / del_order / clear 命令</td></tr>
+        <tr><td class="tbl-name">CDP_OperateUnit_Events</td><td>OperateUnitID, LabId, ExeParameters, Status, OperateMode(='VICELL'), EventType, EventMessage, EventTime, SourceID, OperateType, ParentOperateUnitID, StartTime, EndTime, ErrorCode, BatchId, CabinId, Solution</td><td>仪器弹窗错误事件 INSERT</td></tr>
+        <tr><td class="tbl-name">CDP_Events_HandlingRecord</td><td>OperateUnitID, RootCause, HandlingContent, HandlingResult, HandlingTime, HandlingUserID, Created_by, Creation_time, Last_updated_by, Last_update_time</td><td>自动关闭错误事件的处理记录</td></tr>
+        <tr><td class="tbl-name">Auth_User</td><td>Account, Pwd, IsDelete</td><td>Confirm.cs 退出登录</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== Cedex ===================== -->
+<section class="subsystem" id="cedex">
+  <div class="sub-header">
+    <span class="badge badge-cedex">Cedex</span>
+    <h2>Cedex 生化分析子系统</h2>
+  </div>
+  <div class="sub-info">
+    <strong>项目路径：</strong><code>CedexHT/SubsystemService.Cedex</code><br>
+    <strong>核心文件：</strong><code>CedexService.cs</code>、<code>CedexOrderValidator.cs</code>、<code>CedexPortClient.cs</code>
+  </div>
+  <div class="sub-body">
+
+    <div class="feature-block">
+      <h3>1. 设备配置</h3>
+      <div class="files">CedexService.GetCedexDeviceByMac / SaveDeviceSetting · Pipe: save_subsystem_device</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexDevice</td><td>CedexDeviceID</td><td class="op-rw">R/W</td><td>主键</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexDevice</td><td>SubSystemIP / DeviceIP / SubSystemMAC</td><td class="op-rw">R/W</td><td>子系统与仪器 IP、MAC 定位</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexDevice</td><td>TestingEquipmentID</td><td class="op-rw">R/W</td><td>台账；重复绑定检查</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexDevice</td><td>SerialPortName / SerialPortBaudRate / SerialPortDataBits / SerialPortStopBits / SerialPortParity / SerialPortFlowType</td><td class="op-rw">R/W</td><td>串口参数</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexDevice</td><td>IsDelete / Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-rw">R/W</td><td>软删与审计</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>2. 下单前校验</h3>
+      <div class="files">CedexOrderValidator.CheckCedexRack / CheckCedexSampleID / CheckOccupiedTubes · Pipe: log_in, send_orders, empty_racks</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>TestingCedexTaskDtlID, TestingCedexTaskID, CedexDeviceID, SampleID, PositionNo, Status, IsDelete</td><td>未完成样品/架位冲突检查（Status &lt; 7/9/99）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexDevice</td><td>CedexDeviceID, SubSystemMAC, IsDelete</td><td>JOIN 按 MAC 过滤</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexOrder</td><td>CedexDeviceID, Position, IsDelete</td><td>CheckOccupiedTubes：占用试管位检查</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>3. 订单持久化</h3>
+      <div class="files">CedexService.SaveCedexOrderInfo · Pipe: log_in(自动), send_orders(手动)</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>读写</th><th>用途说明</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTask</td><td>TestingCedexTaskID</td><td class="op-w">W</td><td>LAST_INSERT_ID</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTask</td><td>OrderParameter</td><td class="op-w">W</td><td>整批订单 JSON</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTask</td><td>Status / StartTime</td><td class="op-w">W</td><td>初始 Status=5</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTask</td><td>IsDelete / Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-w">W</td><td>审计</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>TestingCedexTaskID / CedexDeviceID</td><td class="op-w">W</td><td>关联任务与设备</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>TestingItems</td><td class="op-rw">R/W</td><td>检测项编号，`|` 分隔；结果比对时也读取</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>PositionNo</td><td class="op-rw">R/W</td><td>架位+管位（如 J1）</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>SampleID / BatchID / BatchOPID</td><td class="op-w">W</td><td>样品与批次</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>Mode</td><td class="op-w">W</td><td>3=自动 log_in / 1=手动 send_orders</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>Status / StartTime / EndTime</td><td class="op-rw">R/W</td><td>5 进行中 → 7 完成 / 9 培养物上传</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>IsDelete / Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-w">W</td><td>审计</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexOrder</td><td>CedexDeviceID / Position / SampleID</td><td class="op-w">W</td><td>仅手动模式 send_orders 写入</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexOrder</td><td>TestingItem</td><td class="op-w">W</td><td>勾选检测项 JSON</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexOrder</td><td>IsDelete / Created_by / Creation_time / Last_updated_by / Last_update_time</td><td class="op-w">W</td><td>审计</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>4. 检测项来源（只读参数表）</h3>
+      <div class="files">CedexService.GetTestingOrderItems / GetMSATTestingOrderItems / GetCedexTestingDefs</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Batch_OP_ParameterSubValue</td><td>BottomValue(→SpecticFactor), ParameterSubID, OPParameterID, Value</td><td>批次 OP 参数树，Value=1 为选中项</td></tr>
+        <tr><td class="tbl-name">CDP_OP_ParameterSub</td><td>ParameterSubID, TestingNo</td><td>检测项编号</td></tr>
+        <tr><td class="tbl-name">CDP_Batch_OP_ParameterValue</td><td>OPParameterID, BatchSubOPID</td><td>批次参数值关联</td></tr>
+        <tr><td class="tbl-name">CDP_Batch_OP_Sub</td><td>BatchOPSubID, BatchOPID, OpSubID, IsDelete</td><td>批次子 OP</td></tr>
+        <tr><td class="tbl-name">CDP_OP_DefinitionSub</td><td>OpSubID, Code</td><td>OP 定义过滤</td></tr>
+        <tr><td class="tbl-name">CDP_Test_LoadSampleDtl</td><td>CedexParameter, SampleId, IsCedex, IsDelete</td><td>MSAT 样品 Cedex 参数 JSON</td></tr>
+        <tr><td class="tbl-name">CDP_TestingDef</td><td>TestingNo, TestingName, TestingType(=7), IsDelete</td><td>Cedex 检测项定义目录</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>5. 串口结果同步</h3>
+      <div class="files">CedexPortClient.SyncCedexResult / CheckSampleIdIsCulterId / GetCedexTaskResult</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl</td><td>TestingCedexTaskDtlID, SampleID, Status, StartTime, EndTime, CedexDeviceID, TestingItems, Creation_time, Last_update_time, IsDelete</td><td>重复样品(_R后缀)判断；完成状态 7/9</td></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskResult</td><td>TestingCedexTaskResultId, TestingCedexTaskDtlID, TestingItem, TestingValue, TestingUnit, Creation_time, Last_update_time</td><td>按检测项 upsert 结果（保留 3 位小数）</td></tr>
+        <tr><td class="tbl-name">Auth_Culture</td><td>CultureCode, IsDelete</td><td>培养物样品 → Status 9</td></tr>
+      </table>
+    </div>
+
+    <div class="feature-block">
+      <h3>6. 状态查询 &amp; 认证</h3>
+      <div class="files">CedexService.SearchLasterTestingResult · CheckUserAccount · Pipe: result</div>
+      <table>
+        <tr><th>数据表</th><th>字段</th><th>功能</th></tr>
+        <tr><td class="tbl-name">CDP_Testing_CedexTaskDtl + CedexDevice</td><td>TestingCedexTaskID, PositionNo, TestingCedexTaskDtlID, Status, SubSystemMAC, IsDelete</td><td>按架位查最新任务进度（0/5/7）</td></tr>
+        <tr><td class="tbl-name">Auth_User</td><td>Account, Pwd, IsDelete</td><td>Confirm.cs 退出登录</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== CedexOrder ===================== -->
+<section class="subsystem" id="cedexorder">
+  <div class="sub-header">
+    <span class="badge badge-cedexorder">CedexOrder</span>
+    <h2>CedexOrder 下单/启动辅助子系统</h2>
+  </div>
+  <div class="sub-info">
+    <strong>指定路径：</strong><code>CedexHT/CedexHTOrder/CedexHTOrder</code>（项目名 CedexHTOrder）<br>
+    <strong>Solution 中另有：</strong><code>CedexHT/CedexOrder/SubsystemService.CedexOrder</code>（遗留完整下单服务）
+  </div>
+  <div class="sub-body">
+
+    <div class="feature-block">
+      <h3>A. CedexHTOrder（当前指定路径）— 无数据库访问</h3>
+      <div class="no-db">
+        <strong>本项目不读写任何 MySQL 数据表。</strong><br>
+        职责仅为通过 Win32 UI 自动化点击 cobask 软件的 Start/Restart 按钮，并提供 HTTP API（POST /api/cedex/device/start）。<br>
+        相关文件：CedexDeviceStartService.cs、CedexDeviceStartApiHost.cs、ControlHelper.cs、DeviceStartCallLog.cs（内存日志）、CedexStatusForm.cs。<br>
+        App.config 中无 connectionStrings 配置。<br><br>
+        <em>说明：原 CedexOrder 的下单/落库逻辑已合并至 SubsystemService.Cedex（CedexService 注释「照抄 CedexOrder」）。</em>
+      </div>
+    </div>
+
+    <div class="feature-block">
+      <h3>B. SubsystemService.CedexOrder（Solution 遗留项目）— 与 Cedex 共用表</h3>
+      <div class="desc">若仍部署此项目，其使用的数据表与 Cedex 子系统完全相同，核心逻辑在 CedexOrderService.cs。</div>
+      <div class="table-wrap">
+      <table class="detail-table">
+        <tr><th>功能模块</th><th>源文件/方法</th><th>数据表</th><th>涉及字段</th></tr>
+        <tr>
+          <td>设备查询</td>
+          <td>GetCedexDeviceByMac</td>
+          <td class="tbl-name">CDP_Testing_CedexDevice</td>
+          <td>全部列；WHERE SubSystemMAC, IsDelete=0</td>
+        </tr>
+        <tr>
+          <td>检测项目录</td>
+          <td>GetCedexTestingDefs</td>
+          <td class="tbl-name">CDP_TestingDef</td>
+          <td>TestingNo, TestingName, TestingType=7, IsDelete=0</td>
+        </tr>
+        <tr>
+          <td>批次检测项</td>
+          <td>GetTestingOrderItems</td>
+          <td class="tbl-name">CDP_Batch_OP_ParameterSubValue, CDP_OP_ParameterSub, CDP_Batch_OP_ParameterValue, CDP_Batch_OP_Sub, CDP_OP_DefinitionSub</td>
+          <td>BottomValue, TestingNo, Code, Value, BatchOPID, IsDelete 等</td>
+        </tr>
+        <tr>
+          <td>MSAT 检测项</td>
+          <td>GetMSATTestingOrderItems</td>
+          <td class="tbl-name">CDP_Test_LoadSampleDtl</td>
+          <td>CedexParameter, SampleId, IsCedex=1, IsDelete</td>
+        </tr>
+        <tr>
+          <td>架位冲突校验</td>
+          <td>CheckCedexRack</td>
+          <td class="tbl-name">CDP_Testing_CedexTaskDtl + CedexDevice</td>
+          <td>PositionNo, STATUS, SubSystemMAC, IsDelete</td>
+        </tr>
+        <tr>
+          <td>样品重复校验</td>
+          <td>CheckCedexSampleID</td>
+          <td class="tbl-name">CDP_Testing_CedexTaskDtl + CedexDevice</td>
+          <td>SampleID, Status, SubSystemMAC, IsDelete</td>
+        </tr>
+        <tr>
+          <td>试管占用校验</td>
+          <td>CheckOccupiedTubes</td>
+          <td class="tbl-name">CDP_Testing_CedexOrder + CedexDevice</td>
+          <td>Position, SubSystemMAC, IsDelete</td>
+        </tr>
+        <tr>
+          <td>保存订单</td>
+          <td>SaveCedexOrderInfo</td>
+          <td class="tbl-name">CDP_Testing_CedexTask</td>
+          <td>OrderParameter, Status, StartTime, IsDelete, Created_by, Creation_time, Last_updated_by, Last_update_time</td>
+        </tr>
+        <tr>
+          <td>保存订单明细</td>
+          <td>SaveCedexOrderInfo</td>
+          <td class="tbl-name">CDP_Testing_CedexTaskDtl</td>
+          <td>TestingCedexTaskID, CedexDeviceID, TestingItems, PositionNo, SampleID, BatchID, BatchOPID, Mode, Status, StartTime, IsDelete, 审计字段</td>
+        </tr>
+        <tr>
+          <td>保存手动订单</td>
+          <td>SaveCedexOrderInfo(手动)</td>
+          <td class="tbl-name">CDP_Testing_CedexOrder</td>
+          <td>CedexDeviceID, Position, SampleID, TestingItem, IsDelete, 审计字段</td>
+        </tr>
+        <tr>
+          <td>任务状态查询</td>
+          <td>SearchLasterTestingResult</td>
+          <td class="tbl-name">CDP_Testing_CedexTaskDtl + CedexDevice</td>
+          <td>TestingCedexTaskID, TestingCedexTaskDtlID, PositionNo, Status, SubSystemMAC</td>
+        </tr>
+        <tr>
+          <td>用户认证</td>
+          <td>CheckUserAccount</td>
+          <td class="tbl-name">Auth_User</td>
+          <td>Account, Pwd, IsDelete</td>
+        </tr>
+      </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== Cross reference ===================== -->
+<section class="subsystem" id="cross">
+  <div class="sub-header">
+    <h2>跨项目共享表对照</h2>
+  </div>
+  <div class="sub-body">
+    <table class="summary-table">
+      <tr>
+        <th>共享数据表</th>
+        <th>BGA</th>
+        <th>Osmo6060</th>
+        <th>OsmoPro</th>
+        <th>Vicell</th>
+        <th>Cedex</th>
+        <th>CedexOrder</th>
+      </tr>
+      <tr>
+        <td class="tbl-name">Auth_User<br><small>Account, Pwd, IsDelete</small></td>
+        <td>退出登录</td><td>退出登录</td><td>退出登录</td><td>退出登录</td><td>退出登录</td><td>遗留项目</td>
+      </tr>
+      <tr>
+        <td class="tbl-name">Auth_Culture<br><small>CultureCode, IsDelete</small></td>
+        <td>样品类型判断</td><td>Status 9</td><td>Status 9</td><td>Status 9 + Batch 关联</td><td>Status 9</td><td>—</td>
+      </tr>
+      <tr>
+        <td class="tbl-name">CDP_Batch</td>
+        <td>—</td><td>CurrentOSMO</td><td>CurrentOSMO</td><td>CurrentVCD, CurrentViability</td><td>—</td><td>—</td>
+      </tr>
+      <tr>
+        <td class="tbl-name">CDP_LabDevice<br><small>LabDeviceNo, DeviceStatus</small></td>
+        <td>BGA</td><td>OSMO6060</td><td>OSMO</td><td>VICELL (+ErrorCode)</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+
+    <br>
+    <table class="summary-table">
+      <tr>
+        <th>子系统</th>
+        <th>Device 表</th>
+        <th>Order 表</th>
+        <th>Task 表</th>
+        <th>结果落点</th>
+        <th>LabDeviceNo</th>
+      </tr>
+      <tr><td>BGA</td><td class="tbl-name">CDP_Testing_BGADevice</td><td class="tbl-name">CDP_Testing_BGAOrder</td><td class="tbl-name">CDP_Testing_BGATask</td><td class="tbl-name">CDP_Testing_BGATaskResult</td><td>BGA</td></tr>
+      <tr><td>Osmo6060</td><td class="tbl-name">CDP_Testing_OSMODevice (Type=3)</td><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>Task + TaskDtl</td><td>TaskDtl.OSMO</td><td>OSMO6060</td></tr>
+      <tr><td>OsmoPro</td><td class="tbl-name">CDP_Testing_OSMODevice</td><td class="tbl-name">CDP_Testing_OSMOOrder</td><td>Task + TaskDtl</td><td>TaskDtl.OSMO</td><td>OSMO</td></tr>
+      <tr><td>Vicell</td><td class="tbl-name">CDP_Testing_VicellDevice</td><td class="tbl-name">CDP_Testing_VicellOrder</td><td>Task + TaskDtl</td><td>TaskDtl 多列 + Batch</td><td>VICELL</td></tr>
+      <tr><td>Cedex</td><td class="tbl-name">CDP_Testing_CedexDevice</td><td class="tbl-name">CDP_Testing_CedexOrder</td><td>Task + TaskDtl</td><td class="tbl-name">CDP_Testing_CedexTaskResult</td><td>—</td></tr>
+      <tr><td>CedexOrder</td><td colspan="4">CedexHTOrder 无 DB；遗留 CedexOrder 同 Cedex 表</td><td>—</td></tr>
+    </table>
+
+    <div class="shared-note" style="margin-top:20px;">
+      <strong>备注：</strong>Osmo6060 与 OsmoPro 共用 <span class="tbl-name">CDP_Testing_OSMO*</span> 表族，靠 OSMOType / LabDeviceNo / 通信方式区分。
+    </div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

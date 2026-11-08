@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>取测流程表结构与逻辑说明</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #fff;
+      --text: #1a1d23;
+      --muted: #5c6570;
+      --border: #e2e6eb;
+      --accent: #0d6e6e;
+      --accent-soft: #e6f3f3;
+      --code-bg: #eef1f4;
+      --thead: #f0f3f6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    nav {
+      width: 260px;
+      flex-shrink: 0;
+      background: #12202a;
+      color: #d7e0e6;
+      padding: 24px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    nav h1 {
+      font-size: 15px;
+      margin: 0 0 16px;
+      color: #fff;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    nav a {
+      display: block;
+      color: #aebcc6;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+    nav a:hover { background: rgba(255,255,255,.08); color: #fff; }
+    nav .sec { margin-top: 14px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #7a8d9a; padding: 0 10px; }
+    main { flex: 1; padding: 32px 40px 64px; max-width: 1100px; }
+    h2 {
+      font-size: 22px;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h2:first-of-type { margin-top: 0; }
+    h3 { font-size: 17px; margin: 28px 0 12px; color: var(--accent); }
+    h4 {
+      font-size: 14px;
+      margin: 20px 0 8px;
+      font-family: ui-monospace, Consolas, monospace;
+      background: var(--accent-soft);
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    p, li { color: var(--text); }
+    .muted { color: var(--muted); }
+    .lead {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 12px 0 20px;
+      font-size: 13.5px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 9px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--thead); font-weight: 600; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    code {
+      font-family: ui-monospace, Consolas, monospace;
+      background: var(--code-bg);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 12.5px;
+    }
+    .mermaid {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin: 16px 0 24px;
+      overflow-x: auto;
+    }
+    .diagram-overview {
+      padding: 0;
+      margin: 0 0 16px;
+      border: none;
+      background: transparent;
+    }
+    .flow-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px 8px;
+      margin: 0 0 16px;
+    }
+    .flow-block h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: var(--accent);
+      border: none;
+    }
+    .flow-block .mermaid {
+      margin: 0;
+      padding: 8px 4px 12px;
+      border: none;
+      background: transparent;
+    }
+    .flow-block .mermaid svg {
+      max-width: 100% !important;
+      width: 100% !important;
+      height: auto !important;
+    }
+    ol, ul { padding-left: 22px; }
+    ol li, ul li { margin-bottom: 6px; }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin: 8px 0 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .meta strong { color: var(--text); font-weight: 600; }
+    .note {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 10px 14px;
+      margin: 12px 0 20px;
+      border-radius: 0 6px 6px 0;
+      font-size: 14px;
+    }
+    @media (max-width: 900px) {
+      .layout { display: block; }
+      nav { position: relative; width: 100%; height: auto; }
+      main { padding: 20px 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <nav>
+    <h1>取测流程表结构与逻辑说明</h1>
+    <div class="sec">总览</div>
+    <a href="#overview">三类流程对照</a>
+    <div class="sec">手动取测</div>
+    <a href="#manual">共性链路</a>
+    <a href="#manual-common">公共表</a>
+    <a href="#manual-status">任务状态</a>
+    <a href="#bga">BGA</a>
+    <a href="#cedex">Cedex</a>
+    <a href="#osmo">OSMO / OSMO6060</a>
+    <a href="#vicell">Vicell</a>
+    <a href="#manual-api">API 一览</a>
+    <div class="sec">自动取测</div>
+    <a href="#auto">含义与 API</a>
+    <a href="#auto-tables">队列表与字段</a>
+    <a href="#auto-logic">业务逻辑</a>
+    <div class="sec">手动取样自动检测</div>
+    <a href="#load">含义与 API</a>
+    <a href="#load-tables">主表与字段</a>
+    <a href="#load-logic">业务逻辑</a>
+    <div class="sec">附录</div>
+    <a href="#appendix">枚举 / 路径 / 结果表</a>
+  </nav>
+
+  <main>
+    <div class="lead">
+      本文基于 SLMS 前端页面与后端服务，梳理三类取测流程：<strong>手动取测</strong>、<strong>自动取测</strong>、<strong>手动取样自动检测</strong>。内容包括涉及的数据表、关键字段与业务流程。
+    </div>
+
+    <!-- ========== 0 Overview ========== -->
+    <h2 id="overview">0. 三类流程总览</h2>
+
+    <div class="flow-block">
+      <h3>① 手动取测 — SystemControl</h3>
+      <div class="mermaid">
+%%{init: {'themeVariables': {'fontSize': '15px'}, 'flowchart': {'nodeSpacing': 36, 'rankSpacing': 40}}}%%
+flowchart LR
+  UI1["BGA / Cedex / OSMO / OSMO6060 / Vicell"] --> API1["TestingTaskController"] --> Pipe["Named Pipe 设备子系统"] --> T1["CDP_Testing_* Order / Task"]
+      </div>
+    </div>
+
+    <div class="flow-block">
+      <h3>② 自动取测 — TaskQueue</h3>
+      <div class="mermaid">
+%%{init: {'themeVariables': {'fontSize': '15px'}, 'flowchart': {'nodeSpacing': 36, 'rankSpacing': 40}}}%%
+flowchart LR
+  UI2["taskQueue"] --> API2["TaskQueueController"] --> TQ["CDP_TaskQueue + CDP_Batch_OP"] --> Core["外部 Core Service"] --> T2["CDP_Testing_* 结果"]
+      </div>
+    </div>
+
+    <div class="flow-block">
+      <h3>③ 手动取样自动检测 — loadSampleNew</h3>
+      <div class="mermaid">
+%%{init: {'themeVariables': {'fontSize': '15px'}, 'flowchart': {'nodeSpacing': 36, 'rankSpacing': 40}}}%%
+flowchart LR
+  UI3["loadSampleNew"] --> API3["LoadSampleController"] --> LS["CDP_Test_LoadSampleDtl + Item_Serials"] --> Robot["机器人读 ItemStatus 16/17"] --> T3["CDP_Testing_* 完成回写"]
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>流程</th><th>前端入口</th><th>Mode</th><th>取样来源</th><th>检测触发</th></tr></thead>
+      <tbody>
+        <tr><td>手动取测</td><td><code>systemControl/{BGA,cedex,OSMO,OSMO6060,vicell}</code></td><td>Manual=1</td><td>人工在设备页下单</td><td>Named Pipe 直发设备子系统</td></tr>
+        <tr><td>自动取测</td><td><code>dashboard/taskQueue</code></td><td>Auto=3</td><td>反应器自动取样（OPID=1 <code>SAMPLINGTEST</code>）</td><td>Core Service 执行队列任务</td></tr>
+        <tr><td>手动取样自动检测</td><td><code>systemControl/loadSampleNew</code></td><td>Confirm→Manual，Start→Auto</td><td>人工放管到 <code>ROW6_EPTUBE3</code></td><td>ItemStatus 16/17 交接给机器人</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead><tr><th>差异点</th><th>手动取测</th><th>自动取测</th><th>手动取样自动检测</th></tr></thead>
+      <tbody>
+        <tr><td>取样</td><td>人工准备样本并在设备页录入</td><td>机器人从生物反应器取样</td><td>人工将 EP 管放到载样架</td></tr>
+        <tr><td>检测下单</td><td>WebAPI → Named Pipe → 设备服务</td><td>TaskQueue 落库后由 Core Service 驱动</td><td>物料 ExtraData + ItemStatus 交接</td></tr>
+        <tr><td>主表</td><td><code>CDP_Testing_*</code> Order/Task</td><td><code>CDP_TaskQueue</code> + <code>CDP_Batch_OP*</code></td><td><code>CDP_Test_LoadSampleDtl</code> + <code>CDP_Item_Serials</code></td></tr>
+        <tr><td>结果落库</td><td><code>CDP_Testing_*</code></td><td>同左（SampleID / BatchOPID 关联）</td><td>同左，再回写 LoadSample 完成标志</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ========== 1 Manual ========== -->
+    <h2 id="manual">1. 手动取测（BGA / Cedex / OSMO / OSMO6060 / Vicell）</h2>
+    <h3>1.1 共性链路</h3>
+    <div class="mermaid">
+sequenceDiagram
+  participant UI as SystemControl页面
+  participant API as TestingTaskController
+  participant Svc as TestingService
+  participant Pipe as Named Pipe
+  participant Sub as 设备子系统
+  participant DB as CDP_Testing
+
+  UI->>API: 录入 SampleID 并 Send
+  API->>Svc: 校验重复/LoadSample占用/已上传
+  Note over API: Mode = Manual(1)
+  API->>Pipe: sendOrder / order / send_orders / log_in_manual
+  Pipe->>Sub: 下发订单
+  Sub->>DB: 写 Order / Task / Result
+  UI->>API: 轮询 task-list
+  UI->>API: Upload / Sign / Verify
+    </div>
+    <ol>
+      <li>Angular 页通过 <code>taskRes</code>（<code>app/res/app-res.js</code>）调用 <code>api/task/*</code>。</li>
+      <li>控制器：<code>WuXiBioLogics.WebAPI/Testing/TestingTaskController.cs</code>。</li>
+      <li>API 设置 <code>Mode = EnumDeviceMode.Manual (1)</code>，并校验：
+        <ul>
+          <li>SampleID 在 Order/Task 中是否重复；</li>
+          <li><code>ILoadSampleService.CheckSampleIdRepetition</code>（与手动取样冲突）；</li>
+          <li><code>ITestService.CheckSampleStatusIsUpload</code>（状态约 10–14 已上传则拦截）。</li>
+        </ul>
+      </li>
+      <li>通过 Named Pipe 发往设备 Windows 子系统；子系统负责创建/更新 Order、Task、Result。</li>
+      <li>UI 轮询任务列表；检测完成（Tested）后人工 Upload → Signed → Verified。</li>
+      <li>若实验室机器为 Auto 模式且当前设备为指定自动设备，前端会拦截手动发送。</li>
+    </ol>
+
+    <h3 id="manual-common">1.2 公共表</h3>
+    <h4>CDP_Testing_Equipment（设备主数据）</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>TestingEquipmentID</td><td>主键</td></tr>
+        <tr><td>EquipmentType</td><td>设备类型</td></tr>
+        <tr><td>EquipmentNo</td><td>设备编号</td></tr>
+        <tr><td>EquipmentModel</td><td>型号</td></tr>
+        <tr><td>LabId</td><td>所属实验室</td></tr>
+        <tr><td>AssetNo</td><td>资产号</td></tr>
+        <tr><td>Description</td><td>描述</td></tr>
+        <tr><td>Status</td><td>状态</td></tr>
+        <tr><td>IsDelete</td><td>软删</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">各 <code>*Device</code> 表通过 <code>TestingEquipmentID</code> 关联本表。</p>
+
+    <p><strong>CDP_Test_LoadSample / CDP_Test_LoadSampleDtl</strong>：手动取测发送前用于冲突校验（同 SampleID 是否已在 LoadSample 中占用 <code>IsBGA</code> / <code>IsOsmo</code> / <code>IsVicell</code> / <code>IsCedex</code>）。字段详见第 3 章。</p>
+    <p><strong>CDP_Testing_Operation</strong>：操作审计（SampleId、DeviceNo、TestDeviceCategory、OperatorType/User 等）。</p>
+    <p><strong>CDP_Testing_Signature / SignatureDtl</strong>：上传、撤销、作废等签字记录。</p>
+    <p><strong>CDP_Batch / CDP_Batch_OP</strong>：上传后任务通过 <code>BatchID</code> / <code>BatchOPID</code> 关联批次数据。</p>
+
+    <h3 id="manual-status">1.3 任务状态（EnumTaskStatus）</h3>
+    <table>
+      <thead><tr><th>值</th><th>名称</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>5</td><td>Testing</td><td>检测中</td></tr>
+        <tr><td>7</td><td>Tested</td><td>检测完成，可上传</td></tr>
+        <tr><td>9</td><td>Uploaded</td><td>已上传</td></tr>
+        <tr><td>11</td><td>Signed</td><td>已签字</td></tr>
+        <tr><td>13</td><td>Verified</td><td>已复核</td></tr>
+        <tr><td>15</td><td>Abnormal</td><td>异常</td></tr>
+        <tr><td>17</td><td>Abolished</td><td>已作废</td></tr>
+        <tr><td>19</td><td>Delete</td><td>删除</td></tr>
+        <tr><td>99</td><td>Canceled</td><td>已取消</td></tr>
+      </tbody>
+    </table>
+    <p>Mode（<code>EnumDeviceMode</code>）：Manual=1，Auto=3。UI 常显示为 M / A。</p>
+
+    <!-- BGA -->
+    <h3 id="bga">1.4 BGA</h3>
+    <div class="meta">
+      <span><strong>前端</strong> <code>systemControl/BGA/</code></span>
+      <span><strong>服务</strong> TestingBGADeviceService</span>
+      <span><strong>Pipe</strong> BGAService.sendOrder</span>
+    </div>
+    <div class="note">特例：Staging（暂存，<code>SaveStatus=false</code>）直接写 <code>CDP_Testing_BGAOrder</code>，不发 Pipe。</div>
+
+    <h4>CDP_Testing_BGADevice</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>BGADeviceID</td><td>主键</td></tr>
+        <tr><td>SubSystemIP / SubSystemMAC</td><td>子系统通信地址</td></tr>
+        <tr><td>TestingEquipmentID</td><td>关联设备主数据</td></tr>
+        <tr><td>DeviceNo / DeviceModel</td><td>设备编号/型号</td></tr>
+        <tr><td>SerialPort*</td><td>串口参数</td></tr>
+        <tr><td>DeviceStatus</td><td>设备状态</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Testing_BGAOrder</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>TestingBGAOrderID</td><td>主键</td></tr>
+        <tr><td>SampleID</td><td>样品号</td></tr>
+        <tr><td>Position</td><td>托盘位</td></tr>
+        <tr><td>TEMP</td><td>温度</td></tr>
+        <tr><td>BGADeviceID</td><td>设备 FK</td></tr>
+        <tr><td>Status</td><td>订单状态（暂存多为 0）</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Testing_BGATask</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>TestingBGATaskID</td><td>主键</td></tr>
+        <tr><td>BGADeviceID</td><td>设备</td></tr>
+        <tr><td>SampleID / OriginalSampleID</td><td>样品号 / 原始样品号</td></tr>
+        <tr><td>BatchID / BatchOPID / ItemID</td><td>批次与物料关联</td></tr>
+        <tr><td>SEQNo</td><td>序号</td></tr>
+        <tr><td>Mode</td><td>1=手动 / 3=自动</td></tr>
+        <tr><td>Status</td><td>见 EnumTaskStatus</td></tr>
+        <tr><td>StartTime / EndTime</td><td>起止时间</td></tr>
+        <tr><td>Upload* / Signature* / Verify*</td><td>上传 / 签字 / 复核</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Testing_BGATaskResult</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>BGATaskResultID</td><td>主键</td></tr>
+        <tr><td>TestingBGATaskID</td><td>任务 FK</td></tr>
+        <tr><td>Name / Value / Unit</td><td>结果项（如 pH、pCO2）</td></tr>
+        <tr><td>Description</td><td>描述</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">另有 <code>CDP_Testing_BGACalibrationRec</code> 用于手动 pH 校准记录。</p>
+    <p><strong>业务步骤</strong>：选设备 → 录入 SampleID+TEMP（可 Staging）→ Send（Mode=Manual, Pipe）→ 子系统写 Task+Result → Tested 后 Upload/Sign/Verify。</p>
+
+    <!-- Cedex -->
+    <h3 id="cedex">1.5 Cedex</h3>
+    <div class="meta">
+      <span><strong>前端</strong> <code>systemControl/cedex/</code></span>
+      <span><strong>服务</strong> TestingCedexService</span>
+      <span><strong>Pipe</strong> CedexOrderPipe.send_orders</span>
+    </div>
+
+    <h4>CDP_Testing_CedexDevice</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>CedexDeviceID</td><td>主键</td></tr>
+        <tr><td>SubSystemIP / DeviceIP / SubSystemMAC</td><td>通信地址</td></tr>
+        <tr><td>TestingEquipmentID</td><td>设备主数据 FK</td></tr>
+        <tr><td>SerialPort* / DeviceStatus</td><td>串口与状态</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Testing_CedexOrder</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>TestingCedexOrderID</td><td>主键</td></tr>
+        <tr><td>CedexDeviceID / SampleID / Position</td><td>设备、样品、架位</td></tr>
+        <tr><td>TestingItem</td><td>检测项 JSON</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Testing_CedexTask / CedexTaskDtl / CedexTaskResult</h4>
+    <table>
+      <thead><tr><th>表</th><th>关键字段</th></tr></thead>
+      <tbody>
+        <tr><td>CedexTask</td><td>TestingCedexTaskID、OrderParameter、Status、StartTime/EndTime</td></tr>
+        <tr><td>CedexTaskDtl</td><td>SampleID、TestingItems、PositionNo、Mode、Status、BatchID/BatchOPID、Upload/Signature/Verify、Abnormal*</td></tr>
+        <tr><td>CedexTaskResult</td><td>TestingItem、SpecticFactor、TestingValue、TestingUnit</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">另有 <code>CDP_TestingDef</code>（assay 目录）及实验室布局表 <code>CDP_LabDevice</code> / Sub / SubLoc。</p>
+    <p><strong>业务步骤</strong>：选设备+Rack → 填 SampleID、勾选 assay → <code>cedex-order-send</code> → Pipe → 轮询任务 → 上传。</p>
+
+    <!-- OSMO -->
+    <h3 id="osmo">1.6 OSMO（OSMOPRO）与 OSMO6060（OSMOSIX）</h3>
+    <p>两套 UI 共用同一套 OSMO 表，靠 <code>CDP_Testing_OSMODevice.OSMOType</code> 区分（1=PRO，3=6060）。</p>
+    <table>
+      <thead><tr><th>项目</th><th>OSMO</th><th>OSMO6060</th></tr></thead>
+      <tbody>
+        <tr><td>前端</td><td><code>systemControl/OSMO</code></td><td><code>systemControl/OSMO6060</code></td></tr>
+        <tr><td>位数</td><td>20</td><td>24</td></tr>
+        <tr><td>发送 API</td><td><code>api/task/osmo-order-send</code></td><td><code>api/task/osmosix-order-send</code></td></tr>
+        <tr><td>Pipe</td><td>OSMOPipe.order</td><td>OsmoSixPipe.order</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Testing_OSMODevice / Order / Task / TaskDtl</h4>
+    <table>
+      <thead><tr><th>表</th><th>关键字段</th></tr></thead>
+      <tbody>
+        <tr><td>OSMODevice</td><td>OSMODeviceID、SubSystemIP、OSMOIP/OSMOPort、<strong>OSMOType</strong>、SerialPort*、DeviceStatus</td></tr>
+        <tr><td>OSMOOrder</td><td>SampleID、PositionNo、OSMODeviceID</td></tr>
+        <tr><td>OSMOTask</td><td>OrderParameter、Mode、Status、StartTime/EndTime</td></tr>
+        <tr><td>OSMOTaskDtl</td><td>SampleID、PositionNo、<strong>OSMO（渗透压结果）</strong>、Status、BatchID/BatchOPID、Upload/Signature/Verify</td></tr>
+      </tbody>
+    </table>
+    <p><strong>业务步骤</strong>：选设备 → 空位录入 SampleID → Start 批量发送 → Pipe → 结果写入 TaskDtl.OSMO → 上传。</p>
+
+    <!-- Vicell -->
+    <h3 id="vicell">1.7 Vicell</h3>
+    <div class="meta">
+      <span><strong>前端</strong> <code>systemControl/vicell/</code></span>
+      <span><strong>服务</strong> TestingViCellService</span>
+      <span><strong>Pipe</strong> VicellPipe.log_in_manual</span>
+    </div>
+
+    <h4>CDP_Testing_VicellDevice / Order / Task / TaskDtl</h4>
+    <table>
+      <thead><tr><th>表</th><th>关键字段</th></tr></thead>
+      <tbody>
+        <tr><td>VicellDevice</td><td>VicellDeviceID、SubSystemIP、ExcelPath、WasteUpperLimit、CurrentWasteCount</td></tr>
+        <tr><td>VicellOrder</td><td>SampleID、VicellDeviceID、IsClosed</td></tr>
+        <tr><td>VicellTask</td><td>OrderParameter、Mode、Status、StartTime/EndTime</td></tr>
+        <tr><td>VicellTaskDtl</td><td>SampleID、PositionNo、CellType、DilutionFactor、<strong>VCD / Viability / AvgDiam</strong>、Status、ExcelFileLocation、Upload/Signature/Verify</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">另有 <code>CDP_Testing_VicellFile</code>；上传后可写入 <code>CDP_Batch_CellsData</code>（通过 TestingVicellTaskDtlID 关联）。</p>
+    <p><strong>业务步骤</strong>：选设备 → 录入 SampleID / CellType / DilutionFactor → Start → Pipe → 结果落 TaskDtl → 上传。</p>
+
+    <h3 id="manual-api">1.8 手动取测主要 API 一览</h3>
+    <table>
+      <thead><tr><th>设备</th><th>发送</th><th>任务列表</th><th>上传</th></tr></thead>
+      <tbody>
+        <tr><td>BGA</td><td>POST <code>api/task/bga-order-send</code></td><td>GET <code>bga-task-list</code></td><td>GET <code>bga-task-upload</code></td></tr>
+        <tr><td>Cedex</td><td>POST <code>api/task/cedex-order-send</code></td><td>GET <code>cedex-task-list</code></td><td>GET <code>cedex-task-upload</code></td></tr>
+        <tr><td>OSMO</td><td>POST <code>api/task/osmo-order-send</code></td><td>GET <code>osmo-task-list</code></td><td>GET <code>osmo-task-upload</code></td></tr>
+        <tr><td>OSMO6060</td><td>POST <code>api/task/osmosix-order-send</code></td><td>同上</td><td>同上</td></tr>
+        <tr><td>Vicell</td><td>POST <code>api/task/vicell-task-send</code></td><td>GET <code>vicell-task-list</code></td><td>GET <code>vicell-task-upload</code></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ========== 2 Auto ========== -->
+    <h2 id="auto">2. 自动取测（Task Queue）</h2>
+    <h3>2.1 含义</h3>
+    <p>自动取测对应 Task Queue 中 <strong>OPID = 1 / Code = <code>SAMPLINGTEST</code></strong>，权限为 Auto Sampling / Auto Testing。</p>
+    <ul>
+      <li><strong>本仓库</strong>：创建队列、校验、编辑删除、终止/重置调用。</li>
+      <li><strong>外部 Core Service</strong>：真正执行取样与检测，回写 <code>CDP_Batch_OP</code> 状态。</li>
+      <li>检测结果仍落在各 <code>CDP_Testing_*</code> 表（与手动取测共用结果表结构）。</li>
+    </ul>
+    <p class="muted">同页还支持 OPID=2 <code>FEEDING</code>（自动补料），逻辑类似但不在本文展开。</p>
+
+    <h3>2.2 前端与 API</h3>
+    <table>
+      <thead><tr><th>项目</th><th>路径</th></tr></thead>
+      <tbody>
+        <tr><td>路由</td><td><code>bio.dashboard.taskQueue</code> → <code>/taskQueue</code></td></tr>
+        <tr><td>页面</td><td><code>app/views/bio/dashboard/taskQueue/</code></td></tr>
+        <tr><td>API 前缀</td><td><code>api/taskQueue</code>（TaskQueueController）</td></tr>
+        <tr><td>服务</td><td>TaskQueueService1（TaskQueueService.cs）</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <thead><tr><th>动作</th><th>路由</th></tr></thead>
+      <tbody>
+        <tr><td>查询队列</td><td>GET <code>query-task-info</code></td></tr>
+        <tr><td>校验</td><td>POST <code>check-taskqueue</code></td></tr>
+        <tr><td>新增</td><td>POST <code>add-taskqueue</code></td></tr>
+        <tr><td>编辑 / 删除</td><td>POST <code>edit-taskqueue</code> / GET <code>delete-taskqueue</code></td></tr>
+        <tr><td>终止 / 重置</td><td>GET <code>terminate-task</code> / <code>reset-task</code>（转发 Core Service）</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="auto-tables">2.3 队列表与字段</h3>
+    <h4>CDP_TaskQueue</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>TaskQueueID</td><td>主键</td></tr>
+        <tr><td>BatchOPID</td><td>关联批次操作</td></tr>
+        <tr><td>Status</td><td>队列状态（列表常以 Batch_OP.Status 为准）</td></tr>
+        <tr><td>IsDelete</td><td>软删</td></tr>
+        <tr><td>Created_by / Creation_time / Last_updated_*</td><td>审计</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Batch_OP（实际操作，列表状态来源）</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>BatchOPID</td><td>主键</td></tr>
+        <tr><td>LabId / BatchID</td><td>实验室与批次</td></tr>
+        <tr><td>OPID</td><td>操作定义（1=SAMPLINGTEST）</td></tr>
+        <tr><td>Mode</td><td><strong>自动取测为 3（Auto）</strong></td></tr>
+        <tr><td>Status</td><td>Pending=1 / Executing=3 / Executed=5 / Canceled=99</td></tr>
+        <tr><td>StartTime / EndTime</td><td>实际起止</td></tr>
+        <tr><td>SequenceNumber</td><td>序号</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Batch_OP_Sub / ParameterValue / ParameterSubValue / Exec</h4>
+    <table>
+      <thead><tr><th>表</th><th>关键字段</th></tr></thead>
+      <tbody>
+        <tr><td>Batch_OP_Sub</td><td>OPSubID、Status、Value（是否勾选）、StartTime/EndTime；子项含 BGA/VICELL/OSMO/CEDEX/TESTINGRULE</td></tr>
+        <tr><td>ParameterValue</td><td>ParameterID、Value（体积/时间/稀释）；常用 ParameterID=43 为 TESTINGTIME</td></tr>
+        <tr><td>ParameterSubValue</td><td>Cedex 分析项勾选与上下限（TopValue/BottomValue）</td></tr>
+        <tr><td>Batch_OP_Exec</td><td>ActualValue、FeedingTime（实际执行值）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.4 操作模板主数据</h3>
+    <table>
+      <thead><tr><th>表</th><th>关键字段</th><th>作用</th></tr></thead>
+      <tbody>
+        <tr><td>CDP_OP_Definition</td><td>OPID、Code（SAMPLINGTEST/FEEDING/…）</td><td>操作类型</td></tr>
+        <tr><td>CDP_OP_DefinitionSub</td><td>OPSubID、Code（BGA/VICELL/OSMO/CEDEX/TESTINGRULE/…）</td><td>子操作</td></tr>
+        <tr><td>CDP_OP_Parameter</td><td>ParameterID、Name、Type</td><td>参数目录</td></tr>
+        <tr><td>CDP_OP_DefParameter</td><td>OPSubID ↔ ParameterID</td><td>模板绑定</td></tr>
+        <tr><td>CDP_OP_Parameter_Value</td><td>下拉选项 Now/Timing/Rule/Interval</td><td>选项值</td></tr>
+        <tr><td>OP_ParameterSub + TestingDef</td><td>Cedex 分析项</td><td>Cedex 配置</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.5 队列状态（EnumTaskQueueStatus）</h3>
+    <table>
+      <thead><tr><th>值</th><th>名称</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Pending</td></tr>
+        <tr><td>3</td><td>Executing</td></tr>
+        <tr><td>5</td><td>Executed</td></tr>
+        <tr><td>99</td><td>Canceled</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="auto-logic">2.6 业务逻辑</h3>
+    <div class="mermaid">
+sequenceDiagram
+  participant UI as TaskQueue UI
+  participant API as TaskQueueController
+  participant Svc as TaskQueueService
+  participant DB as SQL
+  participant Core as Core Service
+  participant Test as CDP_Testing
+
+  UI->>API: add-taskqueue OPID=1
+  API->>Svc: 接种/权限校验 + Rule展开
+  API->>Svc: 耗材计算
+  Svc->>DB: Insert TaskQueue+Batch_OP Mode=Auto Status=Pending
+  Core->>DB: Pending to Executing to Executed
+  Core->>Test: 驱动取样与仪器检测
+  Test->>DB: 写入检测结果
+  UI->>API: terminate/reset to Core HTTP
+    </div>
+
+    <p><strong>创建</strong></p>
+    <ol>
+      <li>选择反应器 + OPID=1（SAMPLINGTEST）。</li>
+      <li>勾选子项：TestingRule（常开）+ BGA / VICELL / OSMO / CEDEX / RESERVEDSAMPLE 等；自动检测至少勾选一个 assay。</li>
+      <li>设置时间策略：Now / Timing / Rule（日期范围内每日）/ Interval（间隔分钟）。</li>
+      <li>Cedex 打开检测项对话框配置分析项与限值。</li>
+      <li><code>check-taskqueue</code>：当日同反应器/同 SampleID 是否已测预警。</li>
+      <li><code>add-taskqueue</code>：Rule/Interval 展开为多条 Timing；解析批次；插入 TaskQueue → Batch_OP（Mode=Auto, Pending）→ Sub + Parameter；耗材预估。</li>
+    </ol>
+    <p><strong>排队与执行</strong>：Pending 直至 Core Service 拾取；驱动硬件并更新状态；UI 可 Terminate/Reset；结果写入 <code>CDP_Testing_*</code>。</p>
+    <p><strong>编辑/删除</strong>：仅 Pending 可编辑；Executing 不可删。</p>
+
+    <!-- ========== 3 LoadSample ========== -->
+    <h2 id="load">3. 手动取样自动检测（loadSampleNew）</h2>
+    <h3>3.1 含义</h3>
+    <p>操作员将 EP 管手动放到实验室设备 <code>ROW6_EPTUBE3</code> 孔位，配置要跑的仪器（BGA / Vicell / OSMO / Cedex），确认后启动；系统通过物料 <code>ItemStatus</code> 交接给机器人自动分液检测。</p>
+    <p class="muted">路由：<code>bio.systemControl.LoadSample</code> → <code>/loadSample</code>，控制器 <code>loadSampleNewCtrl</code>。</p>
+
+    <table>
+      <thead><tr><th>方面</th><th>本流程</th><th>纯手动取测</th><th>纯自动取测</th></tr></thead>
+      <tbody>
+        <tr><td>取样</td><td>人工放管到 EP 架</td><td>人工 + 设备页直接下单</td><td>反应器自动取样</td></tr>
+        <tr><td>触发</td><td>Start → ItemStatus 16/17</td><td>Named Pipe 直发</td><td>TaskQueue + Core Service</td></tr>
+        <tr><td>主表</td><td>LoadSampleDtl + Item_Serials</td><td>Testing Order/Task</td><td>TaskQueue + Batch_OP</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.2 前端与 API</h3>
+    <table>
+      <thead><tr><th>项目</th><th>路径</th></tr></thead>
+      <tbody>
+        <tr><td>页面</td><td><code>app/views/bio/systemControl/loadSampleNew/</code></td></tr>
+        <tr><td>API</td><td><code>api/loadsample</code>（LoadSampleController）</td></tr>
+        <tr><td>服务</td><td>LoadSampleService</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <thead><tr><th>动作</th><th>接口</th></tr></thead>
+      <tbody>
+        <tr><td>加载孔板</td><td>GET <code>update-load-sample</code></td></tr>
+        <tr><td>草稿保存</td><td>POST <code>save-manual-sample-auto-test</code></td></tr>
+        <tr><td>改状态</td><td>POST <code>set-load-sample-status</code></td></tr>
+        <tr><td>记录查询</td><td>GET <code>query-load-sample-list</code></td></tr>
+        <tr><td>机器模式</td><td><code>api/machine/get-machine-mode</code>、switch-manual/auto</td></tr>
+        <tr><td>IoT 回写</td><td>POST <code>api/core/update-load-sample-status</code></td></tr>
+        <tr><td>定时同步</td><td>LoadSampleJob → SyncLoadSample</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">默认体积（UI）：总量 1500 μL；BGA 120；Vicell Testing 600（样本体积 = 600/稀释倍数）；OSMO 200；Cedex 350。</p>
+
+    <h3 id="load-tables">3.3 主表与字段</h3>
+    <h4>CDP_Test_LoadSample（头表）</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>TestLoadSampleId</td><td>主键（新建明细时常固定关联 <strong>35</strong>）</td></tr>
+        <tr><td>DeviceId / DeviceName</td><td>载样设备</td></tr>
+        <tr><td>Status</td><td>头状态</td></tr>
+        <tr><td>IsDeleted / CreateBy / CreateTime / Update*</td><td>审计</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Test_LoadSampleDtl（每孔一行）</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>TestLoadSampleDtlId</td><td>主键</td></tr>
+        <tr><td>TestLoadSampleId</td><td>头表 FK</td></tr>
+        <tr><td>LocCombinationID / ItemSerialsId</td><td>孔位、EP 管物料</td></tr>
+        <tr><td>SampleId / Volume / Well</td><td>样品号、总体积(μL)、孔位标签</td></tr>
+        <tr><td>IsBGA / BGASampleVolume / BGATemperature / BGAIsComplete</td><td>BGA</td></tr>
+        <tr><td>IsOsmo / OsmoSampleVolume / OSMOIsComplete</td><td>OSMO</td></tr>
+        <tr><td>IsVicell / VicellTestingVolume / DilutionFactor / VicellSampleVolume / VicellCellType / VicellIsComplete</td><td>Vicell</td></tr>
+        <tr><td>IsCedex / CedexSampleVolume / CedexParameter / CedexIsComplete</td><td>Cedex（Parameter 为 JSON）</td></tr>
+        <tr><td>Status</td><td>见 EnumLoadSampleStatus</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CDP_Item_Serials（物理 EP 管）</h4>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>ItemID</td><td>主键</td></tr>
+        <tr><td>ItemDefID / CarriedItemDefID</td><td>常用 12 / 3</td></tr>
+        <tr><td>LocCombinationID / Quantity / CatNO</td><td>位置、体积、目录号</td></tr>
+        <tr><td>ItemStatus</td><td><strong>交接关键状态</strong></td></tr>
+        <tr><td>ExtraData</td><td>JSON：ManualSampleAutoTest 配置，供机器人读取</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead><tr><th>辅助表</th><th>作用</th></tr></thead>
+      <tbody>
+        <tr><td>CDP_LabDevice</td><td><code>LabDeviceNo == "ROW6_EPTUBE3"</code></td></tr>
+        <tr><td>CDP_Location_Combinations</td><td>孔位；保存时 IsEmpty=false，取消时置空</td></tr>
+        <tr><td>CDP_LabDeviceSub / SubLoc</td><td>拼 Well = SubName + LocCode</td></tr>
+        <tr><td>CDP_CellTypeSetting</td><td>Vicell 细胞类型</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.4 状态枚举</h3>
+    <p><strong>EnumLoadSampleStatus（Dtl.Status）</strong></p>
+    <table>
+      <thead><tr><th>值</th><th>名称</th><th>UI 含义</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>Loading</td><td>Draft 草稿</td></tr>
+        <tr><td>1</td><td>Waiting</td><td>Confirm 已确认</td></tr>
+        <tr><td>3</td><td>Executing</td><td>Start 执行中</td></tr>
+        <tr><td>5</td><td>Executed</td><td>已完成</td></tr>
+        <tr><td>9</td><td>Canceled</td><td>已取消</td></tr>
+      </tbody>
+    </table>
+    <p><strong>EnumItemStatus（本流程相关）</strong></p>
+    <table>
+      <thead><tr><th>值</th><th>名称</th><th>时机</th></tr></thead>
+      <tbody>
+        <tr><td>2</td><td>Using</td><td>Draft 后</td></tr>
+        <tr><td>16</td><td>LoadSampleStart</td><td>Start 且未选 BGA/Vicell</td></tr>
+        <tr><td>17</td><td>LoadSampleBgaVIcellStart</td><td>Start 且选了 BGA 或 Vicell</td></tr>
+        <tr><td>28</td><td>Discard</td><td>Cancel 或全部完成后丢弃</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="load-logic">3.5 业务逻辑</h3>
+    <div class="mermaid">
+flowchart TD
+  A[人工放管到 ROW6_EPTUBE3] --> B[Draft 保存]
+  B --> C[写 LoadSampleDtl Status=0]
+  B --> D[写 Item_Serials Status=2 + ExtraData]
+  C --> E[Confirm Status=1]
+  E --> F{机器模式 Auto?}
+  F -->|是| G[切 Manual]
+  F -->|否| H[Start]
+  G --> H
+  H --> I[Status=3]
+  H --> J{含 BGA或Vicell?}
+  J -->|是| K[ItemStatus=17]
+  J -->|否| L[ItemStatus=16]
+  H --> M[切 Auto]
+  K --> N[机器人按 ExtraData 检测]
+  L --> N
+  N --> O[IoT回写或 SyncLoadSample]
+  O --> P{全部 IsComplete 且物料 Discard?}
+  P -->|是| Q[Status=5 Completed]
+    </div>
+    <ol>
+      <li><strong>加载</strong>：GET <code>update-load-sample</code> 合并 ROW6_EPTUBE3 孔位与未完成明细（Status &lt; 5）。</li>
+      <li><strong>Draft</strong>：POST <code>save-manual-sample-auto-test</code> — 校验后写 Dtl(Status=0) + Item_Serials(Status=2, ExtraData)。</li>
+      <li><strong>Confirm</strong>：Status 0→1；若为 Auto 模式先切 Manual。</li>
+      <li><strong>Start</strong>：Status 1→3；ItemStatus→17（有 BGA/Vicell）或 16；切 Auto。</li>
+      <li><strong>机器人/IoT</strong>：读 ItemStatus 与 ExtraData 执行检测；可经 <code>update-load-sample-status</code>（DeviceType 1/3/5/7）置完成。</li>
+      <li><strong>同步</strong>：SyncLoadSample / Job 轮询 Testing 表更新 *IsComplete；全部完成且 ItemStatus=28 → Status=5。</li>
+      <li><strong>Cancel</strong>（Status&lt;3）：Status=9，ItemStatus=28，位置置空。</li>
+    </ol>
+
+    <!-- ========== 4 Appendix ========== -->
+    <h2 id="appendix">4. 附录</h2>
+    <h3>4.1 关键枚举速查</h3>
+    <table>
+      <thead><tr><th>枚举</th><th>要点</th></tr></thead>
+      <tbody>
+        <tr><td>EnumDeviceMode</td><td>Manual=1，Auto=3</td></tr>
+        <tr><td>EnumTaskStatus</td><td>5→7→9→11→13；15/17/99</td></tr>
+        <tr><td>EnumTaskQueueStatus</td><td>1/3/5/99</td></tr>
+        <tr><td>EnumLoadSampleStatus</td><td>0/1/3/5/9</td></tr>
+        <tr><td>EnumItemStatus</td><td>2/16/17/28</td></tr>
+        <tr><td>EnumTestDeviceCategory</td><td>BGA / OSMO / OSMO6060 / Vicell / Cedex</td></tr>
+        <tr><td>EnumOSMOType</td><td>PRO=1，OSMOSIX=3</td></tr>
+        <tr><td>OP Code</td><td>SAMPLINGTEST、FEEDING、RESERVEDSAMPLE</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4.2 主要代码路径</h3>
+    <table>
+      <thead><tr><th>区域</th><th>路径</th></tr></thead>
+      <tbody>
+        <tr><td>手动取测页面</td><td><code>app/views/bio/systemControl/{BGA,cedex,OSMO,OSMO6060,vicell}/</code></td></tr>
+        <tr><td>TaskQueue 页面</td><td><code>app/views/bio/dashboard/taskQueue/</code></td></tr>
+        <tr><td>LoadSample 页面</td><td><code>app/views/bio/systemControl/loadSampleNew/</code></td></tr>
+        <tr><td>手动取测 API</td><td><code>WebAPI/Testing/TestingTaskController.cs</code></td></tr>
+        <tr><td>自动取测 API</td><td><code>WebAPI/Dashboard/TaskQueueController.cs</code></td></tr>
+        <tr><td>LoadSample API</td><td><code>WebAPI/SystemControl/LoadSampleController.cs</code></td></tr>
+        <tr><td>设备服务</td><td><code>Business.Implement/Testing/Testing*Service.cs</code></td></tr>
+        <tr><td>队列服务</td><td><code>Business.Implement/Dashboard/TaskQueueService.cs</code></td></tr>
+        <tr><td>LoadSample 服务</td><td><code>Business.Implement/SystemControl/LoadSampleService.cs</code></td></tr>
+        <tr><td>同步 Job</td><td><code>Jobscheduler/QuartaJob/LoadSampleJob.cs</code></td></tr>
+        <tr><td>实体 / 枚举</td><td><code>Persistence/CDP_*.cs</code>、<code>Business.Entity/Enums.cs</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>4.3 结果表与三种流程的关系</h3>
+    <p>三种流程最终检测数据都汇聚到同一套仪器结果表：</p>
+    <ul>
+      <li>BGA：<code>CDP_Testing_BGATask</code> + <code>BGATaskResult</code></li>
+      <li>Cedex：<code>CDP_Testing_CedexTaskDtl</code> + <code>CedexTaskResult</code></li>
+      <li>OSMO：<code>CDP_Testing_OSMOTaskDtl</code>（字段 OSMO）</li>
+      <li>Vicell：<code>CDP_Testing_VicellTaskDtl</code>（VCD / Viability / AvgDiam）</li>
+    </ul>
+    <div class="note">
+      区别在于<strong>如何产生订单</strong>：手动取测靠 Pipe；自动取测靠 TaskQueue + Core Service；手动取样自动检测靠 LoadSample 物料状态交接后再由机器人写入上述表。
+    </div>
+  </main>
+</div>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'neutral',
+    securityLevel: 'loose',
+    flowchart: { curve: 'basis', htmlLabels: true }
+  });
+</script>
+</body>
+</html>

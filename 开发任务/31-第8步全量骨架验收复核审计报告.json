@@ -1,0 +1,604 @@
+{
+  "meta": {
+    "title": "31-第8步全量骨架验收复核审计报告",
+    "task": "第8步全系统接口契约骨架验收结果独立复核审计（只读）",
+    "auditDate": "2026-09-20",
+    "repo": "D:/Code/zhixianweilai/yaoming-cloud",
+    "branch": "cloud",
+    "head": "6203bda5",
+    "auditMode": "READ_ONLY：未修改任何既有源码/SQL/Vue/客户材料；仅输出本报告两件",
+    "versionNote": "合并定稿版：工作区曾出现两份同号 31 报告（06:55 与 07:12 两次独立复核运行）。本版以 07:12 版为骨架，补回 06:55 版独有的 contract_id 命名域 P1-3、存量 Controller 旧路由残留 P2-3、git 路径编码 P2-5；修正 07:12 版 501 抛出数 508 为实算 439；保留 07:12 版独有的旧 I*Service 死代码发现 P2-2。07:12 原件备份于 _audit31/backup_0712/。",
+    "evidenceDir": "_audit31/"
+  },
+  "verdict": {
+    "passed": true,
+    "conditional": true,
+    "canEnterStep9": true,
+    "pseudoSuccessFound": false,
+    "prematureBusinessLogicFound": false,
+    "portPseudoWiringFound": false,
+    "summary": "全部可机器实算锚点复核通过，无 P0；3 项 P1 为第9步前置组织/口径事项（入库、blocked 裁决、contract_id 命名域）"
+  },
+  "verificationLevels": {
+    "docParse": "PASS",
+    "static": "PASS（Node 实算 + rg）",
+    "compile": "PASS（mvn -pl futurefab-modules/futurefab-system -am test BUILD SUCCESS）",
+    "unitContract": "PASS（futurefab-system 463/463；futurefab-auth 14/14，本次独立重跑，EXIT=0）",
+    "mockMvcStandalone": "PASS（439 条 501+NOT_IMPLEMENTED+contractId 信封断言）",
+    "sqlDb": "NOT_EXECUTED",
+    "realHttp": "NOT_EXECUTED",
+    "externalSystems": "NOT_EXECUTED（BLOCKED_INPUT 保持登记）",
+    "production": "NOT_EXECUTED"
+  },
+  "counts": {
+    "total": {
+      "claimed": 532,
+      "actual": 532,
+      "match": true
+    },
+    "moduleCounts": {
+      "claimed": {
+        "M01": 76,
+        "M02": 255,
+        "M03": 43,
+        "M04": 23,
+        "M05": 64,
+        "M06": 15,
+        "M07": 35,
+        "M09": 21
+      },
+      "actual": {
+        "M01": 76,
+        "M02": 255,
+        "M03": 43,
+        "M04": 23,
+        "M05": 64,
+        "M06": 15,
+        "M07": 35,
+        "M09": 21
+      },
+      "actualIdentical": true
+    },
+    "statusCounts": {
+      "claimed": {
+        "SKELETON_IN_SOURCE": 515,
+        "BLOCKED_REGISTERED": 17
+      },
+      "actual": {
+        "SKELETON_IN_SOURCE": 515,
+        "BLOCKED_REGISTERED": 17
+      },
+      "actualIdentical": true
+    },
+    "dispositionCounts": {
+      "claimed": {
+        "ADJUST": 324,
+        "NEW": 176,
+        "REUSE": 7,
+        "COMPAT": 9,
+        "DISABLE": 16
+      },
+      "actual": {
+        "ADJUST": 324,
+        "NEW": 176,
+        "REUSE": 7,
+        "COMPAT": 9,
+        "DISABLE": 16
+      },
+      "actualIdentical": true
+    },
+    "gateEntries": {
+      "anchorFrozenNonM01Total": 456,
+      "anchorBlockedTotal": 17,
+      "anchorGateEntriesExpected": 439,
+      "actualNonM01": 456,
+      "actualGate": 439,
+      "gateResourceEntries": {
+        "m02": 253,
+        "m03": 43,
+        "m04": 16,
+        "m05": 58,
+        "m06": 15,
+        "m07": 33,
+        "m09": 21,
+        "sum": 439
+      },
+      "manifestVsGateFieldByField": {
+        "comparedEntries": 439,
+        "fieldsPerEntry": 7,
+        "problems": 0
+      }
+    },
+    "skeleton501Throws": {
+      "byModule": {
+        "m02": 253,
+        "m03": 43,
+        "m04": 16,
+        "m05": 58,
+        "m06": 15,
+        "m07": 33,
+        "m09": 21
+      },
+      "total": 439,
+      "note": "与门禁条目数 439 逐条一一对应；前一版记为 508 无对应口径，以 439 为准"
+    }
+  },
+  "uniqueness": {
+    "interfaceId": {
+      "total": 532,
+      "unique": 532,
+      "duplicates": [],
+      "globalUnique": true
+    },
+    "contractId": {
+      "globalDuplicateGroups": 12,
+      "duplicates": [
+        {
+          "contract_id": "API01",
+          "interface_ids": [
+            "M01-001",
+            "M09-001"
+          ]
+        },
+        {
+          "contract_id": "API02",
+          "interface_ids": [
+            "M01-002",
+            "M09-002"
+          ]
+        },
+        {
+          "contract_id": "API03",
+          "interface_ids": [
+            "M01-003",
+            "M09-003"
+          ]
+        },
+        {
+          "contract_id": "API04",
+          "interface_ids": [
+            "M01-004",
+            "M09-004"
+          ]
+        },
+        {
+          "contract_id": "API05",
+          "interface_ids": [
+            "M01-005",
+            "M09-005"
+          ]
+        },
+        {
+          "contract_id": "API06",
+          "interface_ids": [
+            "M01-006",
+            "M09-006"
+          ]
+        },
+        {
+          "contract_id": "API07",
+          "interface_ids": [
+            "M01-007",
+            "M09-007"
+          ]
+        },
+        {
+          "contract_id": "API08",
+          "interface_ids": [
+            "M01-008",
+            "M09-008"
+          ]
+        },
+        {
+          "contract_id": "API09",
+          "interface_ids": [
+            "M01-009",
+            "M09-009"
+          ]
+        },
+        {
+          "contract_id": "API10",
+          "interface_ids": [
+            "M01-010",
+            "M09-010"
+          ]
+        },
+        {
+          "contract_id": "API11",
+          "interface_ids": [
+            "M01-011",
+            "M09-011"
+          ]
+        },
+        {
+          "contract_id": "API12",
+          "interface_ids": [
+            "M01-012",
+            "M09-012"
+          ]
+        }
+      ],
+      "moduleInternalUnique": true,
+      "modulesWithInternalDuplicate": [],
+      "origin": "源自 00 冻结清单（00 清单同样 12 组、编号一致），非第8步引入",
+      "gateUsesInterfaceId": true,
+      "gateResourceIdDuplicates": 0,
+      "assessment": "不构成本次骨架验收缺陷；但 contract_id 命名域须明确为「模块内唯一」（登记为 P1-3）"
+    },
+    "route": {
+      "methodPlusPath": {
+        "total": 532,
+        "unique": 532,
+        "duplicates": [],
+        "uniqueOk": true
+      },
+      "samePathDifferentMethodGroups": 66,
+      "note": "66 组同 path 不同 method 均为 REST 常规配对，非撞车",
+      "gateTemplateNormalizedUnique": {
+        "total": 439,
+        "unique": 439,
+        "duplicates": 0
+      }
+    }
+  },
+  "blockedCheck": {
+    "expected": [
+      "M02-003",
+      "M02-004",
+      "M04-017",
+      "M04-018",
+      "M04-019",
+      "M04-020",
+      "M04-021",
+      "M04-022",
+      "M04-023",
+      "M05-006",
+      "M05-024",
+      "M05-035",
+      "M05-036",
+      "M05-037",
+      "M05-064",
+      "M07-003",
+      "M07-016"
+    ],
+    "actual": [
+      "M02-003",
+      "M02-004",
+      "M04-017",
+      "M04-018",
+      "M04-019",
+      "M04-020",
+      "M04-021",
+      "M04-022",
+      "M04-023",
+      "M05-006",
+      "M05-024",
+      "M05-035",
+      "M05-036",
+      "M05-037",
+      "M05-064",
+      "M07-003",
+      "M07-016"
+    ],
+    "missing": [],
+    "extra": [],
+    "allStatusBlockedRegistered": true,
+    "allSkeletonImplNull": true,
+    "allGateResourceNull": true,
+    "allHaveBlockedReason": true,
+    "noGeneratedEntries": true,
+    "registeredOnlyNoCode": true,
+    "strayBlockedReason": 0,
+    "byModule": {
+      "M02": 2,
+      "M04": 7,
+      "M05": 6,
+      "M07": 2
+    }
+  },
+  "m08Exclusion": {
+    "manifestM08Entries": 0,
+    "manifestAnyFieldContainsM08": 0,
+    "m08SkeletonDirs": "none（dto/vo/application/impl.application/port/impl.port/controller 均无 m08）",
+    "m08InMainSource": "仅 service/port/m0{3,5,7} Javadoc 边界注释与 M09 SourceModule 冻结枚举（允许）；无实现依赖",
+    "gateProof": "detectM08Reference 正反例成对：冻结枚举放行 0 命中 / 实现引用 1 命中 / M08StatisticsService 类型引用 1 命中",
+    "verdict": "PASS"
+  },
+  "m01Regression": {
+    "manifestSKELETON_IN_SOURCE": 76,
+    "audit10Baseline": {
+      "COMPLETE_SKELETON": 76,
+      "PARTIAL_SKELETON": 0,
+      "MISSING_SKELETON": 0,
+      "CONTRACT_DRIFT": 0,
+      "OVER_IMPLEMENTED": 0,
+      "BLOCKED_DESIGN": 0
+    },
+    "audit10Sequence": {
+      "SEQUENCE_COMPLETE": 76,
+      "SEQUENCE_PARTIAL": 0,
+      "SEQUENCE_MISSING": 0,
+      "SEQUENCE_CONFLICT": 0
+    },
+    "completeSkeletonEquals76": true,
+    "partialEquals0": true,
+    "overImplemented": 0,
+    "m01ContractTestsPresentAndGreen": true,
+    "contractTestCounts": {
+      "M01Acl": 19,
+      "M01Config": 20,
+      "M01Dict": 26,
+      "M01Org": 32,
+      "M01System": 23,
+      "M01User": 20,
+      "total": 140
+    },
+    "authTokenContractTests": "14/14 green",
+    "note": "M01-049/075 共用 getInfo 为不同映射重载（/system/user/{userId} 与 /system/user/getInfo），路由唯一性不受影响"
+  },
+  "gateEffectiveness": {
+    "skeletonEngineRealChecks": [
+      "路由+权限注解反射断言",
+      "Controller→ApplicationService 接线与签名/泛型返回",
+      "Impl 零字段+编号501反射直调",
+      "DTO/View 字段形状",
+      "standalone MockMvc 501 信封"
+    ],
+    "fullSystemSkeletonGateTests": [
+      "dtoAndVoCarryNoEntityMapperOrSensitiveFields",
+      "applicationServicesAreZeroFieldNumbered501Only",
+      "m08IsFullyExcluded",
+      "generatedCodeImportsStayInOwnModule",
+      "contractIdsAndRoutesGloballyUnique",
+      "blockedContractsHaveNoGeneratedEntries",
+      "portAdaptersStayUnwiredExceptM01Actor",
+      "detectorsThemselvesWork"
+    ],
+    "negativeFixtures": [
+      "detectorsThemselvesWork（8 类合成脏样本必检出 + 干净/脱敏布尔样本不误伤）",
+      "SkeletonEngineShadowFixtureTest（映射/权限/返回类型/非501重载/错误编号 5 类漂移拦截）"
+    ],
+    "antiIdlingAssertions": true,
+    "historicalProof": "28 报告记载 M05-027 曾真实捕获 expected 501 but was 200 并修复",
+    "verdict": "PASS（命中 0 有反例证明可检出）"
+  },
+  "noFakeSuccessOrEarlyImplementation": {
+    "found": false,
+    "implForbiddenTokenHits": {
+      "scope": "service/impl/application/m02..m09",
+      "hits": 0,
+      "note": "m01 有 8 个文件命中，经取证确认 \"Mapper\" 仅出现在 Javadoc 注释文本，实际零字段 + 显式 501，非编译依赖"
+    },
+    "skeleton501Throws": 439,
+    "skeletonSourceFiles": {
+      "domain/dto": 426,
+      "domain/vo": 740,
+      "service/application": 80,
+      "service/impl/application": 80
+    },
+    "skeletonSourceTotal": 1326,
+    "managementWriteGuardNotWired": true,
+    "verdict": "PASS"
+  },
+  "portWiring": {
+    "adaptersFound": [
+      "m01/M01ActorContextAdapter",
+      "m01/M01ManagementRevisionSourceAdapter"
+    ],
+    "implPortFileCount": 2,
+    "otherModuleProviders": 0,
+    "portInterfaceFiles": 248,
+    "portInterfaceSubdirs": [
+      "m01",
+      "m02",
+      "m03",
+      "m04",
+      "m05",
+      "m06",
+      "m07",
+      "m09"
+    ],
+    "portM08DirExists": false,
+    "pseudoWiringFound": false,
+    "gate": "portAdaptersStayUnwiredExceptM01Actor",
+    "signatureSnapshot": "PortSignatureSnapshotTest 71 契约/43 接口随全量通过"
+  },
+  "testRuns": {
+    "system": {
+      "cmd": "mvn -pl futurefab-modules/futurefab-system -am test",
+      "testsRun": 463,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "result": "BUILD SUCCESS",
+      "exit": 0
+    },
+    "auth": {
+      "cmd": "mvn -pl futurefab-auth -am test",
+      "testsRun": 14,
+      "failures": 0,
+      "errors": 0,
+      "result": "BUILD SUCCESS",
+      "exit": 0
+    }
+  },
+  "gitChecks": {
+    "gitDiffCheck": "PASS (exit 0, 无输出)",
+    "workspaceChanges": {
+      "total": 151,
+      "modified": 52,
+      "untracked": 99
+    },
+    "readOnlyMaterialsTouched": false,
+    "baselineSqlTouched": false,
+    "futurefabUiTouched": false,
+    "committed": false,
+    "pushed": false
+  },
+  "workspaceBoundary": {
+    "deliverables": [
+      "docs/开发任务/25-30 报告",
+      "26 清单 json/md",
+      "src/test/resources/contract/*.json（8 个）",
+      "骨架源码 1326 .java",
+      "21 新增 Controller + controller/run 8 个",
+      "contract 测试类 9 个"
+    ],
+    "generatorAssets": [
+      "_tmp_skelgen/（40 文件，26 清单同源生成器，建议归档保留以维持可复现性）"
+    ],
+    "notDeliverables": [
+      "_tmp_p010_*（13）",
+      "_tmp_p01c_*（12）",
+      "_tmp_p01d_*（5）",
+      "_tmp_r1*（3）",
+      "_tmp_sec_p0*（4）",
+      "_tmp_tc_*（2）",
+      "docs/frontend/",
+      "src/test/java/futurefab/",
+      "_audit31/（本次取证，含 backup_0712）"
+    ]
+  },
+  "issues": {
+    "counts": {
+      "P0": 0,
+      "P1": 3,
+      "P2": 5
+    },
+    "P0": [],
+    "P1": [
+      {
+        "id": "P1-1",
+        "desc": "第8步全部产出物未提交入库（工作区 151 项变更：52 M + 99 ??），第9步拆分需以入库基线为依据，须先评审提交并打 tag"
+      },
+      {
+        "id": "P1-2",
+        "desc": "17 条 blocked 的路由前缀与形状冻结裁决未完成（M04×7 的 /system 前缀与冻结 Controller 前缀冲突 + 三个 Workflow Vo；M05×6；M07×2；M02×2），须单独建「设计裁决阻塞包」，禁止混入开发包"
+      },
+      {
+        "id": "P1-3",
+        "desc": "contract_id 命名域未定义：M01 与 M09 的 API01–API12 跨模块重名 12 组（源自 00 冻结清单，模块内 100% 唯一）。须声明「contract_id 仅模块内唯一，全局唯一键用 interface_id」或重命名"
+      }
+    ],
+    "P2": [
+      {
+        "id": "P2-1",
+        "desc": "M09-004/006/018 request_dto=null 表达为隐式 NoBody，建议统一为显式 NoBody 字面量（推荐 \"NoBody\" 或 FQCN）并在 schema 固化语义"
+      },
+      {
+        "id": "P2-2",
+        "desc": "改写后 Controller 残留未使用的旧 I*Service 注入字段（死代码）",
+        "evidence": [
+          "BottleConfigController.bottleConfigService（IBottleConfigService）",
+          "CalibrationObjectController.calibrationObjectService（ICalibrationObjectService）",
+          "ConsumableMasterController.consumableMasterService（IConsumableMasterService）"
+        ]
+      },
+      {
+        "id": "P2-3",
+        "desc": "存量 Controller 仍持有 Mapper、旧路由残留未治理",
+        "evidence": {
+          "controllerFilesImportingMapper": 1,
+          "files": [
+            "ResCultureController.java"
+          ],
+          "note": "这些端点不在 532 条冻结清单内；10 号审计对 M01 已登记同类 46 条归入 TASK-ROUTE，M02-M09 未登记"
+        }
+      },
+      {
+        "id": "P2-4",
+        "desc": "工作区临时文件较多（约 39 个历史 _tmp_*），入库前需按边界清单归置；_tmp_skelgen 明确去留；补 .gitignore"
+      },
+      {
+        "id": "P2-5",
+        "desc": "git 中文路径输出编码乱码（GBK 序列），非文件损坏；建议确认 git i18n/输出编码配置，避免脚本化路径解析失败"
+      }
+    ]
+  },
+  "m09NoBodyJudgement": {
+    "nullRequestDtoIds": [
+      "M09-004",
+      "M09-006",
+      "M09-018"
+    ],
+    "evidence": [
+      {
+        "id": "M09-004",
+        "verb": "GET",
+        "path": "/alarm/v2/rules",
+        "listRequestDto": null,
+        "resourceReqFq": null,
+        "resourceReqFields": [],
+        "controllerMethod": "getRuleConfig() 无参",
+        "implSignature": "getRuleConfig(NoBody)",
+        "callSite": "NoBody.getInstance()"
+      },
+      {
+        "id": "M09-006",
+        "verb": "GET",
+        "path": "/alarm/v2/sender-config",
+        "listRequestDto": null,
+        "resourceReqFq": null,
+        "resourceReqFields": [],
+        "controllerMethod": "getSenderConfig() 无参",
+        "implSignature": "getSenderConfig(NoBody)",
+        "callSite": "NoBody.getInstance()"
+      },
+      {
+        "id": "M09-018",
+        "verb": "GET",
+        "path": "/alarm/v2/notifications/unread-count",
+        "listRequestDto": null,
+        "resourceReqFq": null,
+        "resourceReqFields": [],
+        "controllerMethod": "getUnreadCount() 无参",
+        "implSignature": "getUnreadCount(NoBody)",
+        "callSite": "NoBody.getInstance()"
+      }
+    ],
+    "fact": "SkeletonEngine.wantParam 将 reqFq==null 映射为 NoBody 单例；29 报告记录该三条反射 IllegalAccessException 修正过程，实证走 NoBody",
+    "judgement": "正确语义（无请求体），非骨架缺陷，不判定失败",
+    "risk": "null 为二义表达：其余 512 条 SKELETON 的 request_dto 均为具体类型名，唯独 3 条为 null；下游机器校验可能误读为「待补 DTO」",
+    "recommendation": "下次清单再生成时统一输出显式 NoBody（\"NoBody\" 或 FQCN），并在 schema 注明语义，防机器校验误报；门禁侧无需改动",
+    "blocksStep9": false
+  },
+  "step9": {
+    "canEnter": true,
+    "preconditionOrder": [
+      "提交骨架基线（P1-1）",
+      "声明 contract_id 命名域（P1-3）",
+      "隔离 17 条 blocked 阻塞包（P1-2）",
+      "启动第9步任务包拆分"
+    ],
+    "preconditions": [
+      "评审并提交第8步产出物形成入库基线并打 tag",
+      "完成 17 条 blocked 裁决并补生成（注意 439 会变化，须同步重算 26 清单 / skeleton-m0X.json / port-closure-anchor.json 三处锚点）",
+      "声明 contract_id 命名域为「模块内唯一」，全局唯一键统一用 interface_id",
+      "处置 _tmp_skelgen 去留（建议归档保留）并清理历史临时文件，补 .gitignore",
+      "（建议）统一 NoBody 表达口径",
+      "规划旧路由治理（P2-3）：为 M02-M09 建 TASK-ROUTE 包",
+      "完成 30 报告 §6 其余项：do→doValue 等 3 处改名、11 处 union 降级 Object、19 处跨契约并集、取值表 String 承载"
+    ],
+    "inheritedBoundaries": [
+      "真实实现替换 501 骨架时同步替换 501 门禁为真实契约测试，逐个替换不做批量放行",
+      "Port provider 按模块逐步接线，禁止一次性全量放开未接线门禁",
+      "旧 Service 重定向与规范化登记（union→Object、同名并集、改名、取值表 String）逐条设计确认后固化",
+      "M08 持续排除，M08 只能以注释边界说明或 M09 SourceModule 冻结枚举值出现",
+      "跨模块只走 service.port.m0x 接口契约；Controller 不直接编排 Mapper、不跨模块查表、不依赖其他模块实现类",
+      "管理写入口实现时接入 ManagementGuardExecutor/@ManagementGuardedWrite；事务边界在应用服务，外部副作用不纳入本地事务",
+      "状态变更须校验当前状态/目标状态/版本/幂等键/权限；批量操作全量校验后执行",
+      "数据库只允许从 docs/开发基线/README.md 指定入口安装；不执行 history/sql/ 下任何文件",
+      "文档权威顺序以 docs/README.md 为准；过程性审阅记录放入 history/review/",
+      "futurefab-ui 本次零改动，第9步如涉及前端须单独确认契约一致性，前端不复制后端状态机",
+      "验证层级不越级：SQL/真实 HTTP/外部系统联调仍未执行",
+      "AAD/SDMS/NamedPipe/邮件/短信/对象存储缺参数一律标记 BLOCKED_INPUT，不得编造默认值",
+      "未经用户明确要求不 commit/push；客户只读材料与开发基线继续只读"
+    ]
+  },
+  "outputs": {
+    "markdown": "docs/开发任务/31-第8步全量骨架验收复核审计报告.md",
+    "json": "docs/开发任务/31-第8步全量骨架验收复核审计报告.json",
+    "backupOfPreviousVersion": "_audit31/backup_0712/",
+    "evidenceDir": "_audit31/"
+  }
+}

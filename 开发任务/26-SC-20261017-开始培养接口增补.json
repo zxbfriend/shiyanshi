@@ -1,0 +1,546 @@
+{
+  "schemaVersion": 1,
+  "supplementId": "SC-20261017",
+  "date": "2026-10-17",
+  "purpose": "Source-traceable start-culture supplement; does not rewrite frozen historical totals",
+  "baseline": {
+    "path": "docs/开发任务/26-全系统接口契约骨架清单.json",
+    "summarySha256": "3dff209ed38515d22b7bdaee615b339152ae31520528247007d35b5520d7575b",
+    "summaryTotal": 534,
+    "policy": "Original summary/interfaces/Port snapshot counts remain frozen; new HTTP counted separately, existing route extensions are not new HTTP",
+    "generatorDeclared": "_tmp_skelgen/gen/gen26.js（同源程序化生成，禁止手工改计数）",
+    "generatorPresent": false,
+    "validationMechanism": [
+      "Existing FullSystemSkeletonGateTest and PortSignatureSnapshotTest retain their baseline responsibilities; they do not automatically count this supplement",
+      "python docs/开发任务/tools/verify-start-culture-registration.py validates this supplement against current Controller/Port/DTO source; it is not HTTP/MySQL/device acceptance"
+    ]
+  },
+  "workflowKinds": [
+    "START_CULTURE_SMALL",
+    "START_CULTURE_PILOT"
+  ],
+  "definitions": [
+    {
+      "kind": "START_CULTURE_SMALL",
+      "subflowCode": "start_culture_small",
+      "nodeCode": "start_culture",
+      "labType": "1",
+      "stepCodes": [
+        "START",
+        "INOCULATION",
+        "SAMPLE_PRIME",
+        "DEVICE_CONFIRM"
+      ]
+    },
+    {
+      "kind": "START_CULTURE_PILOT",
+      "subflowCode": "start_culture_pilot",
+      "nodeCode": "start_culture",
+      "labType": "3",
+      "stepCodes": [
+        "START",
+        "INOCULATION",
+        "ONLINE_ALARM_CONFIRM",
+        "OPC_CONFIRM"
+      ]
+    }
+  ],
+  "newHttp": [
+    {
+      "id": "SC-HTTP01",
+      "changeKind": "NEW",
+      "method": "GET",
+      "path": "/run/workflow-batches/{id}",
+      "permission": "run:workflow:query",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/StartCultureSessionController.java",
+      "controllerMethod": "batch",
+      "requestDto": "Path id",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "batch",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": false,
+      "writeMetadata": [],
+      "currentManagementRevision": true,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "Whole authorized frozen group read; all members and visit history"
+    },
+    {
+      "id": "SC-HTTP02",
+      "changeKind": "NEW",
+      "method": "POST",
+      "path": "/run/workflow-batches/{id}/actions",
+      "permission": "run:workflow:operate",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/StartCultureSessionController.java",
+      "controllerMethod": "action",
+      "requestDto": "StartCultureCommands.Action",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "batchAction",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": true,
+      "writeMetadata": [
+        "X-Request-Id",
+        "X-Management-Revision"
+      ],
+      "currentManagementRevision": false,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "actions": [
+        "VALIDATE_NEXT",
+        "BACK",
+        "COMPLETE",
+        "CANCEL"
+      ],
+      "behavior": "Complete frozen member-set and group version checked; final owner writes share transaction; completion remains readiness blocked"
+    },
+    {
+      "id": "SC-HTTP03",
+      "changeKind": "NEW",
+      "method": "POST",
+      "path": "/run/workflow-page-sessions",
+      "permission": "run:workflow:operate",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/StartCultureSessionController.java",
+      "controllerMethod": "session",
+      "requestDto": "StartCultureCommands.Session",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "session",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": true,
+      "writeMetadata": [
+        "X-Request-Id",
+        "X-Management-Revision"
+      ],
+      "currentManagementRevision": false,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "actions": [
+        "OPEN",
+        "CLOSE"
+      ],
+      "behavior": "OPEN audits step 1; CLOSE invalidates old page attempt under session lock"
+    },
+    {
+      "id": "SC-HTTP04",
+      "changeKind": "NEW",
+      "method": "GET",
+      "path": "/run/workflow-requests/{requestId}",
+      "permission": "run:workflow:query",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/StartCultureSessionController.java",
+      "controllerMethod": "receipt",
+      "requestDto": "Path requestId; Query labId,workflowKind",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "receipt",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": false,
+      "writeMetadata": [],
+      "currentManagementRevision": true,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "Read original actor+lab request refs; no body/draft recovery; NOT_FOUND/UNKNOWN does not prove non-execution"
+    }
+  ],
+  "existingHttpExtensions": [
+    {
+      "id": "M07-022",
+      "changeKind": "EXTENSION",
+      "method": "GET",
+      "path": "/run/workflows/candidates",
+      "permission": "run:workflow:query",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/RunWorkflowController.java",
+      "controllerMethod": "listWorkflowCandidates",
+      "requestDto": "WorkflowCandidateQuery",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "candidates",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": false,
+      "writeMetadata": [],
+      "currentManagementRevision": true,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "workflowKind branch; labId/operatorFilter/pageNum/pageSize; returns blocked reasons, actual definition version and owner versions"
+    },
+    {
+      "id": "M07-023",
+      "changeKind": "EXTENSION",
+      "method": "POST",
+      "path": "/run/workflows",
+      "permission": "run:workflow:start",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/RunWorkflowController.java",
+      "controllerMethod": "startWorkflows",
+      "requestDto": "WorkflowBatchStartCommand -> StartCultureCommands.Start",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "start",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": true,
+      "writeMetadata": [
+        "X-Request-Id",
+        "X-Management-Revision"
+      ],
+      "currentManagementRevision": false,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "workflowKind branch; no business draft saved; one small group or one pilot instance"
+    },
+    {
+      "id": "M07-024",
+      "changeKind": "EXTENSION",
+      "method": "GET",
+      "path": "/run/workflows/{id}",
+      "permission": "run:workflow:query",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/RunWorkflowController.java",
+      "controllerMethod": "getWorkflowInstance",
+      "requestDto": "WorkflowInstanceDetailQuery; Path id",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "detail",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": false,
+      "writeMetadata": [],
+      "currentManagementRevision": true,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "Owned start-culture instance branch, read only"
+    },
+    {
+      "id": "M07-025",
+      "changeKind": "EXTENSION",
+      "method": "POST",
+      "path": "/run/workflows/{id}/steps/{stepId}",
+      "permission": "run:workflow:operate",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/RunWorkflowController.java",
+      "controllerMethod": "operateWorkflowStep",
+      "requestDto": "WorkflowStepOperationCommand -> StartCultureCommands.Step",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "step",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": true,
+      "writeMetadata": [
+        "X-Request-Id",
+        "X-Management-Revision"
+      ],
+      "currentManagementRevision": false,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "SC step/session/visit/CAS/action matrix; final COMPLETE readiness blocked"
+    },
+    {
+      "id": "M07-026",
+      "changeKind": "EXTENSION",
+      "method": "POST",
+      "path": "/run/workflows/{id}/operations",
+      "permission": "run:workflow:operate",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/RunWorkflowController.java",
+      "controllerMethod": "operateWorkflow",
+      "requestDto": "WorkflowOperationCommand",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "",
+      "implementationState": "FAIL_CLOSED_ONLY",
+      "guardedWrite": true,
+      "writeMetadata": [
+        "X-Request-Id",
+        "X-Management-Revision"
+      ],
+      "currentManagementRevision": false,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "SC controller branch rejects CONFIGURATION_INCOMPLETE; no sample-prime/restart command emitted",
+      "blockers": [
+        "SC-Q04",
+        "SC-Q09"
+      ]
+    },
+    {
+      "id": "M07-027",
+      "changeKind": "EXTENSION",
+      "method": "POST",
+      "path": "/run/workflows/{id}/cancel",
+      "permission": "run:workflow:operate",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/RunWorkflowController.java",
+      "controllerMethod": "cancelWorkflow",
+      "requestDto": "WorkflowCancelCommand -> StartCultureCommands.Cancel",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/application/m07/StartCultureApplicationService.java",
+      "applicationMethod": "cancel",
+      "implementationState": "IMPLEMENTED",
+      "guardedWrite": true,
+      "writeMetadata": [
+        "X-Request-Id",
+        "X-Management-Revision"
+      ],
+      "currentManagementRevision": false,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "SC owned branch; session closure and whole-group cancellation"
+    },
+    {
+      "id": "M07-028",
+      "changeKind": "EXTENSION",
+      "method": "POST",
+      "path": "/run/services/{id}/restart",
+      "permission": "run:service:restart",
+      "controller": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/controller/run/RunServiceController.java",
+      "controllerMethod": "restartService",
+      "requestDto": "ServiceRestartCommand",
+      "applicationService": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/application/m07/RunServiceApplicationApplicationServiceImpl.java",
+      "applicationMethod": "restartService",
+      "implementationState": "NOT_IMPLEMENTED_FOR_SC",
+      "guardedWrite": true,
+      "writeMetadata": [
+        "X-Request-Id",
+        "X-Management-Revision"
+      ],
+      "currentManagementRevision": false,
+      "verification": {
+        "responseEnvelope": "AjaxResult",
+        "identitySource": "server ActorContext",
+        "httpVerification": "NOT_VERIFIED",
+        "databaseVerification": "NOT_RUN",
+        "browserVerification": "NOT_VERIFIED",
+        "deviceVerification": "BLOCKED_EXTERNAL"
+      },
+      "behavior": "Existing request-shape validation and failure-close only; no SC pageSessionId/visitNo DTO extension and no device restart",
+      "blockers": [
+        "SC-Q09"
+      ]
+    }
+  ],
+  "ownerPorts": [
+    {
+      "owner": "M02",
+      "consumer": "M07",
+      "interface": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/port/m02/StartCultureDevicePort.java",
+      "provider": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/port/m02/M02StartCultureDeviceAdapter.java",
+      "methodSignatures": [
+        "DeviceFacts resolve(String deviceKind, long deviceId, long labId, String workflowKind)",
+        "Readiness readiness(String deviceKind, long deviceId, long labId, String workflowKind)"
+      ],
+      "typedModels": "Nested records declared on provider-owned Port interface; ActorContext and RuntimeFact retain original owners",
+      "implementationState": "IMPLEMENTED",
+      "httpVerification": "NOT_VERIFIED",
+      "databaseVerification": "NOT_RUN",
+      "deviceVerification": "BLOCKED_EXTERNAL",
+      "notes": "M02 readiness intentionally returns blocked; M03/M09 mutations join final transaction; pure validation has no business save"
+    },
+    {
+      "owner": "M03",
+      "consumer": "M07",
+      "interface": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/port/m03/StartCultureAdmissionPort.java",
+      "provider": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/port/m03/M03StartCultureAdmissionAdapter.java",
+      "methodSignatures": [
+        "List<Candidate> candidates(ActorContext actor, long labId, String workflowKind)",
+        "String cellTypeDictionaryType()",
+        "Candidate requireAdmission(ActorContext actor, long cultureId, String workflowKind, boolean forUpdate)",
+        "InitialValidation validateInitial(ActorContext actor, Candidate candidate, InitialInput input)",
+        "void applyFirstStarted(ActorContext actor, Candidate candidate, RuntimeFact fact)",
+        "void applyInitial(ActorContext actor, Candidate candidate, InitialInput input, RuntimeFact fact)"
+      ],
+      "typedModels": "Nested records declared on provider-owned Port interface; ActorContext and RuntimeFact retain original owners",
+      "implementationState": "IMPLEMENTED",
+      "httpVerification": "NOT_VERIFIED",
+      "databaseVerification": "NOT_RUN",
+      "deviceVerification": "BLOCKED_EXTERNAL",
+      "notes": "M02 readiness intentionally returns blocked; M03/M09 mutations join final transaction; pure validation has no business save"
+    },
+    {
+      "owner": "M09",
+      "consumer": "M07",
+      "interface": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/port/m09/StartCultureAlarmPort.java",
+      "provider": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/impl/port/m09/M09StartCultureAlarmAdapter.java",
+      "methodSignatures": [
+        "Snapshot inherit(ActorContext actor, long cultureId, String deviceKind, long deviceId)",
+        "Validated validate(ActorContext actor, long cultureId, String deviceKind, long deviceId, Snapshot source, List<OnlineInput> rows, boolean saveAsDeviceDefault)",
+        "void apply(ActorContext actor, long cultureId, long labId, String deviceKind, long deviceId, Validated validated, com.futurefab.system.service.port.m07.model.RuntimeFact completeFact)"
+      ],
+      "typedModels": "Nested records declared on provider-owned Port interface; ActorContext and RuntimeFact retain original owners",
+      "implementationState": "IMPLEMENTED",
+      "httpVerification": "NOT_VERIFIED",
+      "databaseVerification": "NOT_RUN",
+      "deviceVerification": "BLOCKED_EXTERNAL",
+      "notes": "M02 readiness intentionally returns blocked; M03/M09 mutations join final transaction; pure validation has no business save"
+    },
+    {
+      "owner": "M04",
+      "consumer": "M07,M03",
+      "interface": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/port/m04/WorkflowDefinitionPort.java",
+      "provider": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/service/port/m04/WorkflowDefinitionPortImpl.java",
+      "methodSignatures": [
+        "WorkflowDefinition resolveForRun(WorkflowDefinitionQuery query)",
+        "boolean isStartCultureNode(String nodeId)"
+      ],
+      "typedModels": "service.port.m04.model.WorkflowDefinition/WorkflowDefinitionQuery/WorkflowDefinitionStep",
+      "implementationState": "IMPLEMENTED",
+      "httpVerification": "NOT_VERIFIED",
+      "databaseVerification": "NOT_RUN",
+      "notes": "Real lab binding and fixed 4-step definition; content version=definitionHash; M03 checks selected IDs through owner Port"
+    }
+  ],
+  "transportModels": {
+    "source": "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/domain/dto/m07/StartCultureCommands.java",
+    "schemaVersion": 2,
+    "records": [
+      {
+        "name": "DeviceRef",
+        "components": "String deviceKind, String deviceId, String channelCode"
+      },
+      {
+        "name": "Target",
+        "components": "String cultureId, DeviceRef deviceRef, String expectedCultureVersion, String expectedPlanVersion, String occupancyId, String expectedOccupancyVersion"
+      },
+      {
+        "name": "Session",
+        "components": "String action, String labId, String workflowKind, String pageSessionId, String expectedSessionVersion, String reasonCode"
+      },
+      {
+        "name": "Start",
+        "components": "String workflowKind, String labId, List<Target> targets, String definitionVersion, String pageSessionId, String restartedFrom"
+      },
+      {
+        "name": "Inoculation",
+        "components": "String cultureId, String value, String unit, String cellTypeId, String cellTypePrefix, String dictionaryVersion, String draftRevision"
+      },
+      {
+        "name": "Alarm",
+        "components": "String sourceScope, String sourceConfigId, String sourceRevision, String sourceHash, String deviceItemVersion, List<OnlineInput> items, String draftRevision, boolean saveAsDeviceDefault, String expectedDeviceTemplateRevision"
+      },
+      {
+        "name": "Confirmation",
+        "components": "String kind, List<String> observationRefs, String predicateVersion, String draftRevision"
+      },
+      {
+        "name": "Simulation",
+        "components": "String confirmationKind"
+      },
+      {
+        "name": "Payload",
+        "components": "Inoculation inoculation, Alarm alarm, String expectedCultureVersion, String expectedPlanVersion, String expectedOccupancyVersion, String expectedWeightRevision, List<Confirmation> confirmations, String skipReason, Boolean skipConfirmed, Simulation simulation"
+      },
+      {
+        "name": "Member",
+        "components": "String workflowId, String expectedWorkflowVersion, String expectedStepVersion, Payload typedPayload"
+      },
+      {
+        "name": "Action",
+        "components": "String action, String pageSessionId, String visitNo, String expectedGroupVersion, List<Member> members, String reasonCode"
+      },
+      {
+        "name": "Step",
+        "components": "String action, String pageSessionId, String visitNo, String expectedWorkflowVersion, String expectedStepVersion, Payload typedPayload"
+      },
+      {
+        "name": "Cancel",
+        "components": "String pageSessionId, String expectedWorkflowVersion, String reasonCode"
+      }
+    ],
+    "notes": "IDs/versions are positive decimal strings; decimal values are strings; WriteMeta headers authoritative. Existing W01-W08 keep schema 1."
+  },
+  "blockers": [
+    {
+      "code": "SC-Q02",
+      "status": "BLOCKED_EXTERNAL",
+      "scope": "Small gas readiness profile"
+    },
+    {
+      "code": "SC-Q03",
+      "status": "BLOCKED_EXTERNAL",
+      "scope": "Trusted device/OPC observations and freshness"
+    },
+    {
+      "code": "SC-Q04",
+      "status": "BLOCKED_EXTERNAL",
+      "scope": "Sample prime command/stop protocol"
+    },
+    {
+      "code": "SC-Q05",
+      "status": "BLOCKED_EXTERNAL",
+      "scope": "Device-default config modification remains disabled"
+    },
+    {
+      "code": "SC-Q07",
+      "status": "BLOCKED_EXTERNAL",
+      "scope": "Nonblank cell-type prefix remains disabled"
+    },
+    {
+      "code": "SC-Q08",
+      "status": "BLOCKED_EXTERNAL",
+      "scope": "External online monitoring integration remains unverified"
+    },
+    {
+      "code": "SC-Q09",
+      "status": "BLOCKED_EXTERNAL",
+      "scope": "Bound service restart protocol remains disabled"
+    },
+    {
+      "code": "SC-Q12",
+      "status": "BLOCKED_BUSINESS_DECISION",
+      "scope": "Existing initial-input conflict has no new approval bypass"
+    }
+  ],
+  "responseModelLimitation": "Current SC application returns Object/Map inside AjaxResult, not a dedicated typed response VO; source registration does not claim all-leaf response schema completion",
+  "acceptance": {
+    "sourceRegistration": "STATIC_VERIFIED",
+    "contractTests": "See root aggregate test report; no independent passing-count claim here",
+    "http": "NOT_VERIFIED",
+    "browser": "NOT_VERIFIED",
+    "mysql": "NOT_RUN",
+    "externalDevice": "BLOCKED_EXTERNAL",
+    "production": "NOT_VERIFIED"
+  }
+}

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMP AAD（Azure AD SAML）调用原理与流程说明</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --primary: #2563eb;
+            --border: #e5e7eb;
+            --code-bg: #0f172a;
+            --code-text: #e2e8f0;
+            --accent: #dbeafe;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+        h1, h2, h3 { line-height: 1.35; }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 2px rgba(0,0,0,.04);
+        }
+        .tag {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th { background: #f9fafb; }
+        code.inline {
+            background: #eef2ff;
+            color: #3730a3;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 90%;
+        }
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 16px;
+            border-radius: 10px;
+            overflow: auto;
+            font-size: 12px;
+            line-height: 1.55;
+            margin: 12px 0 0;
+        }
+        .file-path {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .flow {
+            background: #f8fafc;
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: Consolas, monospace;
+            white-space: pre-wrap;
+            font-size: 13px;
+        }
+        .warn {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            color: #9a3412;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        ul { padding-left: 20px; }
+        li { margin: 6px 0; }
+        .toc a { color: var(--primary); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>SMP AAD（Azure AD SAML）调用原理与流程说明</h1>
+    <p class="subtitle">基于 WuXiBioLogics.WebUI 解决方案 · 配置来源 Web.config (126-133) · 生成日期 2026-07-06</p>
+
+    <div class="card toc">
+        <strong>目录</strong>
+        <ol>
+            <li><a href="#overview">总体说明</a></li>
+            <li><a href="#config">Web.config 配置项说明</a></li>
+            <li><a href="#flow">完整调用流程</a></li>
+            <li><a href="#frontend">前端 HTML / JS</a></li>
+            <li><a href="#backend">后台 Controller</a></li>
+            <li><a href="#api">API 资源定义</a></li>
+            <li><a href="#notes">注意事项</a></li>
+        </ol>
+    </div>
+
+    <div class="card" id="overview">
+        <h2>1. 总体说明</h2>
+        <p>
+            SMP 系统支持两种登录方式：
+        </p>
+        <ul>
+            <li><strong>域账号登录（AAD / SAML）</strong>：默认模式，用户点击登录后跳转 Microsoft Azure AD 完成身份认证。</li>
+            <li><strong>本地账号登录</strong>：用户在登录页切换后，使用账号密码调用 <code class="inline">api/auth/login</code>。</li>
+        </ul>
+        <p>
+            AAD 登录采用 <strong>SAML 2.0</strong> 协议，后端使用 <code class="inline">AspNetSaml</code> 组件（命名空间 <code class="inline">Saml</code>）生成 SAML Request、解析 SAML Response。
+            认证成功后，系统不会直接把 Azure 用户信息写入 Session，而是：
+        </p>
+        <ol>
+            <li>从 SAML Response 中提取用户 <strong>Email</strong>；</li>
+            <li>用 Email 匹配本地 <code class="inline">Auth_User</code> 表；</li>
+            <li>生成本系统 JWT Token，写入前端 localStorage，后续 API 通过 <code class="inline">Authorization</code> 请求头鉴权。</li>
+        </ol>
+    </div>
+
+    <div class="card" id="config">
+        <h2>2. Web.config 配置项说明</h2>
+        <p>配置位置：<code class="inline">WuXiBioLogics.WebUI/Web.config</code> → <code class="inline">&lt;appSettings&gt;</code></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>配置 Key</th>
+                    <th>示例值</th>
+                    <th>作用</th>
+                    <th>读取位置</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>IsSpecialCultureTest</code></td>
+                    <td>0</td>
+                    <td>注释说明：0=开启，1=关闭。当前仅被 <code>SystemConstant</code> 读取，<strong>未参与 AAD 登录主流程</strong>。</td>
+                    <td><code>SystemConstant.cs</code></td>
+                </tr>
+                <tr>
+                    <td><code>ida:ClientId</code></td>
+                    <td>XXXXXX-XXX.com:443</td>
+                    <td>SAML SP（Service Provider）标识，对应 Azure AD 企业应用中的 Identifier / Entity ID。</td>
+                    <td><code>AuthController.cs</code></td>
+                </tr>
+                <tr>
+                    <td><code>RedirectUri</code></td>
+                    <td>https://cmctracker.wuxibiologics.com/WuXiBio/api/auth/callbacksaml</td>
+                    <td>SAML 断言回调地址（ACS URL），Azure AD 认证完成后 POST <code>SAMLResponse</code> 到此地址。</td>
+                    <td>Web.config 中 Key 为 <code>RedirectUri</code></td>
+                </tr>
+                <tr>
+                    <td><code>ida:Authority</code></td>
+                    <td>https://login.microsoftonline.com/{tenantId}/saml2</td>
+                    <td>Azure AD SAML 登录端点，用于构造跳转 URL。</td>
+                    <td><code>AuthController.cs</code></td>
+                </tr>
+                <tr>
+                    <td><code>WebIndex</code></td>
+                    <td>https://cmctracker.wuxibiologics.com/WuXiBio/loading</td>
+                    <td>SAML 回调处理完成后，后端 302 重定向到前端 Loading 页，并附带加密后的 email 参数 <code>code</code>。</td>
+                    <td><code>AuthController.cs</code></td>
+                </tr>
+                <tr>
+                    <td><code>wxlogicscer</code></td>
+                    <td>Azure AD 联合 SSO 证书（PEM）</td>
+                    <td>用于校验 Azure AD 返回的 SAML Response 签名，并解析出用户 Email。</td>
+                    <td><code>AuthController.cs</code></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="warn">
+            <strong>配置注意：</strong>
+            <code>AuthController</code> 读取的是 <code>ida:RedirectUri</code>，而 Web.config 当前写的是 <code>RedirectUri</code>（无 ida: 前缀）。
+            若运行时 <code>redirectUri</code> 为空，SAML Request 中的 AssertionConsumerServiceURL 可能不正确。建议统一 Key 名称。
+        </div>
+    </div>
+
+    <div class="card" id="flow">
+        <h2>3. 完整调用流程</h2>
+        <div class="flow">[1] 用户打开 /WuXiBio/login
+    ↓
+[2] 默认显示 AAD 登录按钮（IsLocalLogin = false）
+    ↓ 点击「登录」
+[3] 前端 loginController.aad()
+    → GET api/auth/aad-url
+    ↓
+[4] 后端 AuthController.Privacy()
+    → AuthRequest.GetRedirectUrl(authority)
+    → 返回 Azure AD SAML 登录 URL
+    ↓
+[5] 浏览器跳转到 Azure AD（ida:Authority）
+    ↓ 用户输入域账号密码 / MFA
+[6] Azure AD POST SAMLResponse
+    → api/auth/callbacksaml （RedirectUri）
+    ↓
+[7] 后端 AuthController.ADDCallback()
+    → Response(samlCertificate, SAMLResponse).GetEmail()
+    → Redirect WebIndex?code={加密email}
+    ↓
+[8] 前端 /WuXiBio/loading?code=xxx
+    → loadingPageController.init()
+    → GET api/auth/user-login?code=xxx
+    ↓
+[9] 后端 AuthController.UserLoginExt(code)
+    → GetByEmail(解密code)
+    → 加载模块树、生成 JWT、写登录日志
+    ↓
+[10] 前端写入 localStorage（loginUser / authorizationData / ModuleSetting）
+    → 跳转 /WuXiBio/home/dataManage/setting/project</div>
+    </div>
+
+    <div class="card" id="frontend">
+        <h2>4. 前端 HTML / JS</h2>
+
+        <h3><span class="tag">路由</span> app-route.js — Loading 页路由</h3>
+        <div class="file-path">WuXiBioLogics.WebUI/app/route/app-route.js</div>
+        <pre>$stateProvider.state('Loading', {
+    url: '/WuXiBio/loading',
+    views: {
+        "Login": {
+            controller: 'loadingCtrl',
+            templateUrl: '/app/views/login/loadingPage/loadingPage.html'
+        }
+    }
+});</pre>
+
+        <h3><span class="tag">HTML</span> login.html — 登录页（AAD / 本地切换）</h3>
+        <div class="file-path">WuXiBioLogics.WebUI/app/views/login/login.html</div>
+        <pre>&lt;!-- 本地账号输入框，仅 IsLocalLogin=true 时显示 --&gt;
+&lt;div class="input-group" ng-if="IsLocalLogin"&gt;
+    &lt;input type="text" id="acc" data-ng-model="loginData.account" ...&gt;
+&lt;/div&gt;
+&lt;div class="input-group" ng-if="IsLocalLogin"&gt;
+    &lt;input type="password" id="pwd" data-ng-model="loginData.password" ...&gt;
+&lt;/div&gt;
+
+&lt;!-- 默认 AAD 登录按钮 --&gt;
+&lt;div ng-if="!IsLocalLogin" class="login-button" data-ng-click="aad()" ng-disabled="logining"&gt;
+    {{'login_SIGN' | translate}}
+&lt;/div&gt;
+
+&lt;!-- 本地登录按钮 --&gt;
+&lt;div ng-if="IsLocalLogin" class="login-button" data-ng-click="login()" ng-disabled="logining"&gt;
+    {{'login_SIGN' | translate}}
+&lt;/div&gt;
+
+&lt;!-- 切换 AAD / 本地登录 --&gt;
+&lt;label ng-click="localLogin()"&gt;{{loginMsg | translate}}&lt;/label&gt;</pre>
+
+        <h3><span class="tag">HTML</span> loadingPage.html — AAD 回调落地页</h3>
+        <div class="file-path">WuXiBioLogics.WebUI/app/views/login/loadingPage/loadingPage.html</div>
+        <pre>&lt;div class="login-body"&gt;
+    &lt;div class="aad-loading-page"&gt;
+        登录中...
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+
+        <h3><span class="tag">JS</span> loginController.js — 完整 AAD 相关方法</h3>
+        <div class="file-path">WuXiBioLogics.WebUI/app/views/login/loginController.js</div>
+        <pre>$scope.aad = function () {
+    authRes.aad(data => {
+        location.href = data.Data;
+    });
+};
+
+$scope.localLogin = function () {
+    if ($scope.IsLocalLogin == false) {
+        $scope.IsLocalLogin = true;
+        $scope.loginMsg = 'Login_Aad';
+    } else {
+        $scope.IsLocalLogin = false;
+        $scope.loginMsg = 'Login_Local';
+    }
+};</pre>
+
+        <h3><span class="tag">JS</span> loadingPageController.js — 完整文件</h3>
+        <div class="file-path">WuXiBioLogics.WebUI/app/views/login/loadingPage/loadingPageController.js</div>
+        <pre>'use strict';
+app.controller('loadingCtrl', ['$scope', '$rootScope', '$state', '$location', 'authService', 'localStorageService', 'utility', '$interval', 'authRes', '$translate', 'validationRegex', 'T', '$timeout',
+    function ($scope, $rootScope, $state, $location, authService, localStorageService, utility, $interval, authRes, $translate, validationRegex, T, $timeout) {
+        const currentParams = $location.$$search;
+        console.log("==========AAA");
+        $scope.init = () => {
+            console.log("==========",currentParams.code);
+            if (!currentParams.code) return;
+            authRes.addLoginUser({code: currentParams.code}, data => {
+                if (data.ResultCode > 0) {
+                    const issueTime = new Date(data.Data.IssuedTime).format("yyyy-MM-dd hh:mm:ss");
+                    localStorageService.set('licenseInfo', {
+                        licenseRemainDay: Math.ceil(moment(issueTime).diff(moment(), 'minute') / 1440),
+                        licenseExpired: false
+                    });
+                    localStorageService.set('loginUser', data.Data);
+                    localStorageService.set('ModuleSetting', data.Data.LoginOrgModule);
+                    localStorageService.set('authorizationData', { token: data.Token });
+                    $location.path('/WuXiBio/home/dataManage/setting/project');
+                } else {
+                    utility.msgwarning(T.T(data.ResultMessageCode, data.ResultMessage));
+                    $timeout(function () {
+                        location.href = '/WuXiBio/login';
+                    }, 5000);
+                }
+            });
+        };
+
+        $scope.init();
+    }
+]);</pre>
+    </div>
+
+    <div class="card" id="backend">
+        <h2>5. 后台 Controller（AuthController.cs）</h2>
+        <p>文件路径：<code class="inline">WuXiBioLogics.WebAPI/Auth/AuthController.cs</code></p>
+
+        <h3>5.1 配置读取</h3>
+        <pre>private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
+private static string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
+private static string authority = ConfigurationManager.AppSettings["ida:Authority"];
+private static string webIndex = ConfigurationManager.AppSettings["WebIndex"];
+private static string samlCertificate = ConfigurationManager.AppSettings["wxlogicscer"];</pre>
+
+        <h3>5.2 获取 AAD 跳转地址 — Privacy() / api/auth/aad-url</h3>
+        <pre>[Route("aad-url"), HttpGet, AllowAnonymous]
+public IHttpActionResult Privacy()
+{
+    try
+    {
+        AuthRequest authRequest = new AuthRequest(clientId, redirectUri);
+        string samlRedirectUrl = authRequest.GetRedirectUrl(authority);
+        _logger.Info($"aad-url:{samlRedirectUrl}");
+        var response = Ok(new BaseResponse&lt;string&gt;
+        {
+            Data = samlRedirectUrl
+        });
+        return response;
+    }
+    catch (Exception ex)
+    {
+        throw;
+    }
+}</pre>
+
+        <h3>5.3 SAML 回调 — ADDCallback() / api/auth/callbacksaml</h3>
+        <pre>[Route("callbacksaml"), HttpPost, AllowAnonymous]
+public RedirectResult ADDCallback()
+{
+    string responseString = HttpContext.Current.Request.Form["SAMLResponse"];
+    _logger.Info($"callbacksaml:{responseString}");
+    string email = new Response(samlCertificate, responseString).GetEmail();
+    return Redirect(webIndex + "?code=" + SecurityHelper.Encryption(email).Replace("+", "¤"));
+}</pre>
+
+        <h3>5.4 域账号换取系统登录态 — UserLoginExt() / api/auth/user-login</h3>
+        <pre>[Route("user-login"), HttpGet, AllowAnonymous]
+public async Task&lt;IHttpActionResult&gt; UserLoginExt(string code)
+{
+    BaseResponse&lt;User&gt; response = new BaseResponse&lt;User&gt;() { IsSuccess = false, ResultCode = 0 };
+    try
+    {
+        var user = _userService.GetByEmail(SecurityHelper.Decrypt(code)).Data;
+        if (user == null)
+        {
+            response.ResultMessageCode = EnumMsgCode.SE500001.ToString();
+            return Ok(response);
+        }
+
+        var roleInfo = _roleService.GetRole(user.UserId).Data;
+        if (roleInfo != null && !roleInfo.Status)
+        {
+            response.ResultMessageCode = EnumMsgCode.SE500102.ToString();
+            return Ok(response);
+        }
+
+        var ipAddress = Request.GetClientIpAddress();
+        if (ipAddress.Equals("::1")) ipAddress = Computer.IpAddress;
+
+        user.LoginMachineId = Convert.ToInt32(SystemConstant.LABINDEX);
+        LoadModuleTree(user);
+        response.IsSuccess = true;
+        response.ResultCode = 200;
+        response.ResultMessageCode = EnumMsgCode.SE500004.ToString();
+        response.Data = user;
+        response.Token = GenToken(user, user.LoginMachineId);
+        UserLoginHelper.SetCurrentLoginMac(user.UserId, ipAddress);
+        try
+        {
+            var userLoginLog = new UserLoginLog()
+            {
+                UserId = user.UserId,
+                LoginTime = DateTime.Now,
+                LoginIP = Request.GetClientIpAddress(),
+                Browser = Request.GetUserAagent(),
+                PCName = Request.GetClientPCName(),
+                MAC = "00:00:00:00:00:00",
+                OS = Request.GetOSVersion(),
+            };
+            _roleService.SaveUserLoginLog(userLoginLog);
+        }
+        catch (Exception ex)
+        {
+            response.ResultCode = -1;
+            response.ResultMessageCode = EnumMsgCode.SE500104.ToString();
+            _logger.Error("Sign Log", ex);
+        }
+        response.IsSuccess = true;
+        response.ResultCode = 1;
+    }
+    catch (Exception ex)
+    {
+        _logger.Error("Login", ex);
+        throw ex;
+    }
+    return Ok(response);
+}</pre>
+
+        <h3>5.5 JWT 生成 — GenToken()</h3>
+        <pre>private static string GenToken(User user, int machineId)
+{
+    var jwtcreated =
+       Math.Round((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds + 5);
+    var payload = new Dictionary&lt;string, dynamic&gt;
+        {
+            {"iat", jwtcreated},
+            {"userId", user.UserId},
+            {"machineId", machineId}
+        };
+    return JWT.JsonWebToken.Encode(payload, Constants.SecretKey,
+        JWT.JwtHashAlgorithm.HS256);
+}</pre>
+
+        <h3>5.6 加载用户菜单 — LoadModuleTree()</h3>
+        <pre>private void LoadModuleTree(User user)
+{
+    var mt = _roleService.GetOrgRoleModule(user.UserId, user.LoginMachineId).Data;
+    if (mt == null)
+    {
+        return;
+    }
+    user.LoginOrgModule = mt.ToList();
+}</pre>
+    </div>
+
+    <div class="card" id="api">
+        <h2>6. API 资源定义（app-res.js）</h2>
+        <div class="file-path">WuXiBioLogics.WebUI/app/res/app-res.js</div>
+        <pre>app.factory('authRes', ['$resource', function ($resource) {
+    return $resource('api/auth/:id', { id: '@id' },
+        {
+            aad: {
+                method: 'GET',
+                url: 'api/auth/aad-url',
+            },
+            callbacksaml: {
+                method: 'Post',
+                url: 'api/auth/callbacksaml',
+            },
+            login: {
+                method: 'GET',
+                url: 'api/auth/login',
+                ignoreRefreshToken: true,
+            },
+            refreshToken: {
+                method: 'GET',
+                url: 'api/auth/refresh-token',
+                ignoreRefreshToken: true,
+            },
+            addLoginUser: {
+                method: 'GET',
+                url: 'api/auth/user-login'
+            },
+        });
+}])</pre>
+
+        <h3>API 对照表</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>前端调用</th>
+                    <th>HTTP</th>
+                    <th>后端方法</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>authRes.aad()</code></td>
+                    <td>GET api/auth/aad-url</td>
+                    <td>Privacy()</td>
+                    <td>获取 Azure AD SAML 登录 URL</td>
+                </tr>
+                <tr>
+                    <td>Azure AD 表单 POST</td>
+                    <td>POST api/auth/callbacksaml</td>
+                    <td>ADDCallback()</td>
+                    <td>接收 SAMLResponse，解析 Email，重定向到 loading 页</td>
+                </tr>
+                <tr>
+                    <td><code>authRes.addLoginUser({code})</code></td>
+                    <td>GET api/auth/user-login?code=</td>
+                    <td>UserLoginExt()</td>
+                    <td>用 Email 匹配本地用户，返回 User + JWT</td>
+                </tr>
+                <tr>
+                    <td><code>authService.login()</code></td>
+                    <td>GET api/auth/login</td>
+                    <td>Login() / UserLogin()</td>
+                    <td>本地账号密码登录（非 AAD 流程）</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card" id="notes">
+        <h2>7. 注意事项</h2>
+        <ul>
+            <li><strong>用户映射规则：</strong>AAD 登录依赖 SAML 中的 Email 与本地 <code>Auth_User.Email</code> 精确匹配；若 Azure 返回的邮箱在系统中不存在，会返回 <code>SE500001</code>。</li>
+            <li><strong>callbacksaml 不由前端直接调用：</strong>该接口由 Azure AD 服务器 POST 表单触发，前端 <code>authRes.callbacksaml</code> 仅作资源定义，实际流程是浏览器被 302 重定向到 <code>WebIndex</code>。</li>
+            <li><strong>Token 鉴权：</strong>登录成功后 JWT 存入 <code>localStorage.authorizationData</code>，后续请求由 <code>JWTAuth</code> 过滤器校验。</li>
+            <li><strong>本地登录切换：</strong>登录页默认 <code>IsLocalLogin=false</code>，即默认走 AAD；点击底部链接可切换到本地账号登录。</li>
+            <li><strong>IsSpecialCultureTest：</strong>当前代码库中仅定义于 <code>SystemConstant</code>，与 AAD SAML 主链路无直接调用关系。</li>
+            <li><strong>第三方依赖：</strong>SAML 处理依赖 NuGet 包 <code>AspNetSaml 2.1.3</code>（<code>AspNetSaml.dll</code>，命名空间 <code>Saml</code>）。</li>
+        </ul>
+    </div>
+
+    <p style="color: var(--muted); font-size: 13px; margin-top: 24px;">
+        文档基于当前工作区代码自动生成，涉及文件：Web.config、AuthController.cs、login.html、loginController.js、loadingPage.html、loadingPageController.js、app-res.js、app-route.js。
+    </p>
+</div>
+</body>
+</html>

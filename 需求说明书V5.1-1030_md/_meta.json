@@ -1,0 +1,258 @@
+{
+ "doc_title": "需求说明书",
+ "generated_from": "需求说明书V5.1-1030.docx",
+ "modules": [
+  {
+   "file": "01-基本设置.md",
+   "title": "基本设置",
+   "h1": "系统设置",
+   "images": 57,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "02-实验室设置.md",
+   "title": "实验室设置",
+   "h1": "系统设置",
+   "images": 117,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 10
+  },
+  {
+   "file": "03-资源管理.md",
+   "title": "资源管理",
+   "h1": "系统设置",
+   "images": 45,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 2
+  },
+  {
+   "file": "04-项目设置①.md",
+   "title": "项目设置①",
+   "h1": "系统设置",
+   "images": 69,
+   "tables": 2,
+   "own_h1": false,
+   "removed": 27
+  },
+  {
+   "file": "05-数据字典.md",
+   "title": "数据字典",
+   "h1": "系统设置",
+   "images": 10,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "06-工艺设置.md",
+   "title": "工艺设置",
+   "h1": "系统设置",
+   "images": 81,
+   "tables": 2,
+   "own_h1": false,
+   "removed": 7
+  },
+  {
+   "file": "07-数据管理.md",
+   "title": "数据管理",
+   "h1": "数据管理",
+   "images": 2,
+   "tables": 1,
+   "own_h1": true,
+   "removed": 0
+  },
+  {
+   "file": "08-检测分析.md",
+   "title": "检测分析",
+   "h1": "数据管理",
+   "images": 44,
+   "tables": 9,
+   "own_h1": false,
+   "removed": 1
+  },
+  {
+   "file": "09-数据签名操作台①（5.0调整）.md",
+   "title": "数据签名操作台①（5.0调整）",
+   "h1": "数据管理",
+   "images": 11,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 14
+  },
+  {
+   "file": "10-签批记录①.md",
+   "title": "签批记录①",
+   "h1": "数据管理",
+   "images": 3,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "11-设备统计（5.0）.md",
+   "title": "设备统计（5.0）",
+   "h1": "数据管理",
+   "images": 1,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "12-在线数据②.md",
+   "title": "在线数据②",
+   "h1": "数据管理",
+   "images": 9,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "13-离线数据②（3.2）.md",
+   "title": "离线数据②（3.2）",
+   "h1": "数据管理",
+   "images": 3,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "14-批次对比（4.2）.md",
+   "title": "批次对比（4.2）",
+   "h1": "数据管理",
+   "images": 1,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "15-历史培养（4.2）.md",
+   "title": "历史培养（4.2）",
+   "h1": "数据管理",
+   "images": 1,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "16-实验室工作台（5.0调整）（5.1调整）.md",
+   "title": "实验室工作台（5.0调整）（5.1调整）",
+   "h1": "实验室工作台（5.0调整）（5.1调整）",
+   "images": 0,
+   "tables": 1,
+   "own_h1": true,
+   "removed": 0
+  },
+  {
+   "file": "17-个人工作台（4.0）.md",
+   "title": "个人工作台（4.0）",
+   "h1": "实验室工作台（5.0调整）（5.1调整）",
+   "images": 1,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "18-反应器.md",
+   "title": "反应器",
+   "h1": "实验室工作台（5.0调整）（5.1调整）",
+   "images": 377,
+   "tables": 19,
+   "own_h1": false,
+   "removed": 101
+  },
+  {
+   "file": "19-库存&耗材（5.0）.md",
+   "title": "库存&耗材（5.0）",
+   "h1": "实验室工作台（5.0调整）（5.1调整）",
+   "images": 27,
+   "tables": 1,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "20-补料控制台（5.0）.md",
+   "title": "补料控制台（5.0）",
+   "h1": "实验室工作台（5.0调整）（5.1调整）",
+   "images": 5,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "21-取样控制台（5.0）.md",
+   "title": "取样控制台（5.0）",
+   "h1": "实验室工作台（5.0调整）（5.1调整）",
+   "images": 2,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "22-Load Sample（5.0）.md",
+   "title": "Load Sample（5.0）",
+   "h1": "实验室工作台（5.0调整）（5.1调整）",
+   "images": 5,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "23-首页（4.0）.md",
+   "title": "首页（4.0）",
+   "h1": "首页（4.0）",
+   "images": 1,
+   "tables": 0,
+   "own_h1": true,
+   "removed": 0
+  },
+  {
+   "file": "24-顶部导航栏（4.0）.md",
+   "title": "顶部导航栏（4.0）",
+   "h1": "首页（4.0）",
+   "images": 5,
+   "tables": 0,
+   "own_h1": false,
+   "removed": 0
+  },
+  {
+   "file": "25-字段说明与计算公式（3.1）（3.2）.md",
+   "title": "字段说明与计算公式（3.1）（3.2）",
+   "h1": "字段说明与计算公式（3.1）（3.2）",
+   "images": 0,
+   "tables": 7,
+   "own_h1": true,
+   "removed": 5
+  },
+  {
+   "file": "26-补料任务的记录信息（3.1）.md",
+   "title": "补料任务的记录信息（3.1）",
+   "h1": "补料任务的记录信息（3.1）",
+   "images": 1,
+   "tables": 0,
+   "own_h1": true,
+   "removed": 0
+  },
+  {
+   "file": "27-补糖任务的记录信息（3.1）.md",
+   "title": "补糖任务的记录信息（3.1）",
+   "h1": "补糖任务的记录信息（3.1）",
+   "images": 1,
+   "tables": 0,
+   "own_h1": true,
+   "removed": 0
+  },
+  {
+   "file": "28-药明方提供原系统参考文档（3.1）（3.2）（4.1调整）.md",
+   "title": "药明方提供原系统参考文档（3.1）（3.2）（4.1调整）",
+   "h1": "药明方提供原系统参考文档（3.1）（3.2）（4.1调整）",
+   "images": 0,
+   "tables": 1,
+   "own_h1": true,
+   "removed": 0
+  }
+ ]
+}

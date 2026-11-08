@@ -1,0 +1,26 @@
+15:32:52.770 [main] INFO  o.h.v.i.util.Version - [<clinit>,18] - HV000001: Hibernate Validator 9.0.1.Final
+15:32:54.760 [main] WARN  c.f.c.s.h.RequestMetaExceptionHandler - [handleRequestMetaInvalidException,37] - 请求地址'/detect/device-usage/export',公共请求元数据非法：管理写接口必须携带请求头 X-Management-Revision（十进制非负整数字符串）
+15:32:54.769 [main] WARN  c.f.c.s.h.RequestMetaExceptionHandler - [handleRequestMetaInvalidException,37] - 请求地址'/detect/device-usage/export',公共请求元数据非法：managementRevision 必须为十进制非负整数字符串（long 值域内）
+15:32:54.796 [main] WARN  c.f.c.s.h.RequestMetaExceptionHandler - [handleRequestMetaInvalidException,37] - 请求地址'/detect/device-usage/export',公共请求元数据非法：managementRevision 必须为十进制非负整数字符串（long 值域内）
+15:32:54.825 [main] WARN  c.f.c.s.f.RequestMetadataFilter - [doFilterInternal,55] - 请求地址'/detect/device-usage/export',请求头 X-Request-Id 非法（值不回显），以400 INPUT_INVALID拒绝
+
+Test run finished after 10610 ms
+[         5 containers found      ]
+[         0 containers skipped    ]
+[         5 containers started    ]
+[         0 containers aborted    ]
+[         5 containers successful ]
+[         0 containers failed     ]
+[        25 tests found           ]
+[         0 tests skipped         ]
+[        25 tests started         ]
+[         0 tests aborted         ]
+[        25 tests successful      ]
+[         0 tests failed          ]
+
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (D:\Programs\Maven\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended

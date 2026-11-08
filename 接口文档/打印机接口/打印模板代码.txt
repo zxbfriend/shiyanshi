@@ -1,0 +1,34 @@
+  public BaseResponse ZebraPrint(PrintInputModel printInputModel)
+    {
+BaseResponse baseResponse = new BaseResponse();
+try
+        {
+string itemSerialsNumber = printInputModel.ItemSerialsNumber;
+string text = "";
+string text2 = "";
+            text = ((itemSerialsNumber.Length < 14) ? itemSerialsNumber : itemSerialsNumber.Substring(0, 14));
+if (itemSerialsNumber.Length >= 15)
+            {
+                text2 = itemSerialsNumber.Substring(14, itemSerialsNumber.Length - 14);
+            }
+string text3 = $"^XA \r\n                                ^FO{printInputModel.PrinterWidth},{printInputModel.PrinterHeight}^AJN,{printInputModel.PrinterFont},{printInputModel.PrinterFont}^FD{printInputModel.ProjectNo}^FS \r\n                                ^FO{printInputModel.PrinterWidthOne},{printInputModel.PrinterHeightOne}^AJN,{printInputModel.PrinterFontOne},{printInputModel.PrinterFontOne}^FD{text}^FS\r\n                                ^FO{printInputModel.PrinterWidthTwo},{printInputModel.PrinterHeightTwo}^AJN,{printInputModel.PrinterFontTwo},{printInputModel.PrinterFontTwo}^FD{text2}^FS\r\n                                ^FO{printInputModel.PrinterWidthThree},{printInputModel.PrinterHeightThree}^AJN,{printInputModel.PrinterFontThree},{printInputModel.PrinterFontThree}^FD{printInputModel.Time}^FS\r\n                                ^XZ";
+_logger.Info(text3);
+if (printInputModel.Number > 99)
+            {
+                printInputModel.Number = 1;
+            }
+for (int i = 1; i <= printInputModel.Number; i++)
+            {
+bool flag = ZebraPrinterUtil.PrintWithTCP(text3, printInputModel.ZabraIp, printInputModel.ZabraPort, false);
+_logger.Info($"Zebra print{i} result: {flag}");
+            }
+        }
+catch (Exception ex)
+        {
+_logger.Error(ex, "Zebra print Error");
+            baseResponse.IsSuccess = false;
+            baseResponse.ResultCode = -1;
+            baseResponse.ResultMessageCode = EnumMsgCode.SE500424.ToString();
+        }
+        return baseResponse;
+    }

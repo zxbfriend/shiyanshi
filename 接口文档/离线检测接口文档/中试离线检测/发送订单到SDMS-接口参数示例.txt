@@ -1,0 +1,547 @@
+BGA 
+设备1
+serialNumber:FQIB70918672
+privateKey:ttJ0PuwA2BI3fpUYu/ew4F3lEBOz1jWD
+ 
+设备2
+serialNumber:MTM4BE655064
+privateKey:Dh+d3jt8OSQw9GVuPDpKLP3cYAFTB/tC
+
+OSMO
+serialNumber:JGI152C056A9
+privateKey:o0rjVblKzssSZ6+XrkFOcteZ34MMjMfH
+             
+Cedex
+serialNumber:SIO132CF1613
+privateKey:64jn7dvv0svyROSKpGPKctQThwE5zJW2
+
+
+
+ platform-address: http://10.248.161.66:9080
+ app-key: 496126134910977DD718D950A
+ app-secret: eyJhcHBfa2V5IjoiNDk2MTI2MTM0OTEwOTc3REQ3MThEOTUwQSJ9
+
+
+1.发送 BGA 检测订单:/sdms-app/order/set   测试用例入参：
+{
+    "serialNumber": "FQIB70918672",
+    "privateKey": "ttJ0PuwA2BI3fpUYu/ew4F3lEBOz1jWD",
+    "testingOrder": {
+        "sampleId": "SMP-260701-01",
+        "Temp": "33.5"，
+        "DeviceModel": "BGA-Model-X",//无用，以后也不用传了
+        "DeviceNo": "EQ-001"//无用，以后也不用传了
+    }
+}
+
+发送 Osmo检测订单: /sdms-app/order/set  测试用例入参：
+{
+  "serialNumber": "JGI152C056A9",
+  "privateKey": "o0rjVblKzssSZ6+XrkFOcteZ34MMjMfH",
+  "testingOrder": {
+    "sampleId": "SMP-260701-01",
+    "positionNo": "15" //位置
+  }
+}
+
+发送 Cedex检测订单: /sdms-app/order/set
+{
+  "serialNumber": "SIO132CF1613",
+  "privateKey": "64jn7dvv0svyROSKpGPKctQThwE5zJW2",
+  "testingOrder": {
+   "sampleId": "SMP-260701-03",
+    "PositionNo": "5",                 //孔号
+    "cedexCheckBioModel": [
+      {
+        "Name": "GLC2B",
+        "TestingNo": "932",   //序列号
+        "SpecificFactor": "1.0"
+      }
+    ]
+  }
+}
+2.设备校验：/sdms-app/valid-equ
+入参例子：
+{
+  "sampleId": null,
+  "beginTime": null,
+  "endTime": null,
+  "serialNumber": "SIO132CF1613",
+  "privateKey": "64jn7dvv0svyROSKpGPKctQThwE5zJW2"
+}
+
+
+
+
+3.查询订单结果：/sdms-app/order/get
+入参以BGA为例：
+{
+  "sampleId": null,
+  "beginTime": null,
+  "endTime": null,
+  "serialNumber": "SIO132CF1613",
+  "privateKey": "64jn7dvv0svyROSKpGPKctQThwE5zJW2"
+}
+
+出参：
+BGA设备1
+{
+    "msg": "操作成功",
+    "code": 200,
+    "data": [
+        {
+            "itemList": [
+                {
+                    "errorMsg": null,
+                    "name": "aMOD",
+                    "subSampleId": null,
+                    "testingNo": "aMOD",
+                    "unit": null,
+                    "value": "348"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iIID",
+                    "subSampleId": null,
+                    "testingNo": "iIID",
+                    "unit": null,
+                    "value": "F661"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rTYPE",
+                    "subSampleId": null,
+                    "testingNo": "rTYPE",
+                    "unit": null,
+                    "value": "SAMPLE"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rSEQ",
+                    "subSampleId": null,
+                    "testingNo": "rSEQ",
+                    "unit": null,
+                    "value": "9608"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rDATE",
+                    "subSampleId": null,
+                    "testingNo": "rDATE",
+                    "unit": null,
+                    "value": "01Jul26"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rTIME",
+                    "subSampleId": null,
+                    "testingNo": "rTIME",
+                    "unit": null,
+                    "value": "14:40"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iPID",
+                    "subSampleId": null,
+                    "testingNo": "iPID",
+                    "unit": null,
+                    "value": "SMP-260701-01"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iOID",
+                    "subSampleId": null,
+                    "testingNo": "iOID",
+                    "unit": null,
+                    "value": "admin"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rDEVICE",
+                    "subSampleId": null,
+                    "testingNo": "rDEVICE",
+                    "unit": null,
+                    "value": "SYRINGE"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mpH",
+                    "subSampleId": null,
+                    "testingNo": "mpH",
+                    "unit": null,
+                    "value": "6.908"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mPCO2",
+                    "subSampleId": null,
+                    "testingNo": "mPCO2",
+                    "unit": "mmHg",
+                    "value": "47.4"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mPO2",
+                    "subSampleId": null,
+                    "testingNo": "mPO2",
+                    "unit": "mmHg",
+                    "value": "94.5"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mNa+",
+                    "subSampleId": null,
+                    "testingNo": "mNa+",
+                    "unit": "mM/L",
+                    "value": "114"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mK+",
+                    "subSampleId": null,
+                    "testingNo": "mK+",
+                    "unit": "mM/L",
+                    "value": "9.41"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "cpH",
+                    "subSampleId": null,
+                    "testingNo": "cpH",
+                    "unit": null,
+                    "value": "6.908"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "cPCO2",
+                    "subSampleId": null,
+                    "testingNo": "cPCO2",
+                    "unit": "mmHg",
+                    "value": "47.4"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "cPO2",
+                    "subSampleId": null,
+                    "testingNo": "cPO2",
+                    "unit": "mmHg",
+                    "value": "94.5"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iTEMP",
+                    "subSampleId": null,
+                    "testingNo": "iTEMP",
+                    "unit": "mmHg",
+                    "value": "37.0"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mBP",
+                    "subSampleId": null,
+                    "testingNo": "mBP",
+                    "unit": "mmHg",
+                    "value": "754"
+                }
+            ],
+            "resultTime": "2026-07-01 14:50:14",
+            "sampleId": "SMP-260701-01"
+        }
+    ]
+}
+
+BGA设备2
+{
+    "msg": "操作成功",
+    "code": 200,
+    "data": [
+        {
+            "itemList": [
+                {
+                    "errorMsg": null,
+                    "name": "aMOD",
+                    "subSampleId": null,
+                    "testingNo": "aMOD",
+                    "unit": null,
+                    "value": "348"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iIID",
+                    "subSampleId": null,
+                    "testingNo": "iIID",
+                    "unit": null,
+                    "value": "F630"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rTYPE",
+                    "subSampleId": null,
+                    "testingNo": "rTYPE",
+                    "unit": null,
+                    "value": "SAMPLE"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rSEQ",
+                    "subSampleId": null,
+                    "testingNo": "rSEQ",
+                    "unit": null,
+                    "value": "3359"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rDATE",
+                    "subSampleId": null,
+                    "testingNo": "rDATE",
+                    "unit": null,
+                    "value": "01Jul26"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rTIME",
+                    "subSampleId": null,
+                    "testingNo": "rTIME",
+                    "unit": null,
+                    "value": "14:40"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iPID",
+                    "subSampleId": null,
+                    "testingNo": "iPID",
+                    "unit": null,
+                    "value": "SMP-260701-02"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iOID",
+                    "subSampleId": null,
+                    "testingNo": "iOID",
+                    "unit": null,
+                    "value": "admin"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "rDEVICE",
+                    "subSampleId": null,
+                    "testingNo": "rDEVICE",
+                    "unit": null,
+                    "value": "SYRINGE"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mpH",
+                    "subSampleId": null,
+                    "testingNo": "mpH",
+                    "unit": null,
+                    "value": "6.908"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mPCO2",
+                    "subSampleId": null,
+                    "testingNo": "mPCO2",
+                    "unit": "mmHg",
+                    "value": "45.5"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mPO2",
+                    "subSampleId": null,
+                    "testingNo": "mPO2",
+                    "unit": "mmHg",
+                    "value": "94.1"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mNa+",
+                    "subSampleId": null,
+                    "testingNo": "mNa+",
+                    "unit": "mM/L",
+                    "value": "114"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mK+",
+                    "subSampleId": null,
+                    "testingNo": "mK+",
+                    "unit": "mM/L",
+                    "value": "9.15"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "cpH",
+                    "subSampleId": null,
+                    "testingNo": "cpH",
+                    "unit": null,
+                    "value": "6.949"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "cPCO2",
+                    "subSampleId": null,
+                    "testingNo": "cPCO2",
+                    "unit": "mmHg",
+                    "value": "39.1"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "cPO2",
+                    "subSampleId": null,
+                    "testingNo": "cPO2",
+                    "unit": "mmHg",
+                    "value": "75.8"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "iTEMP",
+                    "subSampleId": null,
+                    "testingNo": "iTEMP",
+                    "unit": "mmHg",
+                    "value": "33.5"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "mBP",
+                    "subSampleId": null,
+                    "testingNo": "mBP",
+                    "unit": "mmHg",
+                    "value": "752"
+                }
+            ],
+            "resultTime": "2026-07-01 14:53:53",
+            "sampleId": "SMP-260701-02"
+        }
+    ]
+}
+
+OSMO
+{
+    "msg": "操作成功",
+    "code": 200,
+    "data": [
+        {
+            "itemList": [
+                {
+                    "errorMsg": null,
+                    "name": "OSMO",
+                    "subSampleId": null,
+                    "testingNo": "OSMO",
+                    "unit": "mOsm/kg",
+                    "value": "320"
+                }
+            ],
+            "resultTime": "2026-07-01 15:05:10",
+            "sampleId": "SMP-260701-01"
+        },
+        {
+            "itemList": [
+                {
+                    "errorMsg": null,
+                    "name": "OSMO",
+                    "subSampleId": null,
+                    "testingNo": "OSMO",
+                    "unit": "mOsm/kg",
+                    "value": "321"
+                }
+            ],
+            "resultTime": "2026-07-01 14:03:38",
+            "sampleId": "D0-2783F260614X03"
+        }
+    ]
+}
+Cedex
+{
+    "msg": "操作成功",
+    "code": 200,
+    "data": [
+        {
+            "itemList": [
+                {
+                    "errorMsg": null,
+                    "name": "GLN2B",
+                    "subSampleId": null,
+                    "testingNo": "15",
+                    "unit": "",
+                    "value": "3.29"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "GLC2B",
+                    "subSampleId": null,
+                    "testingNo": "932",
+                    "unit": "",
+                    "value": "7.58"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "LAC2B",
+                    "subSampleId": null,
+                    "testingNo": "933",
+                    "unit": "g/L",
+                    "value": "0.28"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "NH3B",
+                    "subSampleId": null,
+                    "testingNo": "922",
+                    "unit": "",
+                    "value": "1.23"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "GLC2D",
+                    "subSampleId": null,
+                    "testingNo": "901",
+                    "unit": "",
+                    "value": "7.86"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "IGGHB",
+                    "subSampleId": null,
+                    "testingNo": "926",
+                    "unit": "",
+                    "value": "83"
+                }
+            ],
+            "resultTime": "2026-07-01 15:19:41",
+            "sampleId": "D0-X2269F260602X05"
+        },
+        {
+            "itemList": [
+                {
+                    "errorMsg": null,
+                    "name": "GLC2B",
+                    "subSampleId": null,
+                    "testingNo": "932",
+                    "unit": "",
+                    "value": "5.73"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "LAC2B",
+                    "subSampleId": null,
+                    "testingNo": "933",
+                    "unit": "g/L",
+                    "value": "0.17"
+                },
+                {
+                    "errorMsg": null,
+                    "name": "NH3B",
+                    "subSampleId": null,
+                    "testingNo": "922",
+                    "unit": "",
+                    "value": "3.32"
+                }
+            ],
+            "resultTime": "2026-07-01 14:14:48",
+            "sampleId": "D0-2783F260614X03"
+        }
+    ]
+}
+
+
+

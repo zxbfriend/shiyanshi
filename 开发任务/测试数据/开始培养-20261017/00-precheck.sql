@@ -1,0 +1,12 @@
+SELECT DATABASE() AS target_database,VERSION() AS mysql_version,@@session.time_zone AS session_timezone,DATE(CONVERT_TZ(UTC_TIMESTAMP(),'+00:00','+08:00')) AS business_date;
+SELECT table_name FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name IN ('run_start_culture_session','run_start_culture_receipt','run_workflow_step_visit','run_workflow_step_visit_member','alarm_start_culture_collection');
+SELECT table_name,column_name FROM information_schema.columns WHERE table_schema=DATABASE() AND ((table_name='res_culture' AND column_name IN ('initial_weight_source_kind','initial_weight_workflow_id','cell_type_id','cell_type_name','cell_type_value','cell_type_prefix','cell_type_workflow_id','cell_type_effective_at','start_completed_workflow_id')) OR (table_name='run_workflow_instance' AND column_name IN ('workflow_kind','page_session_id','batch_id','business_date','deadline_at','active_start_culture_id','completed_start_culture_id')));
+SELECT c.culture_id,c.initial_weight_g,c.initial_weight_candidate_id,cc.state AS candidate_state FROM res_culture c LEFT JOIN res_culture_change_candidate cc ON cc.candidate_id=c.initial_weight_candidate_id AND cc.culture_id=c.culture_id WHERE c.initial_weight_g IS NOT NULL;
+SELECT lab_id,lab_name,lab_type,status,del_flag FROM lab_lab WHERE lab_id IN (11001,11002);
+SELECT node_id,node_code,status,del_flag FROM workflow_node WHERE node_id=3;
+SELECT lab_id,node_id FROM lab_workflow_node WHERE lab_id IN (11001,11002) AND node_id=3;
+SELECT subflow_id,node_id,subflow_code,sort_order FROM workflow_subflow WHERE node_id=3 OR subflow_id IN (40011,40012);
+SELECT step_id FROM workflow_step WHERE step_id IN (40021,40022,40023,40024,40031,40032,40033,40034);
+SELECT project_id,project_code FROM res_project WHERE project_id=861017001 OR project_code='SC-20261017';
+SELECT user_id,user_name,status,del_flag FROM sys_user WHERE user_id=1;
+SELECT dict_code,dict_label,dict_value,status FROM sys_dict_data WHERE dict_type='smp_cell_type';

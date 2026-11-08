@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SubSystem Named Pipe 接口文档</title>
+  <style>
+    :root {
+      --bg: #f8f9fb;
+      --card: #ffffff;
+      --text: #1a1a2e;
+      --muted: #5c6370;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --code-bg: #f1f5f9;
+      --sidebar-w: 260px;
+      --accent-bga: #059669;
+      --accent-cedex: #7c3aed;
+      --accent-osmo: #d97706;
+      --accent-vicell: #dc2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    nav.sidebar {
+      width: var(--sidebar-w);
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      overflow-y: auto;
+      padding: 20px 0;
+      z-index: 100;
+    }
+    nav.sidebar h2 {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 0 20px 12px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    nav.sidebar ul { list-style: none; }
+    nav.sidebar a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      border-left: 3px solid transparent;
+    }
+    nav.sidebar a:hover { background: var(--primary-light); color: var(--primary); }
+    nav.sidebar a.sub { padding-left: 32px; font-size: 12px; color: var(--muted); }
+    main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 32px 48px 64px;
+      max-width: 1100px;
+    }
+    header.doc-header {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+    }
+    header.doc-header h1 { font-size: 28px; margin-bottom: 8px; }
+    header.doc-header .meta { color: var(--muted); font-size: 13px; }
+    section { margin-bottom: 40px; }
+    h2 {
+      font-size: 22px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      scroll-margin-top: 20px;
+    }
+    h3 { font-size: 17px; margin: 24px 0 12px; color: var(--primary); }
+    h4 { font-size: 15px; margin: 20px 0 10px; }
+    p { margin-bottom: 10px; }
+    .pipe-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    thead { background: #f1f5f9; }
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafbfc; }
+    code, .code-block {
+      font-family: Consolas, "Courier New", monospace;
+      background: var(--code-bg);
+      border-radius: 4px;
+    }
+    code { padding: 1px 6px; font-size: 12px; }
+    pre.code-block {
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: 10px 0 16px;
+      border: 1px solid var(--border);
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .note {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      margin: 12px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+    }
+    .tag { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+    .tag-req { background: #dbeafe; color: #1d4ed8; }
+    .tag-opt { background: #f3f4f6; color: #6b7280; }
+    .subsystem-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot-bga { background: var(--accent-bga); }
+    .dot-cedex { background: var(--accent-cedex); }
+    .dot-osmo { background: var(--accent-osmo); }
+    .dot-vicell { background: var(--accent-vicell); }
+    @media print {
+      nav.sidebar { display: none; }
+      main { margin-left: 0; max-width: 100%; }
+    }
+    @media (max-width: 900px) {
+      nav.sidebar { display: none; }
+      main { margin-left: 0; padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar">
+    <h2>目录</h2>
+    <ul>
+      <li><a href="#sec1">1. 通信协议总览</a></li>
+      <li><a href="#sec2">2. NamePipeResult</a></li>
+      <li><a href="#sec3">3. BGA</a></li>
+      <li><a href="#sec3-1" class="sub">接口一览</a></li>
+      <li><a href="#sec4">4. Cedex 配置</a></li>
+      <li><a href="#sec5">5. Cedex 订单</a></li>
+      <li><a href="#sec6">6. OSMO 6060</a></li>
+      <li><a href="#sec7">7. ViCell XR</a></li>
+      <li><a href="#sec8">8. 状态码参考</a></li>
+      <li><a href="#sec9">9. 调用示例</a></li>
+      <li><a href="#sec10">10. 源文件索引</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <header class="doc-header">
+      <h1>SubSystem Named Pipe 接口文档</h1>
+      <p class="meta">文档来源：BGAService、CedexOrderService、CedexService、OsmoSixService、ViCellService &nbsp;|&nbsp; 生成日期：2026-06-15</p>
+    </header>
+
+    <!-- Section 1 -->
+    <section id="sec1">
+      <h2>1. 通信协议总览</h2>
+
+      <h3>1.1 管道地址（Pipe Name）</h3>
+      <table>
+        <thead><tr><th>子系统</th><th>服务类</th><th>Pipe 名称</th><th>启动方法</th></tr></thead>
+        <tbody>
+          <tr><td>BGA</td><td><code>BGAService</code></td><td><code>BGAService</code></td><td><code>StartServerPipe("BGAService")</code></td></tr>
+          <tr><td>Cedex 设备配置</td><td><code>CedexService</code></td><td><code>CedexPipe</code></td><td><code>StartServerPipe("CedexPipe")</code></td></tr>
+          <tr><td>Cedex 订单</td><td><code>CedexOrderService</code></td><td><code>CedexOrderPipe</code></td><td><code>StartServerPipe("CedexOrderPipe")</code></td></tr>
+          <tr><td>OSMO 6060</td><td><code>OsmoSixService</code></td><td><code>OsmoSixPipe</code></td><td><code>StartServerPipe("OsmoSixPipe")</code></td></tr>
+          <tr><td>ViCell XR</td><td><code>ViCellService</code></td><td><code>VicellPipe</code></td><td><code>StartServerPipe("VicellPipe")</code></td></tr>
+        </tbody>
+      </table>
+      <p><strong>客户端连接方式：</strong>使用 Windows Named Pipe，管道名即为上表中的 Pipe 名称（本地连接）。</p>
+
+      <h3>1.2 请求报文格式</h3>
+      <pre class="code-block">{command}|{payload}</pre>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>command</td><td>string</td><td>命令名称，与各 Service 中 <code>AddProcessor</code> 注册名一致</td></tr>
+          <tr><td>payload</td><td>string</td><td>业务参数；无参数时传空字符串，但 <strong>必须保留分隔符 <code>|</code></strong></td></tr>
+        </tbody>
+      </table>
+      <p><strong>示例：</strong></p>
+      <pre class="code-block">log_in_check|
+result|J
+log_in|[{"SampleID":"S001","RackNo":"J","TubeNo":1}]</pre>
+      <div class="note">若请求不符合 <code>command|payload</code> 两段格式，返回 <code>SubsystemParamsError</code>。</div>
+
+      <h3>1.3 响应报文格式</h3>
+      <pre class="code-block">{CommandName}|{ErrorCode}|{ResultDataJSON}</pre>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>CommandName</td><td>string</td><td>回显请求命令名</td></tr>
+          <tr><td>ErrorCode</td><td>long（十六进制字符串）</td><td>由 ErrorCodeLevel + ErrorType + SubsystemErrorNumber 拼接后转 16 进制</td></tr>
+          <tr><td>ResultDataJSON</td><td>string</td><td>成功或失败时的附加数据 JSON；无数据时为空字符串</td></tr>
+        </tbody>
+      </table>
+      <p><strong>ErrorCode 组成：</strong></p>
+      <table>
+        <thead><tr><th>组成部分</th><th>格式</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>ErrorCodeLevel</td><td>2 位十六进制</td><td><code>SuccessLevel</code> = 成功；<code>ErrorLevel</code> = 失败</td></tr>
+          <tr><td>ErrorType</td><td>2 位十六进制</td><td>通常为 <code>SubsystemErrorType</code></td></tr>
+          <tr><td>SubsystemErrorNumber</td><td>4 位十六进制</td><td>具体业务错误码枚举值</td></tr>
+          <tr><td>后缀</td><td><code>00000000</code></td><td>固定填充</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 2 -->
+    <section id="sec2">
+      <h2>2. 公共响应对象 NamePipeResult</h2>
+      <table>
+        <thead><tr><th>属性/字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>CommandName</td><td>string</td><td>命令名称（内部赋值，响应时回显）</td></tr>
+          <tr><td>ErrorLevel</td><td>ErrorCodeLevel</td><td>错误级别（只读）</td></tr>
+          <tr><td>_errorCodeLevel</td><td>ErrorCodeLevel</td><td>错误级别</td></tr>
+          <tr><td>_errorType</td><td>ErrorType</td><td>错误类型</td></tr>
+          <tr><td>_subsystemErrorNumber</td><td>SubsystemErrorNumber</td><td>子系统错误编号</td></tr>
+          <tr><td>_resultData</td><td>object</td><td>附加返回数据，序列化为 JSON 写入响应第三段</td></tr>
+        </tbody>
+      </table>
+      <p><strong>构造函数：</strong></p>
+      <table>
+        <thead><tr><th>签名</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>NamePipeResult(SubsystemErrorNumber, object resultData = null)</code></td><td>根据 errorNumber 是否为 0 自动判定 Success/Error</td></tr>
+          <tr><td><code>NamePipeResult(ErrorCodeLevel, ErrorType, SubsystemErrorNumber, object resultData = null)</code></td><td>完整指定各级错误信息</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 3 BGA -->
+    <section id="sec3">
+      <div class="subsystem-header"><span class="dot dot-bga"></span><h2>3. BGA 子系统（Pipe: <span class="pipe-badge">BGAService</span>）</h2></div>
+
+      <h3 id="sec3-1">3.1 接口一览</h3>
+      <table>
+        <thead><tr><th>命令</th><th>入参 payload</th><th>出参 ResultData</th><th>功能说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>log_in_check</code></td><td>无（空）</td><td>无 / 错误码</td><td>登录前可用性检查（含校准、测样间隔等）</td></tr>
+          <tr><td><code>log_in</code></td><td><code>RequestOrderModel</code> JSON</td><td>无</td><td>Core Service 自动下单（Mode=3）</td></tr>
+          <tr><td><code>sendOrder</code></td><td><code>RequestOrderModel</code> JSON</td><td>无</td><td>UI 手动下单</td></tr>
+          <tr><td><code>cancel</code></td><td>无</td><td>无</td><td>取消当前待处理订单（Status 1→99）</td></tr>
+          <tr><td><code>cancel_sample</code></td><td>sampleId 字符串</td><td>无</td><td>按 SampleID 取消样品</td></tr>
+          <tr><td><code>result</code></td><td>无</td><td>int（任务状态码）</td><td>查询最近一次检测任务状态</td></tr>
+          <tr><td><code>refreshResult</code></td><td>sampleId JSON 字符串</td><td>无</td><td>刷新指定样品检测结果</td></tr>
+          <tr><td><code>queryPortName</code></td><td>无</td><td><code>List&lt;string&gt;</code> 串口列表</td><td>查询可用 COM 口</td></tr>
+          <tr><td><code>saveDevice</code></td><td><code>TestingBGADevice</code> JSON</td><td>无 / IP 字符串</td><td>保存/更新 BGA 设备串口配置</td></tr>
+        </tbody>
+      </table>
+
+      <h3>3.2 命令详情</h3>
+      <div class="card">
+        <h4>log_in_check</h4>
+        <table>
+          <tbody>
+            <tr><th style="width:120px">请求</th><td><code>log_in_check|</code></td></tr>
+            <tr><th>成功</th><td><code>SubsystemSuccess</code></td></tr>
+            <tr><th>失败</th><td>见下方常见错误码</td></tr>
+          </tbody>
+        </table>
+        <p><strong>常见失败错误码：</strong></p>
+        <table>
+          <thead><tr><th>SubsystemErrorNumber</th><th>含义</th></tr></thead>
+          <tbody>
+            <tr><td>BGANotRunning</td><td>设备未配置或未运行</td></tr>
+            <tr><td>BGADeviceException</td><td>设备号/型号异常</td></tr>
+            <tr><td>BGAOtherSampleTesting</td><td>有其他样品正在检测或测样间隔不足</td></tr>
+            <tr><td>BGATwoPointCheckDoing</td><td>两点校准进行中或即将到期</td></tr>
+            <tr><td>BGATwoPointCheckMissing</td><td>缺少两点校准记录</td></tr>
+            <tr><td>BGAOnePointCheckMissing</td><td>缺少一点校准记录</td></tr>
+            <tr><td>BGAOnePointCheckDoing</td><td>一点校准进行中</td></tr>
+            <tr><td>BGAFiveMintusTip</td><td>5 分钟校准提示</td></tr>
+            <tr><td>BGASampleSended</td><td>样品已发送</td></tr>
+            <tr><td>BGAJsonException</td><td>JSON 解析异常</td></tr>
+            <tr><td>BGASubSystemError</td><td>系统异常</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h4>log_in / sendOrder / cancel / cancel_sample / result / refreshResult / queryPortName / saveDevice</h4>
+        <table>
+          <thead><tr><th>命令</th><th>请求格式</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>log_in</td><td><code>log_in|{RequestOrderModel JSON}</code></td><td>自动填充 BGADeviceID、Mode=3、Created_by=0；TEMP 默认 33</td></tr>
+            <tr><td>sendOrder</td><td><code>sendOrder|{RequestOrderModel JSON}</code></td><td>不强制 Mode=3，会保存 Order 信息</td></tr>
+            <tr><td>cancel</td><td><code>cancel|</code></td><td>成功 SubsystemSuccess；失败 BGASubSystemError</td></tr>
+            <tr><td>cancel_sample</td><td><code>cancel_sample|{sampleId}</code></td><td>sampleId 为样品编号字符串（非 JSON）</td></tr>
+            <tr><td>result</td><td><code>result|</code></td><td>出参 int：最近任务 Status；0 无记录；7~14 映射为 7</td></tr>
+            <tr><td>refreshResult</td><td><code>refreshResult|"{sampleId}"</code></td><td>Status 3/5/7 且有 SEQNo 时发送 SMP_REQ</td></tr>
+            <tr><td>queryPortName</td><td><code>queryPortName|</code></td><td>出参 List&lt;string&gt;；失败 BGAUnKownPort</td></tr>
+            <tr><td>saveDevice</td><td><code>saveDevice|{TestingBGADevice JSON}</code></td><td>失败 BGASubDeviceMacOrIpOrDeviceNoRepeat / BGAJsonException</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.3 数据模型</h3>
+      <h4>RequestOrderModel</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>必填</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>TestingBGAOrderID</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>订单 ID，0 表示新建</td></tr>
+          <tr><td>SampleID</td><td>string</td><td><span class="tag tag-req">是</span></td><td>样品编号</td></tr>
+          <tr><td>Position</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>位置</td></tr>
+          <tr><td>TEMP</td><td>decimal?</td><td><span class="tag tag-opt">否</span></td><td>温度，默认 33℃</td></tr>
+          <tr><td>SaveStatus</td><td>bool?</td><td><span class="tag tag-opt">否</span></td><td>保存状态</td></tr>
+          <tr><td>BGADeviceID</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>设备 ID（服务端可自动填充）</td></tr>
+          <tr><td>BatchID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 ID</td></tr>
+          <tr><td>BatchOPID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 OP ID</td></tr>
+          <tr><td>IsDelete</td><td>bool</td><td><span class="tag tag-opt">否</span></td><td>删除标记</td></tr>
+          <tr><td>Mode</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>模式；log_in 时强制为 3</td></tr>
+          <tr><td>Created_by</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>创建人</td></tr>
+          <tr><td>Creation_time</td><td>DateTime?</td><td><span class="tag tag-opt">否</span></td><td>创建时间</td></tr>
+          <tr><td>Status</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>状态</td></tr>
+        </tbody>
+      </table>
+
+      <h4>TestingBGADevice</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>BGADeviceID</td><td>int</td><td>设备主键，&gt;0 为更新</td></tr>
+          <tr><td>SubSystemMAC</td><td>string</td><td>子系统 MAC（保存时自动填充）</td></tr>
+          <tr><td>SubSystemIP</td><td>string</td><td>子系统 IP</td></tr>
+          <tr><td>SubSystemDeviceNo</td><td>string</td><td>子系统设备号</td></tr>
+          <tr><td>TestingEquipmentID</td><td>int</td><td>检测设备 ID</td></tr>
+          <tr><td>DeviceNo</td><td>string</td><td>BGA 仪器编号</td></tr>
+          <tr><td>DeviceModel</td><td>string</td><td>BGA 仪器型号</td></tr>
+          <tr><td>SerialPortName</td><td>string</td><td>串口名</td></tr>
+          <tr><td>SerialPortBaudRate</td><td>int?</td><td>波特率</td></tr>
+          <tr><td>SerialPortDataBits</td><td>int?</td><td>数据位</td></tr>
+          <tr><td>SerialPortStopBits</td><td>string</td><td>停止位</td></tr>
+          <tr><td>SerialPortParity</td><td>string</td><td>校验位</td></tr>
+          <tr><td>SerialPortFlowType</td><td>string</td><td>流控</td></tr>
+          <tr><td>IsDelete</td><td>bool</td><td>删除标记</td></tr>
+          <tr><td>Created_by</td><td>int?</td><td>创建人</td></tr>
+          <tr><td>Creation_time</td><td>DateTime?</td><td>创建时间</td></tr>
+          <tr><td>Last_updated_by</td><td>int?</td><td>更新人</td></tr>
+          <tr><td>Last_update_time</td><td>DateTime?</td><td>更新时间</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 4 Cedex Config -->
+    <section id="sec4">
+      <div class="subsystem-header"><span class="dot dot-cedex"></span><h2>4. Cedex 设备配置子系统（Pipe: <span class="pipe-badge">CedexPipe</span>）</h2></div>
+
+      <h3>4.1 接口一览</h3>
+      <table>
+        <thead><tr><th>命令</th><th>入参 payload</th><th>出参 ResultData</th><th>功能说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>get_port_names</code></td><td>无</td><td><code>List&lt;string&gt;</code></td><td>获取可用串口列表</td></tr>
+          <tr><td><code>save_subsystem_device</code></td><td><code>CedexPortModel</code> JSON</td><td>无 / SubSystemIP</td><td>保存/更新 Cedex 设备配置</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4.2 命令详情</h3>
+      <table>
+        <thead><tr><th>命令</th><th>请求</th><th>失败码</th></tr></thead>
+        <tbody>
+          <tr><td>get_port_names</td><td><code>get_port_names|</code></td><td>—</td></tr>
+          <tr><td>save_subsystem_device</td><td><code>save_subsystem_device|{CedexPortModel JSON}</code></td><td>CedexSubSystemDeviceRepeat / CedexSubSystemDeviceMacAddressRepeat / CedexSubSystemComportError</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4.3 CedexPortModel</h3>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>CedexDeviceID</td><td>int</td><td>设备主键，&gt;0 为更新</td></tr>
+          <tr><td>SubSystemIP</td><td>string</td><td>子系统 IP</td></tr>
+          <tr><td>DeviceIP</td><td>string</td><td>Cedex 设备 IP</td></tr>
+          <tr><td>SubSystemMAC</td><td>string</td><td>子系统 MAC（保存时自动填充）</td></tr>
+          <tr><td>SubSystemDeviceNo</td><td>string</td><td>子系统设备号</td></tr>
+          <tr><td>TestingEquipmentID</td><td>int</td><td>检测设备 ID</td></tr>
+          <tr><td>SerialPortName</td><td>string</td><td>串口名</td></tr>
+          <tr><td>SerialPortBaudRate</td><td>int?</td><td>波特率</td></tr>
+          <tr><td>SerialPortDataBits</td><td>int?</td><td>数据位</td></tr>
+          <tr><td>SerialPortStopBits</td><td>string</td><td>停止位</td></tr>
+          <tr><td>SerialPortParity</td><td>string</td><td>校验位</td></tr>
+          <tr><td>SerialPortFlowType</td><td>string</td><td>流控</td></tr>
+          <tr><td>IsDelete</td><td>bool</td><td>删除标记</td></tr>
+          <tr><td>Created_by</td><td>int?</td><td>创建人</td></tr>
+          <tr><td>Creation_time</td><td>DateTime?</td><td>创建时间</td></tr>
+          <tr><td>Last_updated_by</td><td>int?</td><td>更新人</td></tr>
+          <tr><td>Last_update_time</td><td>DateTime?</td><td>更新时间</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 5 Cedex Order -->
+    <section id="sec5">
+      <div class="subsystem-header"><span class="dot dot-cedex"></span><h2>5. Cedex 订单子系统（Pipe: <span class="pipe-badge">CedexOrderPipe</span>）</h2></div>
+
+      <h3>5.1 接口一览</h3>
+      <table>
+        <thead><tr><th>命令</th><th>入参 payload</th><th>出参 ResultData</th><th>功能说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>log_in_check</code></td><td>无</td><td>无</td><td>检查 Cedex 是否运行且未在处理订单</td></tr>
+          <tr><td><code>log_in</code></td><td><code>List&lt;CoreTestingModel&gt;</code> JSON</td><td>无</td><td>Core Service 自动下单</td></tr>
+          <tr><td><code>send_orders</code></td><td><code>List&lt;TestingOrder&gt;</code> JSON</td><td>无</td><td>UI 手动批量下单</td></tr>
+          <tr><td><code>result</code></td><td>rack 字符串</td><td>int</td><td>查询指定 Rack 最近任务状态</td></tr>
+          <tr><td><code>empty_racks</code></td><td>无</td><td>string（逗号分隔 Rack 字母）</td><td>查询空闲 Rack 列表</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.2 命令详情</h3>
+      <table>
+        <thead><tr><th>命令</th><th>请求</th><th>出参 / 失败</th></tr></thead>
+        <tbody>
+          <tr><td>log_in_check</td><td><code>log_in_check|</code></td><td>前置：IsCedexRunning 且 SendOrderProcess≠True；失败 CedexNotRunning</td></tr>
+          <tr><td>log_in</td><td><code>log_in|[{CoreTestingModel},...]</code></td><td>校验 Rack/SampleID；失败 CedexSubSystemRackNotEmpty 等</td></tr>
+          <tr><td>send_orders</td><td><code>send_orders|[{TestingOrder},...]</code></td><td>另校验 Tube 占用；失败 CedexSubSystemTubeNotEmpty</td></tr>
+          <tr><td>result</td><td><code>result|{rack}</code></td><td>int：0 无任务；5 检测中；7 已完成</td></tr>
+          <tr><td>empty_racks</td><td><code>empty_racks|</code></td><td>string：空闲 Rack（J/K/L/M/N 中未占用的）</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.3 数据模型</h3>
+      <h4>CoreTestingModel</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>必填</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>SampleID</td><td>string</td><td><span class="tag tag-req">是</span></td><td>样品编号</td></tr>
+          <tr><td>RackNo</td><td>string</td><td><span class="tag tag-req">是</span></td><td>Rack 字母（J/K/L/M/N）</td></tr>
+          <tr><td>TubeNo</td><td>int</td><td><span class="tag tag-req">是</span></td><td>试管位置号</td></tr>
+          <tr><td>BatchId</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 ID</td></tr>
+          <tr><td>BatchOPId</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 OP ID；为空时走 MSAT 检测项</td></tr>
+          <tr><td>Code</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>OP 子步骤 Code</td></tr>
+        </tbody>
+      </table>
+
+      <h4>TestingOrder</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>必填</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>SampleID</td><td>string</td><td><span class="tag tag-req">是</span></td><td>样品编号</td></tr>
+          <tr><td>DeviceId</td><td>int</td><td><span class="tag tag-req">是</span></td><td>Cedex 设备 ID</td></tr>
+          <tr><td>BatchID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 ID</td></tr>
+          <tr><td>BatchOPID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 OP ID</td></tr>
+          <tr><td>RackPostionNo</td><td>int</td><td><span class="tag tag-req">是</span></td><td>Rack 枚举值（EnumCedexPostion）</td></tr>
+          <tr><td>TubePostionNo</td><td>int</td><td><span class="tag tag-req">是</span></td><td>试管位置</td></tr>
+          <tr><td>SampleRemake</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>样品备注</td></tr>
+          <tr><td>ManualDilutionFactor</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>手动稀释因子，默认 1</td></tr>
+          <tr><td>UpdateBy</td><td>int</td><td><span class="tag tag-req">是</span></td><td>更新人</td></tr>
+          <tr><td>testingOrderItems</td><td>List&lt;TestingOrderItem&gt;</td><td><span class="tag tag-req">是</span></td><td>检测项目列表</td></tr>
+        </tbody>
+      </table>
+
+      <h4>TestingOrderItem / TestingOrderDefItem</h4>
+      <table>
+        <thead><tr><th>对象</th><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3">TestingOrderItem</td><td>TestingNo</td><td>string</td><td>检测项编号</td></tr>
+          <tr><td>SpecticFactor</td><td>int</td><td>系数，默认 1</td></tr>
+          <tr><td>Code</td><td>string</td><td>OP Code</td></tr>
+          <tr><td rowspan="4">TestingOrderDefItem</td><td>IsCheck</td><td>bool</td><td>是否选中</td></tr>
+          <tr><td>TestingNo</td><td>string</td><td>检测项编号</td></tr>
+          <tr><td>TestingName</td><td>string</td><td>检测项名称</td></tr>
+          <tr><td>SpecticFactor</td><td>int</td><td>系数，默认 1</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 6 OSMO -->
+    <section id="sec6">
+      <div class="subsystem-header"><span class="dot dot-osmo"></span><h2>6. OSMO 6060 子系统（Pipe: <span class="pipe-badge">OsmoSixPipe</span>）</h2></div>
+
+      <h3>6.1 接口一览</h3>
+      <table>
+        <thead><tr><th>命令</th><th>入参 payload</th><th>出参 ResultData</th><th>功能说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>log_in_check</code></td><td>无</td><td>无</td><td>登录前检查设备与连接状态</td></tr>
+          <tr><td><code>log_in</code></td><td><code>List&lt;OsmoPROResult&gt;</code> JSON</td><td>无</td><td>Core Service 自动登录样品（Mode=3）</td></tr>
+          <tr><td><code>order</code></td><td><code>List&lt;OsmoPROResult&gt;</code> JSON</td><td>无</td><td>UI 手动下单并启动检测</td></tr>
+          <tr><td><code>cancel</code></td><td>无</td><td>无</td><td>取消当前任务</td></tr>
+          <tr><td><code>start</code></td><td>无</td><td>无</td><td>启动检测（DB 状态更新）</td></tr>
+          <tr><td><code>result</code></td><td>无</td><td>int</td><td>查询最近任务状态</td></tr>
+          <tr><td><code>del_order</code></td><td>sampleID 字符串</td><td>无</td><td>删除指定样品订单</td></tr>
+          <tr><td><code>queryPortName</code></td><td>无</td><td><code>List&lt;string&gt;</code></td><td>查询可用串口</td></tr>
+          <tr><td><code>saveDevice</code></td><td><code>OSMODevice</code> JSON</td><td>无 / SubSystemIP</td><td>保存设备配置</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.2 命令详情</h3>
+      <table>
+        <thead><tr><th>命令</th><th>请求</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>log_in_check</td><td><code>log_in_check|</code></td><td>需 ConnectStatus=true、IsFinish=true；失败 OSMONotRunning 等</td></tr>
+          <tr><td>log_in</td><td><code>log_in|[{OsmoPROResult},...]</code></td><td>Mode=3，Created_by=0；失败 OSMOSubSystemRepeatSampleId</td></tr>
+          <tr><td>order</td><td><code>order|[{OsmoPROResult},...]</code></td><td>插入 Order、创建 Task、Start、LabDevice 状态=2</td></tr>
+          <tr><td>cancel / start</td><td><code>cancel|</code> / <code>start|</code></td><td>SubsystemSuccess</td></tr>
+          <tr><td>result</td><td><code>result|</code></td><td>int 映射状态；IsFinish 且 Status=5 时为 5</td></tr>
+          <tr><td>del_order</td><td><code>del_order|{sampleID}</code></td><td>软删除 Order 和 TaskDtl</td></tr>
+          <tr><td>queryPortName</td><td><code>queryPortName|</code></td><td>List&lt;string&gt;；无串口 BGAUnKownPort</td></tr>
+          <tr><td>saveDevice</td><td><code>saveDevice|{OSMODevice JSON}</code></td><td>失败 OSMOSubSystemDeviceNoRepeat 等</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6.3 数据模型</h3>
+      <h4>OsmoPROResult</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>必填</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>TestingOSMOTaskID</td><td>ulong</td><td><span class="tag tag-opt">否</span></td><td>任务 ID（服务端填充）</td></tr>
+          <tr><td>ItemID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>项目 ID</td></tr>
+          <tr><td>BatchID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 ID</td></tr>
+          <tr><td>BatchOPID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 OP ID</td></tr>
+          <tr><td>OSMODeviceID</td><td>int</td><td><span class="tag tag-req">是</span></td><td>OSMO 设备 ID</td></tr>
+          <tr><td>SampleID</td><td>string</td><td><span class="tag tag-req">是</span></td><td>样品编号</td></tr>
+          <tr><td>PositionNo</td><td>int</td><td><span class="tag tag-req">是</span></td><td>位置号</td></tr>
+          <tr><td>ResultValue</td><td>decimal?</td><td><span class="tag tag-opt">否</span></td><td>检测结果值</td></tr>
+          <tr><td>ResultUOM</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>结果单位</td></tr>
+          <tr><td>ResultTime</td><td>DateTime?</td><td><span class="tag tag-opt">否</span></td><td>结果时间</td></tr>
+          <tr><td>LogInTime</td><td>DateTime?</td><td><span class="tag tag-opt">否</span></td><td>登录时间</td></tr>
+          <tr><td>Status</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>状态字符串</td></tr>
+          <tr><td>Created_by</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>创建人</td></tr>
+          <tr><td>Mode</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>模式（log_in 时为 3）</td></tr>
+          <tr><td>DeviceNo</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>设备号</td></tr>
+        </tbody>
+      </table>
+
+      <h4>OSMODevice</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>OSMODeviceID</td><td>int</td><td>设备主键，&gt;0 为更新</td></tr>
+          <tr><td>SubSystemDeviceNo</td><td>string</td><td>子系统设备号</td></tr>
+          <tr><td>SubSystemMAC</td><td>string</td><td>子系统 MAC</td></tr>
+          <tr><td>TestingEquipmentID</td><td>int</td><td>检测设备 ID</td></tr>
+          <tr><td>SubSystemIP</td><td>string</td><td>子系统 IP</td></tr>
+          <tr><td>OSMOIP</td><td>string</td><td>OSMO 设备 IP</td></tr>
+          <tr><td>OSMOPort</td><td>int?</td><td>OSMO 端口</td></tr>
+          <tr><td>IsDelete</td><td>bool</td><td>删除标记</td></tr>
+          <tr><td>Created_by</td><td>int?</td><td>创建人</td></tr>
+          <tr><td>Creation_time</td><td>DateTime?</td><td>创建时间</td></tr>
+          <tr><td>Last_updated_by</td><td>int?</td><td>更新人</td></tr>
+          <tr><td>Last_update_time</td><td>DateTime?</td><td>更新时间</td></tr>
+          <tr><td>OSMOType</td><td>int</td><td>设备类型，固定 3（6060）</td></tr>
+          <tr><td>SerialPortName</td><td>string</td><td>串口名</td></tr>
+          <tr><td>SerialPortBaudRate</td><td>int</td><td>波特率</td></tr>
+          <tr><td>SerialPortDataBits</td><td>int</td><td>数据位</td></tr>
+          <tr><td>SerialPortStopBits</td><td>string</td><td>停止位</td></tr>
+          <tr><td>SerialPortParity</td><td>string</td><td>校验位</td></tr>
+          <tr><td>SerialPortFlowType</td><td>string</td><td>流控</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 7 ViCell -->
+    <section id="sec7">
+      <div class="subsystem-header"><span class="dot dot-vicell"></span><h2>7. ViCell XR 子系统（Pipe: <span class="pipe-badge">VicellPipe</span>）</h2></div>
+
+      <h3>7.1 接口一览</h3>
+      <table>
+        <thead><tr><th>命令</th><th>入参 payload</th><th>出参 ResultData</th><th>功能说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>save_subsysytem_setting</code></td><td><code>ViCellDevice</code> JSON</td><td>int(1)</td><td>保存 ViCell 设备配置</td></tr>
+          <tr><td><code>log_in_check</code></td><td>无</td><td>无 / ResutData</td><td>登录前检查</td></tr>
+          <tr><td><code>log_in</code></td><td><code>List&lt;SampleInfo&gt;</code> JSON</td><td>无 / string / ResutData</td><td>自动登录样品</td></tr>
+          <tr><td><code>log_in_manual</code></td><td><code>List&lt;SampleInfo&gt;</code> JSON</td><td>无 / string / List&lt;int&gt;</td><td>手动登录样品</td></tr>
+          <tr><td><code>clear</code></td><td>deviceId 字符串</td><td>无</td><td>清空设备未完成订单</td></tr>
+          <tr><td><code>cancel</code></td><td>无</td><td>无</td><td>取消当前检测任务</td></tr>
+          <tr><td><code>result</code></td><td>无</td><td>int</td><td>查询最近任务状态</td></tr>
+          <tr><td><code>refresh</code></td><td><code>SampleInfo</code> JSON</td><td>无</td><td>刷新单个样品</td></tr>
+          <tr><td><code>del_order</code></td><td>sampleID 字符串</td><td>无</td><td>删除订单</td></tr>
+          <tr><td><code>reset</code></td><td>无</td><td>无</td><td>重置/重启队列</td></tr>
+        </tbody>
+      </table>
+
+      <h3>7.2 命令详情</h3>
+      <table>
+        <thead><tr><th>命令</th><th>请求</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>save_subsysytem_setting</td><td><code>save_subsysytem_setting|{ViCellDevice JSON}</code></td><td>ExcelPath 须存在；成功 ResultData=1</td></tr>
+          <tr><td>log_in_check</td><td><code>log_in_check|</code></td><td>失败 ResutData：dataType=InitialTime</td></tr>
+          <tr><td>log_in</td><td><code>log_in|[{SampleInfo},...]</code></td><td>1~12 个样品；位置/SampleID 不重复</td></tr>
+          <tr><td>log_in_manual</td><td><code>log_in_manual|[{SampleInfo},...]</code></td><td>自动模式需 BatchID+BatchOPID；检查废液上限</td></tr>
+          <tr><td>clear</td><td><code>clear|{deviceId}</code></td><td>仍有未完成样品则 ViCellSubSystemNotFinish</td></tr>
+          <tr><td>cancel</td><td><code>cancel|</code></td><td>无任务 ViCellNoTestingTask</td></tr>
+          <tr><td>result</td><td><code>result|</code></td><td>Status 0~6→5；Status=7 且 IsFinish→7</td></tr>
+          <tr><td>refresh</td><td><code>refresh|{SampleInfo JSON}</code></td><td>触发 RefreshEvent</td></tr>
+          <tr><td>del_order</td><td><code>del_order|{sampleID}</code></td><td>软删除 Order 和 TaskDtl</td></tr>
+          <tr><td>reset</td><td><code>reset|</code></td><td>异步 Btn_StartQueue()</td></tr>
+        </tbody>
+      </table>
+
+      <h3>7.3 数据模型</h3>
+      <h4>SampleInfo</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>必填(log_in)</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>UnknowSampleId</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>未知样品 ID</td></tr>
+          <tr><td>TestingVicellTaskDtlID</td><td>ulong?</td><td><span class="tag tag-opt">否</span></td><td>任务明细 ID</td></tr>
+          <tr><td>TestingVicellTaskID</td><td>ulong?</td><td><span class="tag tag-opt">否</span></td><td>任务 ID</td></tr>
+          <tr><td>PositionNo</td><td>int</td><td><span class="tag tag-req">是</span></td><td>位置号 1~12</td></tr>
+          <tr><td>SampleID</td><td>string</td><td><span class="tag tag-req">是</span></td><td>样品编号</td></tr>
+          <tr><td>CellType</td><td>string</td><td><span class="tag tag-req">是</span></td><td>细胞类型</td></tr>
+          <tr><td>DilutionFactor</td><td>decimal</td><td><span class="tag tag-req">是</span></td><td>稀释因子，&gt;0</td></tr>
+          <tr><td>Mode</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>1=Manual，3=Automatic</td></tr>
+          <tr><td>ItemID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>项目 ID</td></tr>
+          <tr><td>BatchID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 ID</td></tr>
+          <tr><td>BatchOPID</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>批次 OP ID</td></tr>
+          <tr><td>Comment</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>备注</td></tr>
+          <tr><td>Time</td><td>DateTime?</td><td><span class="tag tag-opt">否</span></td><td>登录时间（服务端填充）</td></tr>
+          <tr><td>ResultTime</td><td>DateTime?</td><td><span class="tag tag-opt">否</span></td><td>结果时间</td></tr>
+          <tr><td>Status</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>状态字符串</td></tr>
+          <tr><td>DtlStatus</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>明细状态</td></tr>
+          <tr><td>ViCellDeviceNo</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>设备编号</td></tr>
+          <tr><td>ViCellDeviceID</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>设备 ID</td></tr>
+          <tr><td>TestingEquipmentID</td><td>int</td><td><span class="tag tag-opt">否</span></td><td>检测设备 ID</td></tr>
+          <tr><td>VCD</td><td>decimal?</td><td><span class="tag tag-opt">否</span></td><td>细胞密度</td></tr>
+          <tr><td>Viability</td><td>decimal?</td><td><span class="tag tag-opt">否</span></td><td>活率</td></tr>
+          <tr><td>AvgDiam</td><td>decimal?</td><td><span class="tag tag-opt">否</span></td><td>平均直径</td></tr>
+          <tr><td>ExcelFileLocation</td><td>string</td><td><span class="tag tag-opt">否</span></td><td>Excel 文件路径</td></tr>
+          <tr><td>Created_by</td><td>int?</td><td><span class="tag tag-opt">否</span></td><td>创建人</td></tr>
+        </tbody>
+      </table>
+
+      <h4>ViCellDevice</h4>
+      <table>
+        <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>VicellDeviceID</td><td>int</td><td>设备主键，&gt;0 为更新</td></tr>
+          <tr><td>TestingEquipmentID</td><td>int</td><td>检测设备 ID</td></tr>
+          <tr><td>SubSystemMAC</td><td>string</td><td>子系统 MAC</td></tr>
+          <tr><td>SubSystemIP</td><td>string</td><td>子系统 IP</td></tr>
+          <tr><td>ExcelPath</td><td>string</td><td>Excel 导出目录（必须存在）</td></tr>
+          <tr><td>WasteUpperLimit</td><td>int</td><td>废液上限</td></tr>
+          <tr><td>CurrentWasteCount</td><td>int</td><td>当前废液计数</td></tr>
+          <tr><td>IsDelete</td><td>bool</td><td>删除标记</td></tr>
+          <tr><td>Created_by</td><td>int?</td><td>创建人</td></tr>
+          <tr><td>Creation_time</td><td>DateTime?</td><td>创建时间</td></tr>
+          <tr><td>Last_updated_by</td><td>int?</td><td>更新人</td></tr>
+          <tr><td>Last_update_time</td><td>DateTime?</td><td>更新时间</td></tr>
+        </tbody>
+      </table>
+
+      <h4>ResutData / LogInSampleInfo</h4>
+      <table>
+        <thead><tr><th>对象</th><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">ResutData</td><td>dataType</td><td>string</td><td>SampleID / DeviceIP / InitialTime</td></tr>
+          <tr><td>message</td><td>string</td><td>具体消息内容</td></tr>
+          <tr><td rowspan="2">LogInSampleInfo</td><td>RepeatSampleId</td><td>string</td><td>重复样品 ID 或位置冲突描述（内部回调）</td></tr>
+          <tr><td>SampleList</td><td>List&lt;SampleInfo&gt;</td><td>样品列表</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 8 -->
+    <section id="sec8">
+      <h2>8. 任务状态码参考（result 接口通用）</h2>
+      <table>
+        <thead><tr><th>Status</th><th>含义（通用）</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>无任务 / 无记录</td></tr>
+          <tr><td>1</td><td>已创建 / 待开始</td></tr>
+          <tr><td>3</td><td>检测中</td></tr>
+          <tr><td>5</td><td>进行中 / 等待完成</td></tr>
+          <tr><td>7</td><td>已完成</td></tr>
+          <tr><td>99</td><td>已取消</td></tr>
+        </tbody>
+      </table>
+      <div class="note">各子系统对 Status 有额外映射逻辑，详见各 result 命令说明。</div>
+    </section>
+
+    <!-- Section 9 -->
+    <section id="sec9">
+      <h2>9. 调用示例</h2>
+
+      <h3>9.1 BGA 查询状态</h3>
+      <p><strong>请求：</strong></p>
+      <pre class="code-block">result|</pre>
+      <p><strong>响应：</strong></p>
+      <pre class="code-block">result|0|5</pre>
+      <p>（ErrorCode 为 0 表示成功，ResultData 为 5 表示检测中）</p>
+
+      <h3>9.2 Cedex 自动下单</h3>
+      <p><strong>请求：</strong></p>
+      <pre class="code-block">log_in|[{"SampleID":"S001","RackNo":"J","TubeNo":1,"BatchId":100,"BatchOPId":200,"Code":"OP01"}]</pre>
+      <p><strong>响应（成功）：</strong></p>
+      <pre class="code-block">log_in|0|</pre>
+
+      <h3>9.3 ViCell 手动登录</h3>
+      <p><strong>请求：</strong></p>
+      <pre class="code-block">log_in_manual|[{"PositionNo":1,"SampleID":"S001","CellType":"CHO","DilutionFactor":2,"Mode":3,"BatchID":1,"BatchOPID":2,"ViCellDeviceID":1}]</pre>
+    </section>
+
+    <!-- Section 10 -->
+    <section id="sec10">
+      <h2>10. 附录：源文件索引</h2>
+      <table>
+        <thead><tr><th>子系统</th><th>源文件路径</th></tr></thead>
+        <tbody>
+          <tr><td>BGA</td><td><code>BGA/SubDeviceService.BGA/SubDeviceService.BGA.Core/BGAService.cs</code></td></tr>
+          <tr><td>Cedex 配置</td><td><code>CedexHT/SubsystemService.Cedex/SubsystemService.Cedex.Core/CedexService.cs</code></td></tr>
+          <tr><td>Cedex 订单</td><td><code>CedexHT/CedexOrder/SubsystemService.CedexOrder/SubsystemService.CedexOrder.Core/CedexOrderService.cs</code></td></tr>
+          <tr><td>OSMO</td><td><code>OSMO/OSMO6060/SubDeviceService.OsmoSix/SubDeviceService.OsmoSix.Core/OsmoSixService.cs</code></td></tr>
+          <tr><td>ViCell</td><td><code>Vicell/ViCellXR/Core/ViCellService.cs</code></td></tr>
+          <tr><td>协议基类</td><td><code>CedexBio/SubDeviceService.Core/BaseServices.cs</code></td></tr>
+          <tr><td>响应对象</td><td><code>CedexBio/SubDeviceService.Core/NamePipeResult.cs</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer style="margin-top:48px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;">
+      SubSystem Named Pipe 接口文档 &mdash; 与 SubSystem-NamedPipe接口文档.md 内容同步
+    </footer>
+  </main>
+</div>
+</body>
+</html>

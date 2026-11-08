@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>补料逻辑说明</title>
+<style>
+  body { font-family: "Microsoft YaHei", SimSun, sans-serif; color: #1a1a1a; line-height: 1.65; max-width: 1080px; margin: 24px auto 80px; padding: 0 20px; background: #fafafa; }
+  h1 { font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 8px; }
+  h2 { font-size: 20px; margin-top: 2.2em; border-left: 4px solid #333; padding-left: 10px; }
+  h3 { font-size: 16px; margin-top: 1.4em; }
+  p { margin: 0.6em 0; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 20px; background: #fff; font-size: 14px; }
+  th, td { border: 1px solid #ccc; padding: 6px 8px; vertical-align: top; text-align: left; }
+  th { background: #eee; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 13px; background: #f0f0f0; padding: 0 4px; }
+  nav { background: #fff; border: 1px solid #ddd; padding: 12px 16px; margin: 16px 0 28px; }
+  nav a { margin-right: 14px; color: #0645ad; }
+  .note { background: #fff8e8; border: 1px solid #e6d3a1; padding: 8px 12px; margin: 12px 0; }
+  ol li, ul li { margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<h1>补料逻辑说明</h1>
+<p>本文按当前代码说明五套程序怎么配合完成一次补料：地秤服务、OPC 服务、补料调度、补料监控、服务控制。调度负责开泵、读重量、改速度、写任务；监控负责在调度卡住或补多了的时候把泵速打成 0。两边都写同一套 MySQL 库，不互相调用。</p>
+
+<nav>
+  <a href="#overview">总关系</a>
+  <a href="#scale">1 地秤</a>
+  <a href="#opc">2 OPC</a>
+  <a href="#sch">3 调度</a>
+  <a href="#mon">4 监控</a>
+  <a href="#ctl">5 服务控制</a>
+  <a href="#flow">一次补料</a>
+  <a href="#tables">表</a>
+  <a href="#err">错误码</a>
+</nav>
+
+<h2 id="overview">总关系</h2>
+<p>五套程序里，只有调度和监控连数据库。地秤和 OPC 只提供 HTTP 接口，数据放在本机内存。服务控制不参与补料计算，只告诉监控“这台调度盒子还活着”。</p>
+<table>
+  <tr><th>谁</th><th>什么时候连谁</th><th>接口</th></tr>
+  <tr><td>调度</td><td>补料循环里读罐上的泵速、重量，以及写泵速</td><td><code>GET opcdaReadService/api/getSchdulerDeviceData?deviceId=罐号</code><br/><code>POST opcdaReadService/api/pumpSpeedSet</code></td></tr>
+  <tr><td>调度</td><td>读补料地秤重量。地秤型号和 IP 来自 <code>CDP_EqumentScale</code></td><td>Model=5：<code>GET messageService/api/getScaleData</code><br/>梅特勒名单内同一地址</td></tr>
+  <tr><td>监控</td><td>停泵时写 0 泵速，地址在监控自己的 <code>opcda_url</code></td><td><code>POST opcdaReadService/api/pumpSpeedSet</code>，Speed=0</td></tr>
+  <tr><td>监控</td><td>按配置的每台电脑，每隔数秒问一次健康</td><td><code>GET controlService/api/healthcheck</code></td></tr>
+  <tr><td>服务控制</td><td>健康检查时问本机调度的 version，并 Ping 配置的 IP</td><td>调度 <code>GET version</code>，以及 ICMP Ping</td></tr>
+  <tr><td>OPC</td><td>采集线程运行期间，自己连 DeltaV OPC DA，不回连调度</td><td>DCOM，服务器名配置为 <code>OPC.DeltaV.1</code></td></tr>
+  <tr><td>地秤</td><td>串口或网口秤一直读，HTTP 只读内存缓存</td><td>不访问数据库，也不访问 OPC</td></tr>
+</table>
+<p>调度和监控看的是同一批表：<code>CDP_Batch_FixedFeedingTask</code>、<code>CDP_FixedFeedingTask_ExecDetail</code>、<code>CDP_Batch</code>、<code>CDP_OperateUnit_Events</code>。调度往执行明细里插入行；监控只读最新一行的 <code>Exenumber</code> 和 <code>CheckTime</code>。</p>
+
+<h2 id="scale">1. 地秤 SmallScaleService1</h2>
+<p>这是补料地秤上位机。程序集名 <code>FeedSubSystems1</code>。它打开串口或解析秤的报文，把重量放进本机缓存，再通过 WCF REST 给出去。调度来取重量时打的就是这个服务。</p>
+<h3>对外接口</h3>
+<table>
+  <tr><th>方法</th><th>路径</th><th>返回</th></tr>
+  <tr><td>GET</td><td><code>messageService/api/getScaleData</code></td><td>当前缓存重量。有数 <code>RespondCode=200</code>，缓存空 <code>300</code>，异常 <code>400</code></td></tr>
+  <tr><td>GET</td><td><code>messageService/api/getScaleDataList</code></td><td>缓存里的重量列表，字段 <code>GatherTime</code>、<code>Weight</code>、<code>WeightUnit</code></td></tr>
+  <tr><td>POST</td><td><code>messageService/api/getDeviceData</code></td><td>给调度 LDMS 侧读设备数据，调度配置项 <code>ldms_api_get_device_data</code></td></tr>
+</table>
+<p>缓存键来自本程序 <code>App.config</code> 的 <code>CacheKey</code>。串口读到一帧就解析出重量、单位和时间，写入 <code>LocalCachedProvider</code>。HTTP 请求不直接读串口。缓存空时调度会把这次读数当成失败并累计错误次数。</p>
+<p>地秤服务自己不写补料任务表。哪台秤对应哪口、型号是几，记在库表 <code>CDP_EqumentScale</code>，由调度去查：<code>IP</code>、<code>Port</code>、<code>Model</code>、<code>ScalePrecision</code>。调度里 Model=5 表示串口秤，走 <code>getScaleData</code>。</p>
+
+<h2 id="opc">2. OPC 控制 SmallOPCDAService</h2>
+<p>这台程序连 DeltaV 的 OPC DA 服务器，做两件事：按罐循环读点，把结果放在内存；收到写泵速请求时再连一次 OPC 把设定值写下去。</p>
+<h3>读</h3>
+<p>外部或界面调用高低频采集后，程序按配置找到罐的 IP 和 OPC 服务名（<code>OPC.DeltaV.1</code>），建订阅，按周期 <code>Read</code>。高频点进 <code>_bioHighRead</code>，低频点进 <code>_bioLowRead</code>。读到的泵、泵设定、重量等字段包括 <code>pump1</code> 到 <code>pump4</code>、<code>pump1set</code> 到 <code>pump4set</code>、<code>workingWeight</code>，以及 pH、温度、溶氧等。</p>
+<p>每读完一轮会查库，决定要不要停采集。SQL 是：批次 <code>CDP_Batch.Status &lt; 11</code>、<code>IsDelete=0</code>，位置组合 <code>CDP_Location_Combinations.Status=1</code> 且未删除，设备 <code>CDP_LabDevice.LabDeviceNo</code> 在本服务配置的罐列表里。查不到这台罐，日志写 <code>is finish Cultrue</code>，高低频线程退出，之后 <code>getSchdulerDeviceData</code> 对该罐返回 <code>ResultCode=300</code>（缓存里没有这台）。</p>
+<h3>给调度和监控的接口</h3>
+<table>
+  <tr><th>方法</th><th>路径</th><th>用途</th></tr>
+  <tr><td>GET</td><td><code>opcdaReadService/api/getSchdulerDeviceData?deviceId=</code></td><td>调度读在线数据。缓存有这台罐且 <code>ResultCode=200</code> 才算读到</td></tr>
+  <tr><td>POST</td><td><code>opcdaReadService/api/pumpSpeedSet</code></td><td>写一台泵的设定。Body：<code>ReactorNo</code>、<code>SetName</code>（<code>pump1set</code>…<code>pump4set</code>）、<code>Speed</code></td></tr>
+  <tr><td>POST</td><td><code>opcdaReadService/api/batchPumpSpeedSet</code></td><td>批量写泵速</td></tr>
+  <tr><td>POST</td><td><code>opcdaReadService/api/pumpModeSet</code>、<code>doseset</code></td><td>泵模式、剂量，补料主循环不走这两条</td></tr>
+</table>
+<p>写泵速时，按罐配置把 <code>SetName</code> 换成 OPC 点名（例如 <code>FX093P1402/PID1/SP.CV</code>），每次写都会重新枚举 OPC 服务器并 <code>CoCreateInstanceEx</code>。写完等约 1.6 秒再读回，最多对三次。设定为 0 时，读回也是 0 才返回 <code>Code=200</code>。RPC 不可用时写失败，调度和监控都会看到失败。</p>
+<p>OPC 服务不插入补料执行明细。它用到的库表只有培养是否还在进行：<code>CDP_Batch</code>、<code>CDP_Location_Combinations</code>、<code>CDP_LabDevice</code>。</p>
+
+<h2 id="sch">3. 补料调度 SmallSchdulerService</h2>
+<p>调度是补料的主程序。主循环按 <code>coreservice_interval_time</code>（秒）扫一批“可以补”的批次，满足条件就拉起该任务的补料线程。补料线程里读 OPC、读地秤、算速度、下发、写明细，直到完成、超量、堵塞或通讯失败。</p>
+
+<h3>3.1 哪些批次会进循环</h3>
+<p><code>GetBatchList</code> 的条件：</p>
+<ul>
+  <li><code>CDP_Batch.Status</code> 大于等于 9 且小于 11（收获前、生产未完成）</li>
+  <li><code>CDP_Batch.ErrorCode</code> 为空或 0</li>
+  <li>经 <code>Auth_Culture</code> 找到反应器 <code>CDP_LabDevice</code></li>
+  <li>同一 <code>LabCabinID</code> 上还有一台 <code>LabDeviceType=5</code> 且未删除的设备，它的 <code>ScaleId</code> 当作补料地秤 <code>EquFeedingScaleId</code></li>
+</ul>
+<p>取出的字段：<code>BatchID</code>、<code>EquReactorId</code>、<code>EquFeedingScaleId</code>、<code>CurrentVolume</code>、<code>InoculationTime</code>、<code>MediumVolume</code>、<code>CellsVolume</code>、<code>CurrentGlucoseWeight</code>、<code>CultureCode</code>。</p>
+<p>同一轮里如果这台秤 <code>CDP_EqumentScale.DeviceStatus</code> 表示忙，或 <code>LastUsed_DeviceId</code> 不是本罐且 <code>LastUsed_Time</code> 仍在 <code>Scale_Lock_Time</code> 秒内，本批次跳过。秤上已有未处理 <code>ErrorCode</code> 也跳过。</p>
+
+<h3>3.2 哪些任务会真正开补</h3>
+<p>任务表 <code>CDP_Batch_FixedFeedingTask</code>，条件：</p>
+<ul>
+  <li><code>FeedingTime &lt;= 现在</code>，<code>Mode=1</code></li>
+  <li><code>Status</code> 为 5（待执行）或 2（待取消）</li>
+  <li>批次 <code>ErrorCode</code> 为空或 0</li>
+  <li>当天 Cedex 结果要能用：没有结果、多条未指定、一条未指定，非葡萄糖类型任务会等待（日志里的 cedex 错误）</li>
+  <li>批次上还有未结束任务（状态 7、5、9 且补料时间在今天）则本批次先不往下</li>
+</ul>
+<p>状态含义：1 待审，2 待取消，3 待批准，5 待执行，7 执行中，9 执行异常，11 异常已处理，17 跳过，19 已执行，99 取消。</p>
+<p>开跑前还要补上泵的最大速度。最大速度不在任务表上，而在地秤侧泵位：</p>
+<ul>
+  <li><code>CDP_LabDeviceSub.MaxSpeed</code>、<code>LabDeviceSubNo</code>（要和任务 <code>FeedingPumpNo</code> 字符串相等，<code>4</code> 对不上 <code>04</code>）</li>
+  <li><code>CDP_Item_Serials</code>：本批次、<code>ItemStatus&lt;28</code> 的袋子，<code>ItemID</code>、<code>Quantity</code></li>
+  <li><code>CDP_Location_Controls.ControlType=3</code> 且未删除，连到 <code>CDP_Item_Def.GlucoseConc</code></li>
+</ul>
+<p><code>MaxSpeed</code> 对不上或为 0，本批次本轮停止，日志 <code>MaxSpeed Not Set</code>，任务状态不变，下一轮还会再报。<code>FeedingTime</code> 仍晚于现在则等待。同一批次已有线程在跑则不再启动。</p>
+
+<h3>3.3 计划补料量</h3>
+<p><code>FeedingType=3</code> 时计划量就是任务上的 <code>FeedingVolume</code>。其他类型：</p>
+<p><code>(MediumVolume + CellsVolume) × FeedingVolumePercent / 100 / 1000</code></p>
+<p>葡萄糖规则类型还会按当前糖浓度和 <code>FeedingTo</code>、<code>LowerLimit</code> 另算一版 <code>RealFeedVolume</code>，并回写任务上的补料量。</p>
+
+<h3>3.4 开补时读写的外部数据</h3>
+<p>先读 OPC。<code>opcda_reactors</code> 列表里的罐走 <code>getSchdulerDeviceData</code>。连续失败达到 <code>error_count_limit</code>，任务记 1013（补料阶段 DeltaV 通讯异常），并尝试把该泵写成 0。读成功后取罐重 <code>workingWeight</code> 和对应泵的当前速度 <code>pump1</code>…<code>pump4</code>。</p>
+<p>再读地秤。<code>CDP_EqumentScale</code> 的 <code>IP</code>、<code>Port</code>、<code>Model</code>、<code>ScalePrecision</code>（秤上没填精度就用配置 <code>scale_precision</code>）。Model=5 调地秤服务 <code>getScaleData</code>。读失败或重量小于等于 0，记 1024（自检地秤通讯异常），任务结束，不往下发泵速。地秤读数连续 <code>feeding_scale_freeze_seconds</code> 秒不变，记 1036。</p>
+<p>秤被占用时更新 <code>CDP_EqumentScale.DeviceStatus=1</code>、<code>LastUsed_Time</code>、<code>LastUsed_DeviceId</code>，批次 <code>CDP_Batch.IsFeeding=0</code> 表示秤锁占用中的写法以代码为准：开始补料时把秤 <code>DeviceStatus</code> 置 1，结束或异常时置 2，并把批次 <code>IsFeeding</code> 置回。</p>
+
+<h3>3.5 泵速怎么算、怎么发</h3>
+<p>先取 <code>min(任务 PumpSpeed, 泵 MaxSpeed)</code>，再和 <code>计划量 × 70%</code> 取更小，这是启动速度。降速档默认是 <code>计划量 × 15%</code>，再和启动速度取更小。然后乘配置 <code>Speed_Val</code>（单位换算，默认 1），通过 OPC <code>pumpSpeedSet</code> 发出去。泵号 1 到 4 对应 <code>pump1set</code> 到 <code>pump4set</code>。</p>
+<p>若罐号在 <code>feed_speed_ignore_volume_cap_reactors</code> 里：</p>
+<ul>
+  <li>启动速度低于 <code>feed_speed_volume_cap_floor</code> 时抬到该保底。泵 <code>MaxSpeed</code> 已配置且比保底还小，则不超过 <code>MaxSpeed</code>。</li>
+  <li>降速档改用 <code>feed_slow_set_speed</code>，不再用计划量的 15%。同样不超过 <code>MaxSpeed</code>，也不高于已经保底后的启动速度。</li>
+</ul>
+<p>不在名单里的罐仍用 70% 和 15%。每次下发无论成败都插入 <code>CDP_FixedFeedingTask_SpeedSet</code>：<code>TaskID</code>、<code>TaskNo</code>、<code>SetTime</code>、<code>PumpNo</code>、<code>Step</code>、<code>Speed</code>、<code>IsSuccess</code>、<code>DBTime</code>（库的 now()）。</p>
+<p>下发成功后任务改为状态 7，写 <code>StartTime</code>、<code>CurrentVolumeBefore</code>、<code>GlucoseWeightBefore</code>。</p>
+
+<h3>3.6 补料过程中写什么</h3>
+<p>循环里反复读地秤，已补量 = 开补时秤重量 − 当前秤重量。每次采样插入 <code>CDP_FixedFeedingTask_ExecDetail</code>：</p>
+<table>
+  <tr><th>字段</th><th>含义</th></tr>
+  <tr><td>TaskID / TaskNo</td><td>对应 <code>BatchTaskID</code>、任务号</td></tr>
+  <tr><td>CheckTime</td><td>调度这台电脑的 <code>DateTime.Now</code>，不是数据库时间</td></tr>
+  <tr><td>DBTime</td><td>插入时数据库 <code>now()</code></td></tr>
+  <tr><td>Exenumber</td><td>已补量</td></tr>
+  <tr><td>ExecTime</td><td>从本段开始起的秒数</td></tr>
+  <tr><td>Step</td><td>当前步骤，如加速、恒速</td></tr>
+  <tr><td>CurrentSpeed / SetSpeed</td><td>读回的泵速、本段设定</td></tr>
+  <tr><td>ReactorWeight / FeedingScaleWeight</td><td>罐重、地秤重量</td></tr>
+  <tr><td>IsFeeding</td><td>是否仍在补</td></tr>
+</table>
+<p>过程中的判断用表 <code>CDP_FeedingConfig</code>（<code>IsDelete=0</code> 的第一条）：<code>IntervalTime</code>、<code>JamCoefficient</code>、<code>JamIntervalCoefficient</code>、<code>DitherCoefficient</code>、<code>DitherIntervalCoefficient</code>、<code>RebateCoefficient</code>、<code>RebateIntervalCoefficient</code>。堵塞：一段时间内已补增量 &lt; 设定速度/60 × 秒数 × <code>JamCoefficient</code>，记 1031。地秤短时间猛增，记 1032。这些系数是全局的，不按罐分开。</p>
+<p>补完：任务状态 19，写 <code>EndTime</code>、<code>ReactorWeightFeedingAfter</code>。回写 <code>CDP_Batch.CurrentVolume</code>、<code>CurrentGlucoseWeight</code>（代码里按 ×1000 存），<code>CDP_Item_Serials.Quantity</code> 扣袋子余量。异常：任务状态 9，<code>CDP_Batch.ErrorCode</code> 写成该错误码，<code>IsFeeding=0</code>，秤 <code>ErrorCode</code> 同样写上，并插入 <code>CDP_OperateUnit_Events</code>（<code>LabId=2</code>，<code>OperateType</code> 8 或 10，<code>ErrorCode</code>，<code>EventMessage</code>）。</p>
+
+<h2 id="mon">4. 补料监控 FeedingMonitor</h2>
+<p>监控不负责开补，也不读地秤。它盯着库里“正在补”的任务，发现明细停更或补多了，就向 OPC 发 0 泵速，并把任务打成异常。另一条线盯服务控制的健康检查，调度盒子不健康时也对相关罐停泵。</p>
+
+<h3>4.1 两条循环</h3>
+<table>
+  <tr><th>循环</th><th>间隔</th><th>做什么</th></tr>
+  <tr><td>超标 / 停滞</td><td><code>feedingMonitorRateValue</code> 秒，默认随 <code>rateValue</code></td><td>查状态 7 和 9 的今日任务，逐个看执行明细</td></tr>
+  <tr><td>健康</td><td>每台 <code>serviceControlHealthIntervalSeconds</code> 秒，默认 3</td><td>请求 <code>{baseUrl}/controlService/api/healthcheck</code>。失败则按该 URL 映射的设备停泵</td></tr>
+</table>
+<p>在补任务 SQL：<code>CDP_Batch_FixedFeedingTask.Status IN (7,9)</code>，<code>FeedingTime</code> 从今天 0 点起，<code>IsDelete=0</code>，连 <code>CDP_Batch</code>、<code>CDP_Location_Combinations</code>、<code>CDP_LabDevice</code>，取出 <code>BatchTaskID</code>、<code>BatchID</code>、<code>LabDeviceNo</code>、<code>FeedingPumpNo</code>、<code>FeedingVolume</code>、<code>Status</code>、<code>PumpSpeed</code>。数据库查询失败时用上一轮缓存，缓存超过 <code>cacheMaxAgeMinutes</code> 仍会用来停泵，并打警告。</p>
+
+<h3>4.2 停滞停泵</h3>
+<p>读 <code>CDP_FixedFeedingTask_ExecDetail</code> 中该 <code>TaskID</code> 按 <code>DBTime</code> 最新的一行，取 <code>Exenumber</code> 和 <code>TIMESTAMPDIFF(SECOND, CheckTime, NOW())</code>。</p>
+<ul>
+  <li>没有明细：认为还没开始写，不停泵。</li>
+  <li><code>Exenumber &lt;= 0</code>：还没开补，不做停滞判断，仍做超标判断。</li>
+  <li><code>Exenumber &gt; 0</code> 且滞后秒数 &gt; <code>execDetailStallSeconds</code>：立刻对该泵下发 0。滞后用的是数据库 <code>NOW()</code> 和调度写入的 <code>CheckTime</code>。调度电脑和数据库差几分钟时，会误停或该停不停。监控自己的电脑时钟不参与这个比较。</li>
+</ul>
+
+<h3>4.3 超标停泵</h3>
+<p>阈值 = <code>FeedingVolume × (1 + overFeedingExcessRatio)</code>。已补量 <code>Exenumber</code> 大于该阈值则停泵。配置 0.02 表示允许超过计划量 2%。</p>
+
+<h3>4.4 停泵之后写库</h3>
+<p>0 泵速发到监控配置的 <code>opcda_url</code> + <code>opcdaReadService/api/pumpSpeedSet</code>。只有返回码 200 才算停泵成功。成功后：</p>
+<ul>
+  <li>状态仍为 7 的任务：<code>CDP_Batch_FixedFeedingTask.Status=9</code>，<code>CDP_Batch.IsFeeding=0</code></li>
+  <li>插入 <code>CDP_OperateUnit_Events</code>，<code>ErrorCode</code> 固定 <code>2097</code>，<code>EventMessage</code> 为罐号加原因（明细停滞、超标、健康检查失败等），<code>LabId</code> 来自 <code>operateUnitEventLabId</code></li>
+</ul>
+<p>停泵失败不把任务放进“已处置”，下一轮再试。成功后同一 <code>BatchTaskID</code> 本进程内不再重复停。</p>
+<p>健康检查为 false，或调用异常：按 <code>ServiceControlHealthList</code> 里该 URL 对应的罐号，对状态 7 和 9 的在补任务停泵。监控循环自己连续异常达到 <code>loopErrorCountLimit</code>，对缓存中的在补任务紧急停泵。</p>
+
+<h2 id="ctl">5. 服务控制 ServiceControl</h2>
+<p>服务控制跑在调度那台电脑上，给监控一个健康结果。它不读补料表，也不下发泵速。</p>
+<table>
+  <tr><th>方法</th><th>路径</th><th>作用</th></tr>
+  <tr><td>GET</td><td><code>controlService/api/healthcheck</code></td><td>监控实际使用的接口</td></tr>
+  <tr><td>GET</td><td><code>controlService/api/getservicestatus</code></td><td>查某个 Windows 服务状态</td></tr>
+  <tr><td>GET</td><td><code>controlService/api/getbatchservicestatus</code></td><td>批量查服务状态</td></tr>
+  <tr><td>GET</td><td><code>controlService/api/stopservice</code>、<code>resumeservice</code></td><td>停、恢复 Windows 服务。补料监控的健康循环不调用这两条</td></tr>
+</table>
+<p><code>healthcheck</code> 做两步：GET 本机调度的 <code>schedulerAlivePath</code>（默认 <code>version</code>），JSON 里 <code>Database</code> 非空算调度通；再按 <code>pingIp</code>、<code>pingTimeoutMs</code> 做 ICMP Ping。两步都成功 <code>IsSuccess=true</code>。任一步失败，监控会按该 URL 映射的设备列表去停泵。</p>
+<p>映射写在监控的 <code>ServiceControlHealthList</code>，格式 <code>http://主机:端口^罐号,罐号;下一台...</code>。健康失败时只停这一串罐号里、状态为 7 或 9 的任务，不是全厂所有泵。</p>
+
+<h2 id="flow">一次补料按时间怎么走</h2>
+<ol>
+  <li>OPC 服务已在采这台罐（库里批次未结束）。地秤服务串口缓存里已有重量。服务控制在调度电脑上能打开。</li>
+  <li>调度扫到批次状态 9 至 10、无错误码、秤空闲。任务状态 5，补料时间已到，泵 <code>MaxSpeed</code> 大于 0，袋子 <code>ItemStatus&lt;28</code>。</li>
+  <li>调度读 OPC 在线数据，读地秤 <code>getScaleData</code>。自检通过后按第 3.5 节算出速度，<code>pumpSpeedSet</code> 写到 DeltaV。</li>
+  <li>任务改为 7。之后每个采样周期插入一行执行明细。<code>CheckTime</code> 用调度电脑时间，<code>DBTime</code> 用数据库时间。</li>
+  <li>监控每几秒看到状态 7。明细在刷新、已补量未过阈值，则不动作。</li>
+  <li>调度正常结束：任务 19，回写批次体积、糖重和袋子余量，秤释放。监控之后不再把该任务当在补任务。</li>
+  <li>调度中途不再写明细，且已补量大于 0：监控发现 <code>CheckTime</code> 相对数据库时间超过 <code>execDetailStallSeconds</code>，向 OPC 写 0，任务改为 9，事件码 2097。</li>
+  <li>服务控制健康失败：监控只停该 URL 名下正在补的泵，同样写 0 和事件。</li>
+</ol>
+
+<h2 id="tables">表和字段对照</h2>
+<table>
+  <tr><th>表</th><th>谁写</th><th>谁读</th><th>补料相关字段</th></tr>
+  <tr><td>CDP_Batch</td><td>调度（体积、糖重、ErrorCode、IsFeeding）</td><td>调度、监控、OPC</td><td>Status、ErrorCode、IsFeeding、CurrentVolume、CurrentGlucoseWeight、MediumVolume、CellsVolume、LocCombinationID、InoculationTime</td></tr>
+  <tr><td>CDP_Batch_FixedFeedingTask</td><td>调度改状态和时间；监控把 7 改成 9</td><td>调度、监控</td><td>BatchTaskID、TaskNo、BatchID、Status、Mode、FeedingTime、FeedingType、FeedingPumpNo、PumpSpeed、FeedingVolume、FeedingVolumePercent、StartTime、EndTime、TotalFeedingRealVolume、LowerLimit、FeedingTo</td></tr>
+  <tr><td>CDP_FixedFeedingTask_ExecDetail</td><td>只有调度插入</td><td>监控</td><td>TaskID、CheckTime、DBTime、Exenumber、Step、CurrentSpeed、SetSpeed、ReactorWeight、FeedingScaleWeight</td></tr>
+  <tr><td>CDP_FixedFeedingTask_SpeedSet</td><td>调度每次下发</td><td></td><td>TaskID、PumpNo、Step、Speed、IsSuccess、SetTime、DBTime</td></tr>
+  <tr><td>CDP_EqumentScale</td><td>调度更新占用和错误码</td><td>调度</td><td>ScaleId、IP、Port、Model、ScalePrecision、DeviceStatus、LastUsed_Time、LastUsed_DeviceId、ErrorCode</td></tr>
+  <tr><td>CDP_LabDevice / CDP_LabDeviceSub</td><td>主数据，补料过程中监控可写设备 ErrorCode</td><td>调度、监控、OPC</td><td>LabDeviceNo、LabDeviceType、LabCabinID、ScaleId；子表 LabDeviceSubNo、MaxSpeed</td></tr>
+  <tr><td>CDP_Item_Serials</td><td>调度结束时改 Quantity</td><td>调度</td><td>ItemID、BatchID、LocCombinationID、Quantity、ItemStatus</td></tr>
+  <tr><td>CDP_Location_Combinations / CDP_Location_Controls / CDP_Item_Def</td><td>主数据</td><td>调度、OPC</td><td>位置 Status、ControlType=3、GlucoseConc</td></tr>
+  <tr><td>CDP_FeedingConfig</td><td>人工维护</td><td>调度</td><td>IntervalTime、JamCoefficient、JamIntervalCoefficient、DitherCoefficient、RebateCoefficient 等</td></tr>
+  <tr><td>CDP_OperateUnit_Events</td><td>调度和监控</td><td>界面事件</td><td>BatchID、LabId、SourceID（任务 ID）、ErrorCode、EventMessage、EventTime、OperateMode=AUTO</td></tr>
+  <tr><td>CDP_Testing_CedexTaskDtl 及结果表</td><td>Cedex 程序</td><td>调度开补前</td><td>BatchID、Status、IsDesignate、StartTime、TestingItem</td></tr>
+  <tr><td>cdp_schedulermonitor</td><td>调度心跳</td><td></td><td>CreationTime、Reactors。服务控制另走 HTTP version，不读这张表</td></tr>
+</table>
+
+<h2 id="err">调度和监控常用错误码</h2>
+<table>
+  <tr><th>码</th><th>谁记</th><th>含义</th></tr>
+  <tr><td>1013</td><td>调度</td><td>读 OPC 或下发泵速失败，文案里写 DeltaV 通讯异常或泵速下发失败</td></tr>
+  <tr><td>1024</td><td>调度</td><td>开补前地秤读失败或重量无效</td></tr>
+  <tr><td>1031</td><td>调度</td><td>地秤增量低于按泵速估算的量，按堵塞停泵</td></tr>
+  <tr><td>1032</td><td>调度</td><td>地秤短时间异常变大</td></tr>
+  <tr><td>1036</td><td>调度</td><td>地秤读数连续不变</td></tr>
+  <tr><td>2097</td><td>监控</td><td>监控侧停泵：明细停滞、补料超标，或健康检查失败后的停泵</td></tr>
+</table>
+<p>1013 只说明调度没从 OPC 接口拿到成功结果。OPC 进程刚重启、缓存还没有这台罐，或者写点时 RPC 不可用，都会走到这个码。1024 只说明地秤 HTTP 没返回可用重量。</p>
+
+<p>文档依据仓库里的 <code>SmallScaleService1</code>、<code>SmallOPCDAService</code>、<code>SmallSchdulerService</code>、<code>FeedingMonitor</code>、<code>ServiceControl</code>。现场 <code>exe.config</code> 里的罐号名单、保底泵速、停滞秒数以实际部署文件为准。</p>
+
+</body>
+</html>

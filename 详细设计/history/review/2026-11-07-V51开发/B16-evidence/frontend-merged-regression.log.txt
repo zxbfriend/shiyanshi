@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 D:/Code/zhixianweilai/yaoming-cloud/futurefab-frontend
+
+ ✓ tests/culture-member-display-api.test.ts (3 tests) 22ms
+ ✓ tests/culture-config-preset-api.test.ts (5 tests) 28ms
+ ✓ tests/config-association-pilot-preview.test.ts (8 tests) 46ms
+
+ Test Files  3 passed (3)
+      Tests  16 passed (16)
+   Start at  15:12:59
+   Duration  6.37s (transform 1.19s, setup 0ms, collect 12.31s, tests 95ms, environment 15ms, prepare 1.80s)

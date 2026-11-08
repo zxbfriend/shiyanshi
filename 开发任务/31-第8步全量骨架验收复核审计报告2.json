@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "title": "31-第8步全量骨架验收复核审计报告",
+    "task": "第8步全系统接口契约骨架验收结果独立复核审计（只读）",
+    "auditDate": "2026-09-20",
+    "repo": "D:/Code/zhixianweilai/yaoming-cloud",
+    "branch": "cloud",
+    "head": "6203bda5",
+    "auditMode": "READ_ONLY：未修改任何既有源码/SQL/Vue/客户材料；仅输出本报告两件",
+    "note": "复核开始前工作区已存在同号报告（另一次运行残留），结论与本次独立实算一致；本报告以本次证据为准重写"
+  },
+  "verdict": {
+    "passed": true,
+    "conditional": true,
+    "canEnterStep9": true,
+    "pseudoSuccessFound": false,
+    "prematureBusinessLogicFound": false,
+    "portPseudoWiringFound": false,
+    "summary": "全部可机器实算锚点复核通过，无 P0；2 项 P1 为第9步前置组织事项（入库、blocked 裁决）"
+  },
+  "verificationLevels": {
+    "docParse": "PASS",
+    "static": "PASS（Node 实算 + rg）",
+    "compile": "PASS（mvn -pl futurefab-modules/futurefab-system -am test BUILD SUCCESS）",
+    "unitContract": "PASS（futurefab-system 463/463；futurefab-auth 14/14，本次独立重跑）",
+    "mockMvcStandalone": "PASS（439 条 501+NOT_IMPLEMENTED+contractId 信封断言）",
+    "sqlDb": "NOT_EXECUTED",
+    "realHttp": "NOT_EXECUTED",
+    "externalSystems": "NOT_EXECUTED（BLOCKED_INPUT 保持登记）",
+    "production": "NOT_EXECUTED"
+  },
+  "counts": {
+    "total": { "claimed": 532, "actual": 532, "match": true },
+    "moduleCounts": { "claimed": { "M01": 76, "M02": 255, "M03": 43, "M04": 23, "M05": 64, "M06": 15, "M07": 35, "M09": 21 }, "actualIdentical": true },
+    "statusCounts": { "claimed": { "SKELETON_IN_SOURCE": 515, "BLOCKED_REGISTERED": 17 }, "actualIdentical": true },
+    "dispositionCounts": { "claimed": { "ADJUST": 324, "NEW": 176, "REUSE": 7, "COMPAT": 9, "DISABLE": 16 }, "actualIdentical": true },
+    "gateEntries": { "anchorFrozenNonM01Total": 456, "anchorBlockedTotal": 17, "anchorGateEntriesExpected": 439, "gateResourceEntries": { "m02": 253, "m03": 43, "m04": 16, "m05": 58, "m06": 15, "m07": 33, "m09": 21, "sum": 439 }, "manifestVsGateFieldByField": { "comparedEntries": 439, "fieldsPerEntry": 7, "problems": 0 } },
+    "duplicateContractIds": 0,
+    "duplicateRoutes": 0
+  },
+  "blockedCheck": {
+    "expected": ["M02-003", "M02-004", "M04-017", "M04-018", "M04-019", "M04-020", "M04-021", "M04-022", "M04-023", "M05-006", "M05-024", "M05-035", "M05-036", "M05-037", "M05-064", "M07-003", "M07-016"],
+    "missing": [], "extra": [], "allStatusBlockedRegistered": true, "noGeneratedEntries": true, "registeredOnlyNoCode": true
+  },
+  "m08Exclusion": {
+    "manifestM08Entries": 0,
+    "m08SkeletonDirs": "none",
+    "m08InMainSource": "仅 port/m07 Javadoc 边界注释与 M09 SourceModule 冻结枚举（允许）；无实现依赖",
+    "verdict": "PASS"
+  },
+  "m01Regression": {
+    "manifestSKELETON_IN_SOURCE": 76,
+    "audit10Baseline": "COMPLETE_SKELETON=76, PARTIAL=0",
+    "m01ContractTestsPresentAndGreen": true,
+    "authTokenContractTests": "14/14 green",
+    "note": "M01-049/075 共用 getInfo 为不同映射重载（/getInfo 与 /{userId}），路由唯一性不受影响"
+  },
+  "gateEffectiveness": {
+    "skeletonEngineRealChecks": ["路由+权限注解反射断言", "Controller→ApplicationService 接线与签名/泛型返回", "Impl 零字段+编号501反射直调", "DTO/View 字段形状", "standalone MockMvc 501 信封"],
+    "negativeFixtures": ["FullSystemSkeletonGateTest#detectorsThemselvesWork（成对正反例）", "SkeletonEngineShadowFixtureTest（6 项漂移/遮蔽违例拦截）"],
+    "antiIdlingAssertions": true,
+    "verdict": "PASS（命中0有反例证明可检出）"
+  },
+  "portWiring": {
+    "adaptersFound": ["m01/M01ActorContextAdapter", "m01/M01ManagementRevisionSourceAdapter"],
+    "otherModuleProviders": 0,
+    "gate": "portAdaptersStayUnwiredExceptM01Actor",
+    "signatureSnapshot": "PortSignatureSnapshotTest 71 契约/43 接口随全量通过"
+  },
+  "testRuns": {
+    "system": { "cmd": "mvn -pl futurefab-modules/futurefab-system -am test", "testsRun": 463, "failures": 0, "errors": 0, "skipped": 0, "result": "BUILD SUCCESS" },
+    "auth": { "cmd": "mvn -pl futurefab-auth -am test", "testsRun": 14, "failures": 0, "errors": 0, "result": "BUILD SUCCESS" }
+  },
+  "gitChecks": {
+    "gitDiffCheck": "PASS (exit 0)",
+    "readOnlyMaterialsTouched": false,
+    "baselineSqlTouched": false,
+    "futurefabUiTouched": false,
+    "committed": false,
+    "pushed": false
+  },
+  "workspaceBoundary": {
+    "deliverables": ["docs/开发任务/25-30 报告", "26 清单 json/md", "src/test/resources/contract/*.json", "骨架源码与测试"],
+    "generatorAssets": ["_tmp_skelgen/（2.1MB，26 清单同源生成器，验收后决定去留）"],
+    "notDeliverables": ["_tmp_p010_*", "_tmp_tc_*", "docs/frontend/", "src/test/java/futurefab/", "_audit31/（前次审计过程残留）"]
+  },
+  "issues": {
+    "P0": [],
+    "P1": [
+      { "id": "P1-1", "desc": "第8步全部产出物未提交入库（约143项工作区变更），第9步拆分需以入库基线为依据" },
+      { "id": "P1-2", "desc": "17 条 blocked 的路由前缀与形状冻结裁决未完成，影响第9步任务包边界完整性" }
+    ],
+    "P2": [
+      { "id": "P2-1", "desc": "M09-004/006/018 request_dto=null 表达为隐式 NoBody，建议统一为显式 NoBody 字面量" },
+      { "id": "P2-2", "desc": "部分改写后 Controller 残留未使用的旧 I*Service 注入字段（死代码）" },
+      { "id": "P2-3", "desc": "工作区临时文件较多，入库前需按边界清单归置" }
+    ]
+  },
+  "m09NoBodyJudgement": {
+    "nullRequestDtoIds": ["M09-004", "M09-006", "M09-018"],
+    "fact": "skeleton-m09.json 同为 reqFq=null+reqFields=[]；SkeletonEngine.wantParam 将 null 映射为 NoBody 单例；29 报告 §4.1 实证修正",
+    "judgement": "正确语义，非骨架缺陷，不判定失败",
+    "recommendation": "下次清单再生成时将空请求体显式输出为 NoBody（或 FQCN），并在 schema 注明语义，防机器校验误报"
+  },
+  "step9Preconditions": [
+    "评审并提交第8步产出物形成入库基线",
+    "完成 17 条 blocked 裁决并补生成",
+    "处置 _tmp_skelgen 与临时文件归属",
+    "（建议）统一 NoBody 表达口径"
+  ],
+  "step9InheritedBoundaries": [
+    "真实实现替换 501 骨架时同步替换 501 门禁为真实契约测试",
+    "Port provider 按模块逐步接线，禁止一次性全量放开未接线门禁",
+    "旧 Service 重定向与规范化登记（union→Object、同名并集、改名、取值表 String）逐条设计确认后固化",
+    "M08 持续排除",
+    "管理写入口实现时接入 ManagementGuardExecutor/@ManagementGuardedWrite",
+    "验证层级不越级：SQL/真实HTTP/外部系统联调仍未执行",
+    "未经用户明确要求不 commit/push"
+  ]
+}

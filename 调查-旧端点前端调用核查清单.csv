@@ -1,0 +1,35 @@
+序号,端点（方法+路径）,所在控制器,标记来源,前端定义,前端调用点,脚本或契约,最终判定,若被禁用会坏在哪
+1,POST /alarm/alarmNotifyRule,AlarmNotifyRuleController.java:150,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用（无前端入口）
+2,POST /alarm/alarmNotifyRule/with-receiver,AlarmNotifyRuleController.java:168（映射171）,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+3,PUT /alarm/alarmNotifyRule,AlarmNotifyRuleController.java:186,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+4,PUT /alarm/alarmNotifyRule/with-receiver,AlarmNotifyRuleController.java:204（映射207）,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+5,DELETE /alarm/alarmNotifyRule/{ruleIds},AlarmNotifyRuleController.java:221（映射224）,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+6,POST /alarm/alarmRecord,AlarmRecordController.java:125,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+7,PUT /alarm/alarmRecord,AlarmRecordController.java:143,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+8,DELETE /alarm/alarmRecord/{alarmIds},AlarmRecordController.java:161,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+9,POST /lab/pumpconnection,LabBenchReactorControllerController.java:374/377,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+10,PUT /lab/pumpconnection,LabBenchReactorControllerController.java:401/404,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+11,DELETE /lab/pumpconnection/{connectionIds},LabBenchReactorControllerController.java:463/466,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+12,POST /lab/integratedpump,LabIntegratedReactorPumpController.java:170,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+13,PUT /lab/integratedpump,LabIntegratedReactorPumpController.java:199,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+14,DELETE /lab/integratedpump/{integratedIds},LabIntegratedReactorPumpController.java:231,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+15,POST /lab/leader,LabLabLeaderController.java:127,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+16,PUT /lab/leader,LabLabLeaderController.java:149,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+17,DELETE /lab/leader/{labIds},LabLabLeaderController.java:171,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+18,POST /lab/offlinealarm,LabOfflineAlarmConfigController.java:106/109,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+19,PUT /lab/offlinealarm,LabOfflineAlarmConfigController.java:142/145,@Deprecated（fa4f94f46）,无,"无",无,确认无任何调用方,不适用
+20,PUT /smp/labgroup/{groupId}/members,SysGroupController.java:339,@Deprecated（fa4f94f46）,无（members 仅 GET；保存走 PUT /smp/labgroup）,"无",无,确认无任何调用方,不适用
+21,POST /system/pwdhistory,SysUserPasswordHistoryController.java:114,停用写口（抛 EndpointDisabledException 116-117）,无（SDK 写函数已删）,"无",无,确认无任何调用方,不适用（已400拒绝且无调用方）
+22,PUT /system/pwdhistory,SysUserPasswordHistoryController.java:131,停用写口（133-134）,无,"无",无,确认无任何调用方,不适用
+23,DELETE /system/pwdhistory/{ids},SysUserPasswordHistoryController.java:148,停用写口（150-151）,无,"无",无,确认无任何调用方,不适用
+24,POST /detect/signrecord,DetResultSignRecordController.java:85（抛88）,停用写口+Legacy台账,无（SDK 仅 listSignrecord）,"无",无,确认无任何调用方,不适用（已400拒绝且无调用方）
+25,PUT /detect/signrecord,DetResultSignRecordController.java:93（抛96）,停用写口+Legacy台账,无,"无",无,确认无任何调用方,不适用
+26,DELETE /detect/signrecord/{signIds},DetResultSignRecordController.java:101（抛104）,停用写口+Legacy台账,无,"无",无,确认无任何调用方,不适用
+27,GET /process/approval/deliveries/{id}/reconciliation-preview,ApprovalReconciliationController.java:44,调查结论（docs/调查-M06审批投递现状.md:14）,无,"无",无（仅设计文档描述）,确认无任何调用方,不适用
+28,POST /process/approval/deliveries/{id}/reconciliations,ApprovalReconciliationController.java:56,调查结论（同上）,无,"无",无,确认无任何调用方,不适用
+29,POST /process/approval/reconciliations/{id}/review,ApprovalReconciliationController.java:65,调查结论（同上）,无,"无",无,确认无任何调用方,不适用
+30,POST /process/approval/reconciliations/{id}/withdraw,ApprovalReconciliationController.java:74,调查结论（同上）,无,"无",无,确认无任何调用方,不适用
+31,GET /process/approval/reconciliations/{id},ApprovalReconciliationController.java:83,调查结论（同上）,无,"无",无,确认无任何调用方,不适用
+32,守卫方法 rejectLegacySignRecordUpdate（非HTTP）,LegacyDetectionEndpointGuard.java:44-48 / Impl.java:62-71,Legacy台账（最终API基线.md:4087）,不适用,不适用,无,确认无任何调用方,不适用
+33,守卫方法 rejectLegacySignRecordDelete（非HTTP）,LegacyDetectionEndpointGuard.java:44-48 / Impl.java:62-71,Legacy台账（最终API基线.md:4097）,不适用,不适用,无,确认无任何调用方,不适用
+34,POST /lab/offlinealarm/{labId}/batch-save,LabOfflineAlarmConfigController.java:124-131,旧版入口说明（javadoc，未标@Deprecated）,有：sdk-smp-api/src/modules/lab/offlinealarm.ts:30-35,有：app-smp-settings/src/views/lab-offlinealarm/index.vue:473（保存按钮）,路由已注册 app-smp-settings/src/router/index.ts:261-263,仍被前端调用,在用不能删；模块头标 DEFERRED 但页面与路由仍存在

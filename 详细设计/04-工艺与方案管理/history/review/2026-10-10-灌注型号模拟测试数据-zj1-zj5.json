@@ -1,0 +1,11 @@
+{
+  "purpose": "用户授权的灌注培养基方案功能测试夹具；不代表真实设备工程资料，不用于设备执行或现场核准。",
+  "schemaVersion": 1,
+  "models": [
+    { "displayName": "zj1", "modelId": "1305575282106830848", "modelKind": "INTEGRATED_MODEL", "volumeLitres": 30, "pumpCount": 4, "mfcCount": 2 },
+    { "displayName": "zj2", "modelId": "1305575438982189056", "modelKind": "INTEGRATED_MODEL", "volumeLitres": 20, "pumpCount": 6, "mfcCount": 2 },
+    { "displayName": "zj3", "modelId": "1305575634612916224", "modelKind": "INTEGRATED_MODEL", "volumeLitres": 12, "pumpCount": 8, "mfcCount": 2 },
+    { "displayName": "zj4", "modelId": "1305575824522612736", "modelKind": "INTEGRATED_MODEL", "volumeLitres": 20, "pumpCount": 4, "mfcCount": 2 },
+    { "displayName": "zj5", "modelId": "1305583766458208256", "modelKind": "INTEGRATED_MODEL", "volumeLitres": 20, "pumpCount": 8, "mfcCount": 2 }
+  ]
+}

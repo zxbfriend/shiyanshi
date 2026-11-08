@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "kind": "MODEL",
+    "modelKind": "INTEGRATED_MODEL",
+    "modelId": "1305583885429641216",
+    "deviceKind": null,
+    "deviceId": null
+  },
+  "vendor": {
+    "name": "MOCK-仅供功能测试",
+    "controllerFamily": "MOCK-ZJ6",
+    "protocolVersion": "MOCK-1",
+    "firmwareRange": null
+  },
+  "capabilities": {
+    "pumpCount": 4,
+    "mfcCount": 2,
+    "temperatureControl": false,
+    "weightControl": true,
+    "pressureControl": true,
+    "supportedStepCodes": [],
+    "applicableInstanceIds": []
+  },
+  "specification": {
+    "originalText": "模拟测试夹具：20 L；非厂商规格，不用于设备执行",
+    "value": "20",
+    "unit": "L",
+    "volumeLitres": "20",
+    "conversionRule": "L_IDENTITY"
+  },
+  "pidRules": [],
+  "channels": [],
+  "mediumMappings": [],
+  "feedingPolicy": null
+}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaskQueue 自动取测与自动补料</title>
+  <style>
+    body { font-family: "Microsoft YaHei", "Segoe UI", sans-serif; font-size: 14px; line-height: 1.6; color: #222; max-width: 960px; margin: 0 auto; padding: 24px 20px 48px; background: #fafafa; }
+    h1 { font-size: 20px; border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 20px; }
+    h2 { font-size: 16px; margin: 28px 0 10px; color: #333; }
+    h3 { font-size: 14px; margin: 18px 0 8px; color: #444; }
+    table { width: 100%; border-collapse: collapse; background: #fff; margin: 8px 0 16px; font-size: 13px; }
+    th, td { border: 1px solid #ddd; padding: 7px 10px; text-align: left; vertical-align: top; }
+    th { background: #f0f0f0; font-weight: 600; }
+    code { font-family: Consolas, monospace; background: #eee; padding: 1px 4px; font-size: 12px; }
+    .flow { background: #fff; border: 1px solid #ddd; padding: 12px 16px; margin: 10px 0; font-size: 13px; }
+    ul { margin: 6px 0; padding-left: 22px; }
+    .tag { display: inline-block; background: #e8e8e8; padding: 1px 8px; border-radius: 3px; font-size: 12px; margin-right: 6px; }
+  </style>
+</head>
+<body>
+
+<h1>TaskQueue 自动取测与自动补料</h1>
+<p>基于 <code>TaskQueueService.cs</code> 整理创建任务时的入参、出参及落库表字段。</p>
+
+<h2>1. 操作类型</h2>
+<table>
+  <tr><th>OPID</th><th>Code</th><th>名称</th><th>说明</th></tr>
+  <tr><td>1</td><td>SAMPLINGTEST</td><td>自动取测</td><td>机器人取样 + BGA/Vicell/OSMO/Cedex 等检测</td></tr>
+  <tr><td>2</td><td>FEEDING</td><td>自动补料</td><td>POSITION1/2/3 三位置补料，含体积与泵速</td></tr>
+</table>
+<p>创建后 <code>Mode = Auto(3)</code>，<code>Status = Pending(1)</code>，由外部 Core Service 拾取执行。</p>
+
+<h2>2. 创建流程</h2>
+<div class="flow">
+  <strong>POST api/taskQueue/add-taskqueue</strong><br>
+  校验反应器 / 接种状态 →（补料）校验补料单元连接 → 时间区间校验 →
+  <strong>GetBatchOPRequestListByRequestRule</strong>（Rule/Interval 展开多条）→
+  （取测）<strong>ConsumableCalCulation</strong> 耗材预估 →
+  逐条 <strong>AddTaskQueueAndSpeed</strong> → <strong>InsertTaskQueueAndSpeedEntitys</strong> 落库
+</div>
+<p>保存前可先调 <strong>POST api/taskQueue/check-taskqueue</strong> 做当日重复检测/补料预警。</p>
+
+<h2>3. 请求入参 BatchOPRequest</h2>
+<table>
+  <tr><th>字段</th><th>类型</th><th>必填</th><th>说明</th></tr>
+  <tr><td>LabDeviceIDList</td><td>List&lt;int&gt;</td><td>是</td><td>所选反应器 LabDeviceID 列表</td></tr>
+  <tr><td>OPID</td><td>int</td><td>是</td><td>1=自动取测，2=自动补料</td></tr>
+  <tr><td>LabId</td><td>int</td><td>是</td><td>实验室 ID</td></tr>
+  <tr><td>batchOPSubModelList</td><td>List&lt;OPSubModel&gt;</td><td>是</td><td>子操作及参数，见下节</td></tr>
+  <tr><td>StartDate / EndDate</td><td>DateTime?</td><td>Rule/Interval 时</td><td>规则起止日期</td></tr>
+  <tr><td>ExecuteTime</td><td>string</td><td>Rule 时</td><td>每日执行时刻，如 <code>08:00:00</code></td></tr>
+  <tr><td>Interval</td><td>int</td><td>Interval 时</td><td>间隔分钟数</td></tr>
+  <tr><td>IsAdd</td><td>bool?</td><td>校验用</td><td>check-taskqueue 时区分新增/编辑</td></tr>
+  <tr><td>TaskQueueID / BatchOPID</td><td>int?</td><td>编辑时</td><td>仅 edit-taskqueue 使用</td></tr>
+</table>
+
+<h3>3.1 子操作 OPSubModel</h3>
+<table>
+  <tr><th>字段</th><th>说明</th></tr>
+  <tr><td>OPSubID / OPSubCode / OPSubName</td><td>子操作标识（来自 OP 模板）</td></tr>
+  <tr><td>isCheck</td><td>是否勾选；落库为 <code>CDP_Batch_OP_Sub.Value</code></td></tr>
+  <tr><td>oPParameterList</td><td>该子操作下的参数列表</td></tr>
+</table>
+
+<h3>3.2 参数 OPParameter（oPParameterList 元素）</h3>
+<table>
+  <tr><th>字段</th><th>说明</th></tr>
+  <tr><td>OPParameterID / ParameterID</td><td>参数定义 ID</td></tr>
+  <tr><td>Name</td><td>参数名（如 TESTINGTIME、FEEDINGVOLUME、DILUTIONFACTOR）</td></tr>
+  <tr><td>Value</td><td>参数值，写入 <code>CDP_Batch_OP_ParameterValue.Value</code></td></tr>
+  <tr><td>oPParameterSubList</td><td>Cedex 分析项勾选，写入 ParameterSubValue 表</td></tr>
+</table>
+
+<h2>4. 自动取测（OPID=1）子项与参数</h2>
+<table>
+  <tr><th>OPSubCode</th><th>含义</th><th>常见参数</th></tr>
+  <tr><td>TESTINGRULE</td><td>检测规则（常勾选）</td><td>TESTINGTYPE / RULETYPE（Now/Timing/Rule/Interval）、TESTINGTIME（ParameterID=43）</td></tr>
+  <tr><td>BGA</td><td>BGA 检测</td><td>取样体积等</td></tr>
+  <tr><td>VICELL</td><td>Vicell 检测</td><td>DILUTIONFACTOR 等</td></tr>
+  <tr><td>OSMO</td><td>渗透压检测</td><td>取样体积等</td></tr>
+  <tr><td>CEDEX</td><td>Cedex 检测</td><td>分析项在 oPParameterSubList；限值 TopValue/BottomValue</td></tr>
+  <tr><td>RESERVEDSAMPLE</td><td>留样</td><td>体积；前端保存前 ×1000（μL）</td></tr>
+  <tr><td>RESERVEDSAMPLEHARVEST</td><td>收获留样（灌流）</td><td>同上 ×1000</td></tr>
+</table>
+<p>自动取测除 TESTINGRULE 外至少勾选一个检测子项。GLLY（OPSubID=36）仅灌流培养才写入。</p>
+
+<h2>5. 自动补料（OPID=2）子项与参数</h2>
+<table>
+  <tr><th>OPSubCode</th><th>OPSubID</th><th>含义</th><th>常见参数</th></tr>
+  <tr><td>POSITION1</td><td>5</td><td>补料位 1</td><td>FEEDINGNAME（物料编码，可自动从大液瓶带出）、FEEDINGVOLUME、POSITION1FEEDINGSPEED</td></tr>
+  <tr><td>POSITION2</td><td>6</td><td>补料位 2</td><td>同上</td></tr>
+  <tr><td>POSITION3</td><td>7</td><td>补料位 3</td><td>同上</td></tr>
+</table>
+<p>落库前服务会：按反应器查大液瓶信息填充 FEEDINGNAME；泵速为空时从 <code>CDP_Workflow_BatchSupplyConnectionDtl</code> 或配置默认值补齐；并写入 <code>Auth_UserFeedingSpeedSetting</code> 记录用户泵速偏好。</p>
+<p>创建前 Controller 会调用 <code>CheckSupplementaryConnection</code> 校验补料单元连接。</p>
+
+<h2>6. 规则展开 GetBatchOPRequestListByRequestRule</h2>
+<table>
+  <tr><th>场景</th><th>条件</th><th>结果</th></tr>
+  <tr><td>单次</td><td>无 Rule/Interval</td><td>原请求 1 条</td></tr>
+  <tr><td>Rule 每日</td><td>StartDate + EndDate + ExecuteTime</td><td>按天复制多条，TESTINGTIME = 日期 + ExecuteTime，类型强制 Timing</td></tr>
+  <tr><td>Interval</td><td>StartDate + EndDate + Interval&gt;0</td><td>按间隔分钟复制多条，TESTINGTIME 递增</td></tr>
+</table>
+<p>入参：<code>BatchOPRequest</code>；出参：<code>BaseResponse&lt;List&lt;BatchOPRequest&gt;&gt;</code>，Data 为展开后的请求列表。</p>
+
+<h2>7. 校验 CheckTaskQueue</h2>
+<p>入参：<code>BatchOPRequest</code>（同创建）。出参：<code>BaseResponse</code>。</p>
+<table>
+  <tr><th>场景</th><th>逻辑</th><th>失败码</th></tr>
+  <tr><td>取测 + Now</td><td>当日同批次 BGA/OSMO/CEDEX/VICELL 是否已有结果</td><td>SE5004817（ResultCode=-1，带 msg）</td></tr>
+  <tr><td>取测 OPID=1</td><td>所选反应器当日是否已有同 OP 任务</td><td>SE5004817</td></tr>
+  <tr><td>补料 OPID=2</td><td>所选反应器当日是否已补过相同液体</td><td>SE5004817</td></tr>
+</table>
+<p>ResultCode=1 或默认表示通过（仅预警时 ResultCode=-1）。</p>
+
+<h2>8. 耗材计算 ConsumableCalCulation（仅取测）</h2>
+<p>入参：<code>labId</code>。出参：<code>BaseResponse</code>，库存不足时 IsSuccess=false。</p>
+<p>读取未执行 TaskQueue + Batch_OP，结合子项 BGA/VICELL/OSMO/CEDEX/RESERVEDSAMPLE 及 LoadSample 未完成记录，对比仓库 EP 管、Tip、Vicell 杯、Osmo 杯、Cedex 杯库存。<strong>补料（OPID=2）不走此步骤。</strong></p>
+
+<h2>9. 创建核心 AddTaskQueueAndSpeed</h2>
+<h3>入参</h3>
+<table>
+  <tr><th>参数</th><th>类型</th><th>说明</th></tr>
+  <tr><td>request</td><td>BatchOPRequest</td><td>单条（已展开）请求</td></tr>
+  <tr><td>userID</td><td>int</td><td>当前用户</td></tr>
+</table>
+<p>内部根据 <code>LabDeviceIDList</code> 关联查询：</p>
+<ul>
+  <li><code>CDP_Batch</code> + <code>CDP_Location_Combinations</code> + <code>CDP_LabDevice</code></li>
+  <li>条件：反应器在列表中、批次未完成（Status &lt; Completed）、未删除</li>
+  <li>每个反应器生成一条 <code>BatchOPModelRequest</code>（含 BatchID、LabId、ReactorID、OPID、子项列表）</li>
+</ul>
+
+<h3>出参</h3>
+<p><code>BaseResponse</code>：ResultCode&gt;0 成功；0 反应器无有效批次（SE500230）；-1 异常（SE500030）。</p>
+
+<h2>10. 落库表与字段</h2>
+
+<h3>CDP_TaskQueue</h3>
+<table>
+  <tr><th>字段</th><th>写入值</th></tr>
+  <tr><td>TaskQueueID</td><td>自增主键</td></tr>
+  <tr><td>BatchOPID</td><td>关联 CDP_Batch_OP</td></tr>
+  <tr><td>Status</td><td>与 Batch_OP 一致，初始 Pending</td></tr>
+  <tr><td>IsDelete</td><td>false</td></tr>
+  <tr><td>Created_by / Creation_time</td><td>当前用户 / 当前时间</td></tr>
+</table>
+
+<h3>CDP_Batch_OP</h3>
+<table>
+  <tr><th>字段</th><th>写入值</th></tr>
+  <tr><td>BatchOPID</td><td>自增主键</td></tr>
+  <tr><td>BatchID</td><td>反应器对应批次</td></tr>
+  <tr><td>LabId</td><td>request.LabId</td></tr>
+  <tr><td>OPID</td><td>1 或 2</td></tr>
+  <tr><td>Mode</td><td>3（Auto）</td></tr>
+  <tr><td>Status</td><td>1（Pending）</td></tr>
+  <tr><td>StartTime / EndTime</td><td>规则展开时可能有值</td></tr>
+  <tr><td>SequenceNumber</td><td>序号</td></tr>
+  <tr><td>Created_by / Creation_time</td><td>审计字段</td></tr>
+</table>
+
+<h3>CDP_Batch_OP_Sub</h3>
+<table>
+  <tr><th>字段</th><th>写入值</th></tr>
+  <tr><td>BatchOPSubID</td><td>自增主键</td></tr>
+  <tr><td>BatchOPID</td><td>父操作 ID</td></tr>
+  <tr><td>OPSubID</td><td>子操作定义 ID</td></tr>
+  <tr><td>Status</td><td>同 Batch_OP，Pending</td></tr>
+  <tr><td>Value</td><td>isCheck（是否勾选）</td></tr>
+  <tr><td>StartTime / EndTime</td><td>计划时间</td></tr>
+  <tr><td>SequenceNumber</td><td>序号</td></tr>
+</table>
+
+<h3>CDP_Batch_OP_ParameterValue</h3>
+<table>
+  <tr><th>字段</th><th>写入值</th></tr>
+  <tr><td>OPParameterID</td><td>自增主键</td></tr>
+  <tr><td>BatchSubOPID</td><td>关联 Batch_OP_Sub</td></tr>
+  <tr><td>ParameterID</td><td>参数定义 ID（43=TESTINGTIME 等）</td></tr>
+  <tr><td>SubParameterID</td><td>级联参数 ID（可选）</td></tr>
+  <tr><td>Value</td><td>参数值字符串</td></tr>
+  <tr><td>SequenceNumber</td><td>序号</td></tr>
+</table>
+
+<h3>CDP_Batch_OP_ParameterSubValue（Cedex 等）</h3>
+<table>
+  <tr><th>字段</th><th>说明</th></tr>
+  <tr><td>OPParameterSubID / OPParameterID</td><td>主键与父参数</td></tr>
+  <tr><td>ParameterSubID</td><td>分析项 ID</td></tr>
+  <tr><td>Value</td><td>是否勾选</td></tr>
+  <tr><td>TopValue / BottomValue</td><td>上下限</td></tr>
+</table>
+
+<h3>CDP_Batch_OP_Exec（可选）</h3>
+<table>
+  <tr><th>字段</th><th>说明</th></tr>
+  <tr><td>BatchID / BatchOPID / OPSubID</td><td>关联</td></tr>
+  <tr><td>ActualValue</td><td>实际补料量</td></tr>
+  <tr><td>FeedingTime</td><td>补料时间</td></tr>
+</table>
+<p>创建时若 request 带 batchOPExecModelList 则写入；执行后由 Core Service 回调更新。</p>
+
+<h3>Auth_UserFeedingSpeedSetting（仅补料含泵速时）</h3>
+<table>
+  <tr><th>字段</th><th>说明</th></tr>
+  <tr><td>UserId</td><td>当前用户</td></tr>
+  <tr><td>Feeding1Speed / Feeding2Speed / Feeding3Speed</td><td>三位置泵速</td></tr>
+</table>
+
+<h2>11. 关联读取表（创建时查询，非写入）</h2>
+<table>
+  <tr><th>表</th><th>用途</th></tr>
+  <tr><td>CDP_Batch / CDP_LabDevice / CDP_Location_Combinations</td><td>反应器 → 批次解析</td></tr>
+  <tr><td>CDP_OP_Definition / DefinitionSub / DefParameter / Parameter</td><td>OP 模板与子项参数定义</td></tr>
+  <tr><td>CDP_OP_Parameter_Value</td><td>参数下拉选项（Now/Timing 等）</td></tr>
+  <tr><td>CDP_OP_ParameterSub / CDP_TestingDef</td><td>Cedex 分析项主数据</td></tr>
+  <tr><td>CDP_Workflow_BatchSupplyConnectionDtl</td><td>补料默认泵速</td></tr>
+  <tr><td>Auth_Culture</td><td>GLLY 子项灌流判断</td></tr>
+  <tr><td>CDP_Test_LoadSampleDtl</td><td>耗材计算中的 LoadSample 占用</td></tr>
+  <tr><td>CDP_Testing_* 各仪器表</td><td>CheckTaskQueue 当日重复检测</td></tr>
+</table>
+
+<h2>12. 接口出参汇总</h2>
+<table>
+  <tr><th>接口 / 方法</th><th>出参类型</th><th>成功标志</th></tr>
+  <tr><td>add-taskqueue</td><td>BaseResponse</td><td>ResultCode &gt; 0</td></tr>
+  <tr><td>check-taskqueue</td><td>BaseResponse</td><td>ResultCode ≠ -1（-1 为预警）</td></tr>
+  <tr><td>GetBatchOPRequestListByRequestRule</td><td>BaseResponse&lt;List&lt;BatchOPRequest&gt;&gt;</td><td>ResultCode ≥ 1，Data 为展开列表</td></tr>
+  <tr><td>ConsumableCalCulation</td><td>BaseResponse</td><td>IsSuccess=true</td></tr>
+  <tr><td>AddTaskQueueAndSpeed</td><td>BaseResponse</td><td>ResultCode &gt; 0</td></tr>
+</table>
+
+<h2>13. 取测 vs 补料差异</h2>
+<table>
+  <tr><th>项目</th><th>自动取测 OPID=1</th><th>自动补料 OPID=2</th></tr>
+  <tr><td>子项</td><td>TESTINGRULE + BGA/VICELL/OSMO/CEDEX/留样</td><td>POSITION1/2/3</td></tr>
+  <tr><td>耗材校验</td><td>有（ConsumableCalCulation）</td><td>无</td></tr>
+  <tr><td>连接校验</td><td>无</td><td>CheckSupplementaryConnection</td></tr>
+  <tr><td>泵速记忆</td><td>无</td><td>Auth_UserFeedingSpeedSetting</td></tr>
+  <tr><td>物料名自动填充</td><td>无</td><td>FEEDINGNAME 从大液瓶</td></tr>
+  <tr><td>执行结果表</td><td>CDP_Testing_* 检测任务</td><td>CDP_Batch_OP_Exec 实际补料量</td></tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多实验室数据同步方案 — 架构与时序详解</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #e2e6ed;
+    --text: #1a1f2e;
+    --text2: #4a5568;
+    --text3: #8a95a3;
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --teal: #0d9488;
+    --teal-light: #e0f7f5;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+    --green: #059669;
+    --green-light: #d1fae5;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --font: 'Noto Sans SC', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  /* ── Layout ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── Header ── */
+  .doc-header {
+    background: linear-gradient(135deg, #1a56db 0%, #0d9488 100%);
+    padding: 48px 48px 40px;
+    border-radius: 16px;
+    color: white;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 80px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .doc-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+  .doc-header p { font-size: 14px; opacity: 0.85; }
+  .header-tags { display: flex; gap: 10px; margin-top: 20px; }
+  .header-tag {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ── Section ── */
+  .section { margin-bottom: 48px; }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    letter-spacing: 0.3px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Three Key Badges ── */
+  .three-keys {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .key-card {
+    border-radius: 10px;
+    padding: 18px;
+    border: 1.5px solid;
+  }
+  .key-card.pk { background: var(--primary-light); border-color: #93b4f5; }
+  .key-card.bk { background: var(--amber-light); border-color: #fbbf24; }
+  .key-card.mk { background: var(--teal-light); border-color: #5eead4; }
+  .key-label {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .key-card.pk .key-label { color: var(--primary); }
+  .key-card.bk .key-label { color: var(--amber); }
+  .key-card.mk .key-label { color: var(--teal); }
+  .key-desc { font-size: 12.5px; color: var(--text2); line-height: 1.5; }
+  .key-rule {
+    margin-top: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .key-card.pk .key-rule { background: #dbeafe; color: var(--primary); }
+  .key-card.bk .key-rule { background: #fde68a; color: #92400e; }
+  .key-card.mk .key-rule { background: #ccfbf1; color: var(--teal); }
+
+  /* ── SVG Diagram wrapper ── */
+  .diagram-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .diagram-wrap svg { display: block; width: 100%; }
+
+  /* ── Data table ── */
+  .data-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  thead th {
+    background: #1e293b;
+    color: white;
+    padding: 9px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  tbody td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+  }
+  tbody tr:hover td { background: var(--surface2); }
+  .cell-pk { color: var(--primary); font-weight: 600; }
+  .cell-bk { color: var(--amber); font-weight: 600; }
+  .cell-mk { color: var(--teal); font-weight: 600; }
+  .cell-mk-changed { color: var(--teal); font-weight: 700; background: var(--teal-light); border-radius: 3px; padding: 1px 4px; }
+  .cell-shadow { color: var(--purple); font-style: italic; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; font-family: var(--font);
+  }
+  .badge-pending { background: var(--amber-light); color: var(--amber); }
+  .badge-synced  { background: var(--green-light);  color: var(--green); }
+  .badge-shadow  { background: var(--purple-light);  color: var(--purple); }
+  /* 英文状态值说明（供开发参考）：
+     pending  = 待处理   synced = 已同步   success = 已完成
+     failed   = 失败     shadow = 影子记录  waiting = 等待父记录 */
+
+  /* ── Step list ── */
+  .step-list { counter-reset: step; display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex; gap: 16px; padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-icon {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .step-content { flex: 1; }
+  .step-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .step-detail { font-size: 12.5px; color: var(--text2); line-height: 1.6; }
+
+  /* ── Phase badge ── */
+  .phase-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .phase-upload { background: var(--primary-light); color: var(--primary); border: 1.5px solid #93b4f5; }
+  .phase-merge  { background: var(--teal-light);    color: var(--teal);    border: 1.5px solid #5eead4; }
+  .phase-dist   { background: var(--purple-light);  color: var(--purple);  border: 1.5px solid #c4b5fd; }
+
+  /* ── Info box ── */
+  .info-box {
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 13px; line-height: 1.6;
+  }
+  .info-box-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .info-note   { background: var(--primary-light); border-left: 3px solid var(--primary); }
+  .info-warn   { background: var(--amber-light);   border-left: 3px solid var(--amber); }
+  .info-key    { background: var(--teal-light);    border-left: 3px solid var(--teal); }
+
+  code {
+    font-family: var(--mono);
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 11.5px;
+    color: var(--primary);
+  }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .row2, .three-keys { grid-template-columns: 1fr; } }
+
+  /* ── Rule list ── */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 700px) { .rule-grid { grid-template-columns: 1fr; } }
+  .rule-item {
+    background: var(--surface2);
+    border-radius: 8px; padding: 12px 14px;
+    font-size: 12.5px; display: flex; gap: 10px; align-items: flex-start;
+    border: 1px solid var(--border);
+  }
+  .rule-num {
+    background: var(--primary); color: white;
+    border-radius: 50%; width: 22px; height: 22px; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HEADER ══ -->
+<div class="doc-header">
+  <h1>多工厂多实验室数据同步方案</h1>
+  <p>架构设计 · 同步时序 · 案例详解 &nbsp;|&nbsp; pk / bk / mk 三键设计</p>
+  <div class="header-tags">
+    <span class="header-tag">离线优先</span>
+    <span class="header-tag">无限扩展节点</span>
+    <span class="header-tag">pk 永不修改</span>
+    <span class="header-tag">影子记录透明查询</span>
+  </div>
+</div>
+
+<!-- ══ SECTION 0: 三键核心 ══ -->
+<div class="section">
+  <div class="section-title"><div class="section-num">0</div>三键核心设计</div>
+  <div class="three-keys">
+    <div class="key-card pk">
+      <div class="key-label">pk &nbsp;<span style="font-size:14px;font-family:var(--font)">本地技术主键</span></div>
+      <div class="key-desc">雪花算法生成，全网唯一，是本地所有表关联的基础。字段名 <code>pk</code> / <code>project_pk</code>。</div>
+      <span class="key-rule">创建后永远不修改</span>
+    </div>
+    <div class="key-card bk">
+      <div class="key-label">bk &nbsp;<span style="font-size:14px;font-family:var(--font)">业务主键</span></div>
+      <div class="key-desc">即项目编号，如 XM-0001。总部识别"同一个业务"的唯一依据，写入前标准化格式。</div>
+      <span class="key-rule">写入后不允许修改</span>
+    </div>
+    <div class="key-card mk">
+      <div class="key-label">mk &nbsp;<span style="font-size:14px;font-family:var(--font)">总部统一主键</span></div>
+      <div class="key-desc">本地创建时先等于 pk，总部合并后回写 master_mk，之后全网统一指向同一个值。</div>
+      <span class="key-rule">确定后全网永久不变</span>
+    </div>
+  </div>
+  <div class="info-box info-key">
+    <div class="info-box-icon">💡</div>
+    <div>本地查询永远用 <code>project_pk</code>（即 pk 关联），不受同步影响；跨实验室识别用 <code>project_mk</code>；总部合并依据是 <code>bk</code>。三个维度各司其职，互不干扰。</div>
+  </div>
+</div>
+
+<!-- ══ SECTION 1: 整体架构图 ══ -->
+<div class="section">
+  <div class="section-title"><div class="section-num">1</div>整体架构图</div>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans SC',sans-serif">
+      <defs>
+        <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#1a56db"/>
+        </marker>
+        <marker id="arr-teal" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#0d9488"/>
+        </marker>
+        <marker id="arr-gray" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <rect width="1000" height="560" fill="#f8fafc"/>
+
+      <!-- HQ box -->
+      <rect x="280" y="24" width="440" height="160" rx="14" fill="white" stroke="#1a56db" stroke-width="2"/>
+      <rect x="280" y="24" width="440" height="36" rx="14" fill="#1a56db"/>
+      <rect x="280" y="46" width="440" height="14" fill="#1a56db"/>
+      <text x="500" y="48" text-anchor="middle" fill="white" font-size="14" font-weight="700">🏢 总部数据中心（HQ）</text>
+
+      <!-- HQ internal boxes -->
+      <rect x="300" y="72" width="110" height="92" rx="8" fill="#eff6ff" stroke="#93b4f5" stroke-width="1.5"/>
+      <text x="355" y="100" text-anchor="middle" fill="#1a56db" font-size="11" font-weight="600">上传缓冲区</text>
+      <text x="355" y="116" text-anchor="middle" fill="#64748b" font-size="10">项目中间表</text>
+      <text x="355" y="130" text-anchor="middle" fill="#64748b" font-size="10">子记录中间表</text>
+      <text x="355" y="148" text-anchor="middle" fill="#64748b" font-size="10">（临时隔离，防污染主表）</text>
+
+      <rect x="422" y="72" width="110" height="92" rx="8" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="477" y="100" text-anchor="middle" fill="#0d9488" font-size="11" font-weight="600">合并引擎</text>
+      <text x="477" y="116" text-anchor="middle" fill="#64748b" font-size="10">业务编号去重</text>
+      <text x="477" y="130" text-anchor="middle" fill="#64748b" font-size="10">统一主键选举</text>
+      <text x="477" y="148" text-anchor="middle" fill="#64748b" font-size="10">字段冲突检测</text>
+
+      <rect x="544" y="72" width="110" height="92" rx="8" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="599" y="100" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="600">主数据库</text>
+      <text x="599" y="116" text-anchor="middle" fill="#64748b" font-size="10">总部项目主表</text>
+      <text x="599" y="130" text-anchor="middle" fill="#64748b" font-size="10">身份映射表</text>
+      <text x="599" y="148" text-anchor="middle" fill="#64748b" font-size="10">项目成员表</text>
+
+      <!-- Internal arrows in HQ -->
+      <line x1="410" y1="118" x2="422" y2="118" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr-gray)"/>
+      <line x1="532" y1="118" x2="544" y2="118" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr-gray)"/>
+
+      <!-- Factory A -->
+      <rect x="20" y="250" width="300" height="170" rx="12" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+      <rect x="20" y="250" width="300" height="32" rx="12" fill="#334155"/>
+      <rect x="20" y="268" width="300" height="14" fill="#334155"/>
+      <text x="170" y="271" text-anchor="middle" fill="white" font-size="12" font-weight="600">🏭 工厂 A（Factory-1）</text>
+
+      <!-- Lab A -->
+      <rect x="35" y="294" width="125" height="110" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="98" y="316" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="600">实验室 A</text>
+      <text x="98" y="334" text-anchor="middle" fill="#64748b" font-size="10">项目表</text>
+      <text x="98" y="349" text-anchor="middle" fill="#64748b" font-size="10">实验记录表</text>
+      <text x="98" y="364" text-anchor="middle" fill="#64748b" font-size="10">同步事件队列</text>
+      <text x="98" y="379" text-anchor="middle" fill="#64748b" font-size="10">外部项目映射表</text>
+      <text x="98" y="394" text-anchor="middle" fill="#64748b" font-size="10">待处理队列</text>
+
+      <!-- Lab B -->
+      <rect x="175" y="294" width="125" height="110" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="238" y="316" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="600">实验室 B</text>
+      <text x="238" y="334" text-anchor="middle" fill="#64748b" font-size="10">项目表</text>
+      <text x="238" y="349" text-anchor="middle" fill="#64748b" font-size="10">实验记录表</text>
+      <text x="238" y="364" text-anchor="middle" fill="#64748b" font-size="10">同步事件队列</text>
+      <text x="238" y="379" text-anchor="middle" fill="#64748b" font-size="10">外部项目映射表</text>
+      <text x="238" y="394" text-anchor="middle" fill="#64748b" font-size="10">待处理队列</text>
+
+      <!-- Factory B -->
+      <rect x="350" y="250" width="300" height="170" rx="12" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+      <rect x="350" y="250" width="300" height="32" rx="12" fill="#334155"/>
+      <rect x="350" y="268" width="300" height="14" fill="#334155"/>
+      <text x="500" y="271" text-anchor="middle" fill="white" font-size="12" font-weight="600">🏭 工厂 B（Factory-2）</text>
+
+      <rect x="365" y="294" width="125" height="110" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="428" y="316" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="600">实验室 C</text>
+      <text x="428" y="334" text-anchor="middle" fill="#64748b" font-size="10">项目表</text>
+      <text x="428" y="349" text-anchor="middle" fill="#64748b" font-size="10">实验记录表</text>
+      <text x="428" y="364" text-anchor="middle" fill="#64748b" font-size="10">同步事件队列</text>
+      <text x="428" y="379" text-anchor="middle" fill="#64748b" font-size="10">外部项目映射表</text>
+      <text x="428" y="394" text-anchor="middle" fill="#64748b" font-size="10">待处理队列</text>
+
+      <rect x="505" y="294" width="125" height="110" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="568" y="316" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="600">实验室 D</text>
+      <text x="568" y="334" text-anchor="middle" fill="#64748b" font-size="10">项目表</text>
+      <text x="568" y="349" text-anchor="middle" fill="#64748b" font-size="10">实验记录表</text>
+      <text x="568" y="364" text-anchor="middle" fill="#64748b" font-size="10">同步事件队列</text>
+      <text x="568" y="379" text-anchor="middle" fill="#64748b" font-size="10">外部项目映射表</text>
+      <text x="568" y="394" text-anchor="middle" fill="#64748b" font-size="10">待处理队列</text>
+
+      <!-- Factory N -->
+      <rect x="680" y="250" width="300" height="170" rx="12" fill="white" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="8,4"/>
+      <rect x="680" y="250" width="300" height="32" rx="12" fill="#94a3b8"/>
+      <rect x="680" y="268" width="300" height="14" fill="#94a3b8"/>
+      <text x="830" y="271" text-anchor="middle" fill="white" font-size="12" font-weight="600">🏭 工厂 N（可持续扩展）</text>
+      <rect x="710" y="294" width="240" height="110" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="830" y="354" text-anchor="middle" fill="#94a3b8" font-size="12">实验室 N+1 ... ∞</text>
+
+      <!-- Upload arrows (blue dashed) -->
+      <line x1="98" y1="250" x2="336" y2="184" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+      <line x1="238" y1="250" x2="370" y2="184" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+      <line x1="428" y1="250" x2="470" y2="184" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+      <line x1="568" y1="250" x2="540" y2="184" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+
+      <!-- Download arrows (teal solid) -->
+      <line x1="316" y1="184" x2="108" y2="250" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+      <line x1="355" y1="184" x2="248" y2="250" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+      <line x1="455" y1="184" x2="438" y2="250" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+      <line x1="530" y1="184" x2="558" y2="250" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+
+      <!-- Legend -->
+      <rect x="20" y="450" width="960" height="86" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="44" y="475" fill="#1e293b" font-size="11" font-weight="600">图例说明</text>
+      <line x1="44" y1="495" x2="88" y2="495" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+      <text x="96" y="499" fill="#1a56db" font-size="11">实验室上传（同步事件队列，网络恢复自动重传）</text>
+      <line x1="44" y1="518" x2="88" y2="518" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+      <text x="96" y="522" fill="#0d9488" font-size="11">总部下发（统一主键回写 + 共享实验记录，生成影子记录）</text>
+      <text x="560" y="475" fill="#64748b" font-size="11">🔑 雪花算法按节点机器编号分段，全网主键不冲突</text>
+      <text x="560" y="495" fill="#64748b" font-size="11">⚡ 网络中断实验室本地正常运行，恢复后自动补偿同步</text>
+      <text x="560" y="515" fill="#64748b" font-size="11">📦 新增工厂/实验室：总部注册节点即可，代码无需改动</text>
+    </svg>
+  </div>
+
+  <div class="row2">
+    <div class="info-box info-note" style="margin-bottom:0">
+      <div class="info-box-icon">🏗️</div>
+      <div>架构分三层：<strong>总部数据中心</strong>负责汇总治理；<strong>工厂层</strong>是逻辑分组单元；<strong>实验室</strong>是真正产生数据的叶子节点。三层都可以无限横向扩展。</div>
+    </div>
+    <div class="info-box info-warn" style="margin-bottom:0">
+      <div class="info-box-icon">⚡</div>
+      <div>实验室本地数据库与总部完全<strong>解耦</strong>。业务先写本地，同步事件进队列，后台异步消费。断网时队列积压，网络恢复后自动批量上传，实验不受任何影响。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 2: PHASE 1 上传 ══ -->
+<div class="section">
+  <div class="section-title"><div class="section-num">2</div>阶段一：实验室上传数据</div>
+  <span class="phase-badge phase-upload">📤 上传阶段 · 离线优先</span>
+
+  <div class="info-box info-note">
+    <div class="info-box-icon">📋</div>
+    <div><strong>案例背景：</strong>实验室 A、B、C 三个实验室各自独立，同时针对同一个项目 <strong>XM-0001</strong> 开展实验。三个实验室之间、以及到总部的网络均不稳定。</div>
+  </div>
+
+  <!-- Time sequence diagram Phase 1 -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 440" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans SC',sans-serif">
+      <rect width="1000" height="440" fill="#fafbfc"/>
+
+      <!-- Column headers -->
+      <rect x="40" y="16" width="130" height="36" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="105" y="38" text-anchor="middle" fill="#334155" font-size="12" font-weight="600">实验室 A</text>
+
+      <rect x="200" y="16" width="130" height="36" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="265" y="38" text-anchor="middle" fill="#334155" font-size="12" font-weight="600">实验室 B</text>
+
+      <rect x="360" y="16" width="130" height="36" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="425" y="38" text-anchor="middle" fill="#334155" font-size="12" font-weight="600">实验室 C</text>
+
+      <rect x="570" y="16" width="160" height="36" rx="6" fill="#eff6ff" stroke="#93b4f5" stroke-width="1.5"/>
+      <text x="650" y="32" text-anchor="middle" fill="#1a56db" font-size="12" font-weight="600">同步事件队列</text>
+      <text x="650" y="47" text-anchor="middle" fill="#1a56db" font-size="10">（sync_event）</text>
+
+      <rect x="780" y="16" width="185" height="36" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="872" y="32" text-anchor="middle" fill="#059669" font-size="12" font-weight="600">总部接收缓冲区</text>
+      <text x="872" y="47" text-anchor="middle" fill="#059669" font-size="10">（中间表，隔离主库）</text>
+
+      <!-- Lifelines -->
+      <line x1="105" y1="56" x2="105" y2="430" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="265" y1="56" x2="265" y2="430" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="425" y1="56" x2="425" y2="430" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="650" y1="56" x2="650" y2="430" stroke="#93b4f5" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="872" y1="56" x2="872" y2="430" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Step 1: Lab A writes local -->
+      <rect x="52" y="66" width="106" height="46" rx="6" fill="#eff6ff" stroke="#1a56db" stroke-width="1.5"/>
+      <text x="105" y="85" text-anchor="middle" fill="#1a56db" font-size="10.5" font-weight="600">① 写本地 project</text>
+      <text x="105" y="100" text-anchor="middle" fill="#1e293b" font-size="10">pk=A_P1 bk=XM-0001</text>
+
+      <!-- Step 2: Lab B writes local -->
+      <rect x="212" y="66" width="106" height="46" rx="6" fill="#eff6ff" stroke="#1a56db" stroke-width="1.5"/>
+      <text x="265" y="85" text-anchor="middle" fill="#1a56db" font-size="10.5" font-weight="600">① 写本地 project</text>
+      <text x="265" y="100" text-anchor="middle" fill="#1e293b" font-size="10">pk=B_P1 bk=XM-0001</text>
+
+      <!-- Step 3: Lab C writes local -->
+      <rect x="372" y="66" width="106" height="46" rx="6" fill="#eff6ff" stroke="#1a56db" stroke-width="1.5"/>
+      <text x="425" y="85" text-anchor="middle" fill="#1a56db" font-size="10.5" font-weight="600">① 写本地 project</text>
+      <text x="425" y="100" text-anchor="middle" fill="#1e293b" font-size="10">pk=C_P1 bk=XM-0001</text>
+
+      <!-- Arrow 1: Labs write sync_event -->
+      <line x1="105" y1="130" x2="105" y2="160" stroke="#1a56db" stroke-width="1.5"/>
+      <rect x="52" y="160" width="106" height="40" rx="6" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+      <text x="105" y="176" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">② 写 sync_event</text>
+      <text x="105" y="191" text-anchor="middle" fill="#92400e" font-size="10">status=pending</text>
+
+      <line x1="265" y1="130" x2="265" y2="160" stroke="#1a56db" stroke-width="1.5"/>
+      <rect x="212" y="160" width="106" height="40" rx="6" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+      <text x="265" y="176" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">② 写 sync_event</text>
+      <text x="265" y="191" text-anchor="middle" fill="#92400e" font-size="10">status=pending</text>
+
+      <line x1="425" y1="130" x2="425" y2="160" stroke="#1a56db" stroke-width="1.5"/>
+      <rect x="372" y="160" width="106" height="40" rx="6" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+      <text x="425" y="176" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">② 写 sync_event</text>
+      <text x="425" y="191" text-anchor="middle" fill="#92400e" font-size="10">status=pending</text>
+
+      <!-- 网络中断标记 Lab C -->
+      <rect x="380" y="218" width="90" height="24" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+      <text x="425" y="234" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="600">⚡ 网络中断</text>
+
+      <!-- Background agent -->
+      <rect x="600" y="238" width="100" height="30" rx="5" fill="#f0fdf9" stroke="#0d9488" stroke-width="1.5"/>
+      <text x="650" y="257" text-anchor="middle" fill="#0d9488" font-size="10.5" font-weight="600">后台定时扫描</text>
+
+      <!-- Arrow A uploads -->
+      <line x1="158" y1="252" x2="597" y2="252" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue2)"/>
+      <rect x="230" y="240" width="130" height="20" rx="3" fill="white"/>
+      <text x="295" y="254" text-anchor="middle" fill="#1a56db" font-size="10">甲 批量上传待处理事件</text>
+
+      <!-- Arrow B uploads -->
+      <line x1="318" y1="282" x2="597" y2="282" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue2)"/>
+      <text x="450" y="276" text-anchor="middle" fill="#1a56db" font-size="10">乙 批量上传</text>
+
+      <!-- C retry label -->
+      <rect x="372" y="296" width="106" height="30" rx="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+      <text x="425" y="310" text-anchor="middle" fill="#92400e" font-size="10">失败次数累加</text>
+      <text x="425" y="322" text-anchor="middle" fill="#92400e" font-size="10">网络恢复后重传</text>
+
+      <!-- Write to HQ temp -->
+      <line x1="703" y1="252" x2="778" y2="252" stroke="#059669" stroke-width="1.5" marker-end="url(#arr-green2)"/>
+      <rect x="800" y="220" width="145" height="48" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="872" y="240" text-anchor="middle" fill="#059669" font-size="10.5" font-weight="600">③ 写入缓冲区</text>
+      <text x="872" y="254" text-anchor="middle" fill="#059669" font-size="10">总部接收中间表</text>
+      <text x="872" y="267" text-anchor="middle" fill="#64748b" font-size="10">重复上传自动忽略</text>
+
+      <!-- sync_event update -->
+      <line x1="597" y1="310" x2="158" y2="310" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-green2)"/>
+      <rect x="220" y="296" width="150" height="20" rx="3" fill="white"/>
+      <text x="295" y="309" text-anchor="middle" fill="#059669" font-size="10">④ 同步状态 → 已完成</text>
+
+      <!-- C uploads later -->
+      <line x1="425" y1="342" x2="597" y2="360" stroke="#1a56db" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue2)"/>
+      <text x="510" y="348" text-anchor="middle" fill="#1a56db" font-size="10">⑤ 丙 网络恢复后补传</text>
+
+      <!-- Arrow markers definition -->
+      <defs>
+        <marker id="arr-blue2" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#1a56db"/>
+        </marker>
+        <marker id="arr-green2" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#059669"/>
+        </marker>
+      </defs>
+
+      <!-- Timeline -->
+      <text x="15" y="180" fill="#94a3b8" font-size="10" transform="rotate(-90,15,180)">时间轴 →</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <div class="card-title">案例：三个实验室各自在本地创建项目 XM-0001 — 上传前本地数据状态</div>
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr><th>所在节点</th><th>本地主键（pk）</th><th>业务编号（bk）</th><th>统一主键（mk）初始值</th><th>项目名称</th><th>同步状态</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>实验室甲</td>
+            <td><span class="cell-pk">A_P1</span></td>
+            <td><span class="cell-bk">XM-0001</span></td>
+            <td><span class="cell-mk">A_P1</span></td>
+            <td>锂电池耐久实验</td>
+            <td><span class="badge badge-pending">待上传（pending）</span></td>
+            <td>mk 先等于 pk，等总部回写</td>
+          </tr>
+          <tr>
+            <td>实验室乙</td>
+            <td><span class="cell-pk">B_P1</span></td>
+            <td><span class="cell-bk">XM-0001</span></td>
+            <td><span class="cell-mk">B_P1</span></td>
+            <td>锂电池耐久测试</td>
+            <td><span class="badge badge-pending">待上传（pending）</span></td>
+            <td>mk 先等于 pk，等总部回写</td>
+          </tr>
+          <tr>
+            <td>实验室丙</td>
+            <td><span class="cell-pk">C_P1</span></td>
+            <td><span class="cell-bk">XM-0001</span></td>
+            <td><span class="cell-mk">C_P1</span></td>
+            <td>XM-0001电池寿命</td>
+            <td><span class="badge badge-pending">待上传（pending）</span></td>
+            <td>网络中断，积压在队列，等网络恢复</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">关键逻辑说明</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-icon" style="background:#eff6ff;color:#1a56db">①</div>
+        <div class="step-content">
+          <div class="step-name">同一事务写业务表 + sync_event</div>
+          <div class="step-detail">实验室写项目数据时，在同一个本地事务中同时插入 <code>sync_event</code> 记录（status=pending）。事务提交成功即可，不等网络。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon" style="background:#fef9c3;color:#92400e">②</div>
+        <div class="step-content">
+          <div class="step-name">后台异步上传，支持断点续传</div>
+          <div class="step-detail">后台定时任务每 N 秒扫 pending 事件，批量上传。失败则 <code>retry_count++</code>，下次继续重试。网络中断期间实验室业务完全正常，数据不丢。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon" style="background:#ecfdf5;color:#059669">③</div>
+        <div class="step-content">
+          <div class="step-name">总部接收写中间表（幂等）</div>
+          <div class="step-detail">总部接口将数据写入 <code>hq_project_temp</code>，使用 <code>ON DUPLICATE KEY UPDATE</code> 防止重复上传导致脏数据。中间表与主表隔离，接收失败不影响主数据。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 3: PHASE 2 总部合并 ══ -->
+<div class="section">
+  <div class="section-title"><div class="section-num">3</div>阶段二：数据中心数据整合</div>
+  <span class="phase-badge phase-merge">⚙️ 合并阶段 · 核心治理</span>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans SC',sans-serif">
+      <defs>
+        <marker id="am1" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#0d9488"/>
+        </marker>
+        <marker id="am2" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#7c3aed"/>
+        </marker>
+        <marker id="am3" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#d97706"/>
+        </marker>
+      </defs>
+      <rect width="1000" height="480" fill="#fafbfc"/>
+
+      <!-- Column headers -->
+      <rect x="20" y="16" width="130" height="36" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="85" y="38" text-anchor="middle" fill="#059669" font-size="11.5" font-weight="600">temp 缓冲区</text>
+
+      <rect x="180" y="16" width="130" height="36" rx="6" fill="#f0fdf9" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="245" y="38" text-anchor="middle" fill="#0d9488" font-size="11.5" font-weight="600">合并引擎</text>
+
+      <rect x="340" y="16" width="150" height="36" rx="6" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="415" y="38" text-anchor="middle" fill="#7c3aed" font-size="11.5" font-weight="600">project_identity_map</text>
+
+      <rect x="520" y="16" width="130" height="36" rx="6" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="585" y="38" text-anchor="middle" fill="#7c3aed" font-size="11.5" font-weight="600">hq_project</text>
+
+      <rect x="680" y="16" width="130" height="36" rx="6" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+      <text x="745" y="38" text-anchor="middle" fill="#d97706" font-size="11.5" font-weight="600">project_conflict</text>
+
+      <rect x="840" y="16" width="140" height="36" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="910" y="38" text-anchor="middle" fill="#059669" font-size="11.5" font-weight="600">hq_project_sub</text>
+
+      <!-- Lifelines -->
+      <line x1="85"  y1="52" x2="85"  y2="470" stroke="#a7f3d0" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="245" y1="52" x2="245" y2="470" stroke="#5eead4" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="415" y1="52" x2="415" y2="470" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="585" y1="52" x2="585" y2="470" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="745" y1="52" x2="745" y2="470" stroke="#fed7aa" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="910" y1="52" x2="910" y2="470" stroke="#a7f3d0" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Step 1: engine scans temp -->
+      <rect x="185" y="66" width="120" height="36" rx="5" fill="#f0fdf9" stroke="#0d9488" stroke-width="1.5"/>
+      <text x="245" y="80" text-anchor="middle" fill="#0d9488" font-size="10.5" font-weight="600">① 扫描 temp</text>
+      <text x="245" y="95" text-anchor="middle" fill="#0d9488" font-size="10">processed=pending</text>
+      <line x1="118" y1="84" x2="183" y2="84" stroke="#0d9488" stroke-width="1.5" marker-end="url(#am1)"/>
+      <text x="150" y="78" text-anchor="middle" fill="#64748b" font-size="10">pull</text>
+
+      <!-- Step 2: check bk in hq_project -->
+      <line x1="305" y1="84" x2="518" y2="84" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#am2)"/>
+      <text x="410" y="78" text-anchor="middle" fill="#7c3aed" font-size="10">② SELECT WHERE bk='XM-0001'</text>
+
+      <!-- A: first arrival -->
+      <rect x="520" y="104" width="130" height="44" rx="5" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="585" y="120" text-anchor="middle" fill="#059669" font-size="10.5" font-weight="600">③ A 最先到达</text>
+      <text x="585" y="134" text-anchor="middle" fill="#059669" font-size="10">bk 不存在 → 新建</text>
+      <text x="585" y="147" text-anchor="middle" fill="#059669" font-size="10">master_mk = A_P1</text>
+      <line x1="516" y1="126" x2="308" y2="126" stroke="#0d9488" stroke-width="1.5" marker-end="url(#am1)"/>
+      <text x="410" y="120" text-anchor="middle" fill="#0d9488" font-size="10">result: NOT FOUND</text>
+
+      <!-- Write identity_map for A -->
+      <line x1="308" y1="158" x2="338" y2="158" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#am2)"/>
+      <rect x="338" y="145" width="155" height="30" rx="5" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="415" y="157" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="600">④ 写 identity_map</text>
+      <text x="415" y="169" text-anchor="middle" fill="#7c3aed" font-size="10">A_P1 → master_mk=A_P1</text>
+
+      <!-- B arrives -->
+      <rect x="520" y="195" width="130" height="44" rx="5" fill="#eff6ff" stroke="#93b4f5" stroke-width="1.5"/>
+      <text x="585" y="211" text-anchor="middle" fill="#1a56db" font-size="10.5" font-weight="600">⑤ B 到达</text>
+      <text x="585" y="225" text-anchor="middle" fill="#1a56db" font-size="10">bk 已存在 → 复用</text>
+      <text x="585" y="239" text-anchor="middle" fill="#1a56db" font-size="10">master_mk=A_P1</text>
+      <line x1="516" y1="217" x2="308" y2="217" stroke="#0d9488" stroke-width="1.5" marker-end="url(#am1)"/>
+      <text x="410" y="211" text-anchor="middle" fill="#0d9488" font-size="10">result: FOUND A_P1</text>
+
+      <!-- Check conflict for B's project_name -->
+      <line x1="308" y1="252" x2="678" y2="252" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#am3)"/>
+      <rect x="363" y="238" width="250" height="20" rx="4" fill="white"/>
+      <text x="488" y="252" text-anchor="middle" fill="#d97706" font-size="10">⑥ project_name 不一致 → 写冲突记录等人工审核</text>
+
+      <!-- B identity_map -->
+      <line x1="308" y1="282" x2="338" y2="282" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#am2)"/>
+      <rect x="338" y="270" width="155" height="28" rx="5" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="415" y="282" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="600">⑦ 写 identity_map</text>
+      <text x="415" y="293" text-anchor="middle" fill="#7c3aed" font-size="10">B_P1 → master_mk=A_P1</text>
+
+      <!-- C arrives after disconnect-->
+      <rect x="520" y="312" width="130" height="44" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="585" y="328" text-anchor="middle" fill="#475569" font-size="10.5" font-weight="600">⑧ C 网络恢复后到达</text>
+      <text x="585" y="342" text-anchor="middle" fill="#475569" font-size="10">bk 已存在 → 复用</text>
+      <text x="585" y="356" text-anchor="middle" fill="#475569" font-size="10">master_mk=A_P1 (不变!)</text>
+
+      <!-- C identity_map -->
+      <line x1="308" y1="376" x2="338" y2="376" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#am2)"/>
+      <rect x="338" y="364" width="155" height="28" rx="5" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="415" y="376" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="600">⑨ 写 identity_map</text>
+      <text x="415" y="387" text-anchor="middle" fill="#7c3aed" font-size="10">C_P1 → master_mk=A_P1</text>
+
+      <!-- project_sub to hq_project_sub -->
+      <line x1="118" y1="420" x2="838" y2="420" stroke="#059669" stroke-width="1.5" marker-end="url(#am1)"/>
+      <rect x="350" y="406" width="300" height="20" rx="4" fill="white"/>
+      <text x="500" y="420" text-anchor="middle" fill="#059669" font-size="10">⑩ 三实验室 project_sub 全部挂到 project_pk=A_P1</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <div class="card-title">合并完成后 — 项目身份映射表状态（总部，project_identity_map）</div>
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr><th>业务编号（bk）</th><th>来源实验室</th><th>来源本地主键</th><th>总部统一主键（master_mk）</th><th>统一主键是否已回写</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="cell-bk">XM-0001</span></td><td>实验室甲</td>
+            <td><span class="cell-pk">A_P1</span></td>
+            <td><span class="cell-mk-changed">A_P1</span></td>
+            <td><span class="badge badge-pending">待回写（mk_pushed_back=0）</span></td>
+          </tr>
+          <tr>
+            <td><span class="cell-bk">XM-0001</span></td><td>实验室乙</td>
+            <td><span class="cell-pk">B_P1</span></td>
+            <td><span class="cell-mk-changed">A_P1</span></td>
+            <td><span class="badge badge-pending">待回写（mk_pushed_back=0）</span></td>
+          </tr>
+          <tr>
+            <td><span class="cell-bk">XM-0001</span></td><td>实验室丙</td>
+            <td><span class="cell-pk">C_P1</span></td>
+            <td><span class="cell-mk-changed">A_P1</span></td>
+            <td><span class="badge badge-pending">待回写（mk_pushed_back=0）</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-box info-key" style="margin-top:12px;margin-bottom:0">
+      <div class="info-box-icon">🔐</div>
+      <div>三个实验室的本地 pk（A_P1 / B_P1 / C_P1）全部保留，<strong>一个都没有删除</strong>。master_mk 统一为 A_P1。identity_map 是合并关系的全局账本，任何晚到的数据只能查到这张表，映射到已有 master_mk，<strong>不会触发重新选举</strong>。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">合并完成后 — 总部实验记录汇总表（hq_project_sub，全部挂到统一主键 A_P1）</div>
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr><th>记录主键</th><th>项目统一主键</th><th>实验记录内容</th><th>归属实验室</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A_S1</td><td><span class="cell-mk-changed">A_P1</span></td><td>甲实验室记录-1</td><td>实验室甲</td></tr>
+          <tr><td>A_S2</td><td><span class="cell-mk-changed">A_P1</span></td><td>甲实验室记录-2</td><td>实验室甲</td></tr>
+          <tr><td>A_S3</td><td><span class="cell-mk-changed">A_P1</span></td><td>甲实验室记录-3</td><td>实验室甲</td></tr>
+          <tr><td>B_S1</td><td><span class="cell-mk-changed">A_P1</span></td><td>乙实验室记录-1</td><td>实验室乙</td></tr>
+          <tr><td>B_S2</td><td><span class="cell-mk-changed">A_P1</span></td><td>乙实验室记录-2</td><td>实验室乙</td></tr>
+          <tr><td>C_S1</td><td><span class="cell-mk-changed">A_P1</span></td><td>丙实验室记录-1</td><td>实验室丙</td></tr>
+          <tr><td>C_S2</td><td><span class="cell-mk-changed">A_P1</span></td><td>丙实验室记录-2</td><td>实验室丙</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 4: PHASE 3 下发 ══ -->
+<div class="section">
+  <div class="section-title"><div class="section-num">4</div>阶段三：下发数据到实验室</div>
+  <span class="phase-badge phase-dist">📥 下发阶段 · 影子记录</span>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans SC',sans-serif">
+      <defs>
+        <marker id="dm1" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#7c3aed"/>
+        </marker>
+        <marker id="dm2" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#059669"/>
+        </marker>
+        <marker id="dm3" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#1a56db"/>
+        </marker>
+      </defs>
+      <rect width="1000" height="520" fill="#fafbfc"/>
+
+      <!-- Column headers -->
+      <rect x="20" y="16" width="130" height="36" rx="6" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="85" y="38" text-anchor="middle" fill="#7c3aed" font-size="11.5" font-weight="600">总部下发服务</text>
+
+      <rect x="180" y="16" width="130" height="36" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.5"/>
+      <text x="245" y="38" text-anchor="middle" fill="#0369a1" font-size="11.5" font-weight="600">实验室甲 本地</text>
+
+      <rect x="340" y="16" width="130" height="36" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.5"/>
+      <text x="405" y="38" text-anchor="middle" fill="#0369a1" font-size="11.5" font-weight="600">实验室乙 本地</text>
+
+      <rect x="500" y="16" width="130" height="36" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.5"/>
+      <text x="565" y="38" text-anchor="middle" fill="#0369a1" font-size="11.5" font-weight="600">实验室丙 本地</text>
+
+      <rect x="690" y="16" width="155" height="36" rx="6" fill="#f0fdf9" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="767" y="32" text-anchor="middle" fill="#059669" font-size="11.5" font-weight="600">外部项目映射表</text>
+      <text x="767" y="47" text-anchor="middle" fill="#059669" font-size="10">（external_project_map）</text>
+
+      <!-- Lifelines -->
+      <line x1="85"  y1="52" x2="85"  y2="510" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="245" y1="52" x2="245" y2="510" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="405" y1="52" x2="405" y2="510" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="565" y1="52" x2="565" y2="510" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="767" y1="52" x2="767" y2="510" stroke="#a7f3d0" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Step 1: mk pushback to A -->
+      <rect x="25" y="66" width="120" height="44" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="85" y="82" text-anchor="middle" fill="#7c3aed" font-size="10.5" font-weight="600">① 查找未回写记录</text>
+      <text x="85" y="97" text-anchor="middle" fill="#7c3aed" font-size="10">甲 A_P1→A_P1 无变化</text>
+      <text x="85" y="110" text-anchor="middle" fill="#7c3aed" font-size="10">乙 B_P1→A_P1 需回写</text>
+
+      <!-- mk pushback B -->
+      <line x1="145" y1="105" x2="340" y2="105" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#dm1)"/>
+      <rect x="165" y="91" width="155" height="20" rx="3" fill="white"/>
+      <text x="245" y="104" text-anchor="middle" fill="#7c3aed" font-size="10">② 通知乙：统一主键=A_P1</text>
+
+      <!-- B updates mk -->
+      <rect x="352" y="120" width="106" height="44" rx="5" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="405" y="136" text-anchor="middle" fill="#059669" font-size="10.5" font-weight="600">③ 乙 更新统一主键</text>
+      <text x="405" y="150" text-anchor="middle" fill="#059669" font-size="10">项目表 mk = A_P1</text>
+      <text x="405" y="162" text-anchor="middle" fill="#059669" font-size="10">子记录 project_mk = A_P1</text>
+
+      <!-- Write external_project_map for B -->
+      <line x1="458" y1="142" x2="688" y2="142" stroke="#059669" stroke-width="1.5" marker-end="url(#dm2)"/>
+      <rect x="500" y="128" width="155" height="20" rx="3" fill="white"/>
+      <text x="578" y="141" text-anchor="middle" fill="#059669" font-size="10">④ 写入外部项目映射表</text>
+
+      <!-- mk pushback C -->
+      <line x1="145" y1="188" x2="500" y2="188" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#dm1)"/>
+      <rect x="260" y="175" width="155" height="20" rx="3" fill="white"/>
+      <text x="338" y="188" text-anchor="middle" fill="#7c3aed" font-size="10">⑤ 通知丙：统一主键=A_P1</text>
+
+      <rect x="512" y="200" width="106" height="30" rx="5" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+      <text x="565" y="212" text-anchor="middle" fill="#059669" font-size="10.5" font-weight="600">⑥ 丙 更新统一主键</text>
+      <text x="565" y="222" text-anchor="middle" fill="#059669" font-size="10">项目表 mk = A_P1</text>
+
+      <!-- Divider -->
+      <line x1="20" y1="248" x2="980" y2="248" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="500" y="244" text-anchor="middle" fill="#94a3b8" font-size="11">—— 以下：共享实验记录下发 ——</text>
+
+      <!-- Share B sub to A -->
+      <rect x="25" y="258" width="120" height="44" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="85" y="274" text-anchor="middle" fill="#7c3aed" font-size="10.5" font-weight="600">⑦ 下发乙的记录给甲</text>
+      <text x="85" y="288" text-anchor="middle" fill="#7c3aed" font-size="10">乙实验室的记录（归属=乙）</text>
+      <text x="85" y="300" text-anchor="middle" fill="#7c3aed" font-size="10">来源项目主键=B_P1</text>
+
+      <line x1="145" y1="278" x2="180" y2="278" stroke="#1a56db" stroke-width="1.5" marker-end="url(#dm3)"/>
+
+      <!-- A receives: query external_project_map -->
+      <line x1="245" y1="278" x2="688" y2="278" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#dm2)"/>
+      <rect x="360" y="264" width="260" height="20" rx="3" fill="white"/>
+      <text x="490" y="278" text-anchor="middle" fill="#059669" font-size="10">⑧ 查外部项目映射：B_P1 → 本地项目主键=A_P1</text>
+
+      <!-- A generates shadow record -->
+      <rect x="185" y="300" width="120" height="56" rx="5" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="245" y="318" text-anchor="middle" fill="#7c3aed" font-size="10.5" font-weight="600">⑨ 生成影子记录</text>
+      <text x="245" y="332" text-anchor="middle" fill="#7c3aed" font-size="10">本地项目主键=A_P1 ✓</text>
+      <text x="245" y="344" text-anchor="middle" fill="#7c3aed" font-size="10">是否影子记录=是</text>
+      <text x="245" y="356" text-anchor="middle" fill="#7c3aed" font-size="10">数据归属=实验室乙</text>
+
+      <!-- Share C sub to A and B -->
+      <rect x="25" y="378" width="120" height="44" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="85" y="394" text-anchor="middle" fill="#7c3aed" font-size="10.5" font-weight="600">⑩ 下发丙的记录</text>
+      <text x="85" y="408" text-anchor="middle" fill="#7c3aed" font-size="10">推给甲、乙两个实验室</text>
+
+      <line x1="145" y1="398" x2="180" y2="398" stroke="#1a56db" stroke-width="1.5" marker-end="url(#dm3)"/>
+      <line x1="145" y1="415" x2="340" y2="415" stroke="#1a56db" stroke-width="1.5" marker-end="url(#dm3)"/>
+
+      <rect x="185" y="420" width="106" height="28" rx="5" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="245" y="438" text-anchor="middle" fill="#7c3aed" font-size="10">甲 生成丙的影子记录</text>
+      <rect x="352" y="420" width="106" height="28" rx="5" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="405" y="438" text-anchor="middle" fill="#7c3aed" font-size="10">乙 生成丙的影子记录</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <div class="card-title">下发完成后 — 实验室甲本地实验记录表最终状态（project_sub）</div>
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr><th>本地主键（pk）</th><th>本地项目主键</th><th>统一项目主键（mk）</th><th>实验记录</th><th>数据归属实验室</th><th>是否影子记录</th><th>同步状态</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A_S1</td><td><span class="cell-pk">A_P1</span></td><td><span class="cell-mk-changed">A_P1</span></td><td>甲实验室记录-1</td><td>实验室甲</td><td>否</td><td><span class="badge badge-synced">已同步（synced）</span></td>
+          </tr>
+          <tr>
+            <td>A_S2</td><td><span class="cell-pk">A_P1</span></td><td><span class="cell-mk-changed">A_P1</span></td><td>甲实验室记录-2</td><td>实验室甲</td><td>否</td><td><span class="badge badge-synced">已同步（synced）</span></td>
+          </tr>
+          <tr>
+            <td>A_S3</td><td><span class="cell-pk">A_P1</span></td><td><span class="cell-mk-changed">A_P1</span></td><td>甲实验室记录-3</td><td>实验室甲</td><td>否</td><td><span class="badge badge-synced">已同步（synced）</span></td>
+          </tr>
+          <tr style="background:#fdf4ff">
+            <td><span class="cell-shadow">甲_影子_乙1</span></td><td><span class="cell-pk">A_P1</span></td><td><span class="cell-mk-changed">A_P1</span></td><td>乙实验室记录-1</td><td style="color:#7c3aed">实验室乙</td><td style="color:#7c3aed;font-weight:700">是（只读）</td><td><span class="badge badge-shadow">影子记录（shadow）</span></td>
+          </tr>
+          <tr style="background:#fdf4ff">
+            <td><span class="cell-shadow">甲_影子_乙2</span></td><td><span class="cell-pk">A_P1</span></td><td><span class="cell-mk-changed">A_P1</span></td><td>乙实验室记录-2</td><td style="color:#7c3aed">实验室乙</td><td style="color:#7c3aed;font-weight:700">是（只读）</td><td><span class="badge badge-shadow">影子记录（shadow）</span></td>
+          </tr>
+          <tr style="background:#fdf4ff">
+            <td><span class="cell-shadow">甲_影子_丙1</span></td><td><span class="cell-pk">A_P1</span></td><td><span class="cell-mk-changed">A_P1</span></td><td>丙实验室记录-1</td><td style="color:#7c3aed">实验室丙</td><td style="color:#7c3aed;font-weight:700">是（只读）</td><td><span class="badge badge-shadow">影子记录（shadow）</span></td>
+          </tr>
+          <tr style="background:#fdf4ff">
+            <td><span class="cell-shadow">甲_影子_丙2</span></td><td><span class="cell-pk">A_P1</span></td><td><span class="cell-mk-changed">A_P1</span></td><td>丙实验室记录-2</td><td style="color:#7c3aed">实验室丙</td><td style="color:#7c3aed;font-weight:700">是（只读）</td><td><span class="badge badge-shadow">影子记录（shadow）</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- The query proof -->
+  <div class="card">
+    <div class="card-title">💡 实验室甲的原有查询 — 无需改动任何逻辑，自动返回 7 条记录（含其他实验室影子记录）</div>
+    <div style="background:#1e293b;border-radius:8px;padding:16px;font-family:var(--mono);font-size:12.5px;color:#e2e8f0;line-height:1.8;margin-bottom:12px">
+      <span style="color:#7dd3fc">SELECT</span> ps.pk, ps.remark, ps.owner_node_id, ps.is_shadow<br>
+      <span style="color:#7dd3fc">FROM</span> project p<br>
+      <span style="color:#7dd3fc">JOIN</span> project_sub ps <span style="color:#7dd3fc">ON</span> <span style="color:#fde68a">p.pk = ps.project_pk</span>&nbsp;&nbsp;<span style="color:#6ee7b7">-- 本地主键关联，永不改变</span><br>
+      <span style="color:#7dd3fc">WHERE</span> p.pk = <span style="color:#fca5a5">'A_P1'</span><br>
+      &nbsp;&nbsp;<span style="color:#7dd3fc">AND</span> ps.deleted_flag = <span style="color:#fca5a5">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6ee7b7">-- 逻辑删除过滤</span><br>
+      <span style="color:#7dd3fc">ORDER BY</span> ps.created_at <span style="color:#7dd3fc">DESC</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6ee7b7">-- 按创建时间排序，正常分页</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px">
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border)">
+        <div style="font-weight:600;color:var(--primary);margin-bottom:6px">本实验室自产记录</div>
+        <div>A_S1、A_S2、A_S3（共 3 条）</div>
+        <div style="color:var(--text3);margin-top:4px">是否影子记录 = 否</div>
+      </div>
+      <div style="background:#fdf4ff;border-radius:8px;padding:12px;border:1px solid #e9d5ff">
+        <div style="font-weight:600;color:var(--purple);margin-bottom:6px">实验室乙的影子记录</div>
+        <div>甲_影子_乙1、甲_影子_乙2（共 2 条）</div>
+        <div style="color:var(--text3);margin-top:4px">是否影子记录 = 是，归属 = 实验室乙</div>
+      </div>
+      <div style="background:#f0fdf9;border-radius:8px;padding:12px;border:1px solid #a7f3d0">
+        <div style="font-weight:600;color:var(--teal);margin-bottom:6px">实验室丙的影子记录</div>
+        <div>甲_影子_丙1、甲_影子_丙2（共 2 条）</div>
+        <div style="color:var(--text3);margin-top:4px">是否影子记录 = 是，归属 = 实验室丙</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 5: 全流程数据状态变化 ══ -->
+<div class="section">
+  <div class="section-title"><div class="section-num">5</div>全流程数据状态变化总览（XM-0001 案例）</div>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 310" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans SC',sans-serif">
+      <rect width="1000" height="310" fill="#fafbfc"/>
+
+      <!-- Phase labels -->
+      <rect x="20" y="16" width="280" height="26" rx="5" fill="#eff6ff"/>
+      <text x="160" y="33" text-anchor="middle" fill="#1a56db" font-size="11.5" font-weight="700">阶段一：实验室本地创建（上传前）</text>
+      <rect x="360" y="16" width="280" height="26" rx="5" fill="#f0fdf9"/>
+      <text x="500" y="33" text-anchor="middle" fill="#0d9488" font-size="11.5" font-weight="700">阶段二：总部合并完成后</text>
+      <rect x="700" y="16" width="280" height="26" rx="5" fill="#faf5ff"/>
+      <text x="840" y="33" text-anchor="middle" fill="#7c3aed" font-size="11.5" font-weight="700">阶段三：下发后（各实验室）</text>
+
+      <!-- Table headers -->
+      <rect x="20" y="54" width="280" height="24" rx="0" fill="#1e293b"/>
+      <text x="65" y="69" fill="white" font-size="10" font-weight="600">pk</text>
+      <text x="115" y="69" fill="white" font-size="10" font-weight="600">bk</text>
+      <text x="200" y="69" fill="white" font-size="10" font-weight="600">mk（当前）</text>
+      <rect x="360" y="54" width="280" height="24" rx="0" fill="#1e293b"/>
+      <text x="405" y="69" fill="white" font-size="10" font-weight="600">pk</text>
+      <text x="455" y="69" fill="white" font-size="10" font-weight="600">bk</text>
+      <text x="560" y="69" fill="white" font-size="10" font-weight="600">mk（回写后）</text>
+      <rect x="700" y="54" width="280" height="24" rx="0" fill="#1e293b"/>
+      <text x="740" y="69" fill="white" font-size="10" font-weight="600">pk</text>
+      <text x="790" y="69" fill="white" font-size="10" font-weight="600">bk</text>
+      <text x="900" y="69" fill="white" font-size="10" font-weight="600">mk</text>
+
+      <!-- Phase 1 rows -->
+      <rect x="20" y="78" width="280" height="24" fill="#f8fafc"/>
+      <text x="65"  y="93" fill="#1a56db" font-size="10" font-weight="600">A_P1</text>
+      <text x="115" y="93" fill="#d97706" font-size="10">XM-0001</text>
+      <text x="200" y="93" fill="#94a3b8" font-size="10">A_P1（待回写）</text>
+      <rect x="20" y="102" width="280" height="24" fill="white"/>
+      <text x="65"  y="117" fill="#1a56db" font-size="10" font-weight="600">B_P1</text>
+      <text x="115" y="117" fill="#d97706" font-size="10">XM-0001</text>
+      <text x="200" y="117" fill="#94a3b8" font-size="10">B_P1（待回写）</text>
+      <rect x="20" y="126" width="280" height="24" fill="#f8fafc"/>
+      <text x="65"  y="141" fill="#1a56db" font-size="10" font-weight="600">C_P1</text>
+      <text x="115" y="141" fill="#d97706" font-size="10">XM-0001</text>
+      <text x="200" y="141" fill="#94a3b8" font-size="10">C_P1（待回写）</text>
+
+      <!-- Phase 2 rows (HQ only keeps one project) -->
+      <rect x="360" y="78" width="280" height="70" fill="#f0fdf9"/>
+      <text x="405" y="100" fill="#1a56db" font-size="10" font-weight="600">A_P1</text>
+      <text x="455" y="100" fill="#d97706" font-size="10">XM-0001</text>
+      <text x="555" y="100" fill="#0d9488" font-size="11" font-weight="700">A_P1 ✓</text>
+      <text x="500" y="130" fill="#94a3b8" font-size="10" text-anchor="middle">hq_project 只保留 1 条记录</text>
+      <text x="500" y="144" fill="#0d9488" font-size="10" text-anchor="middle">identity_map 记录 A/B/C 三个来源</text>
+
+      <!-- Phase 3 rows (all labs have unified mk) -->
+      <rect x="700" y="78" width="280" height="24" fill="#fdf4ff"/>
+      <text x="740" y="93" fill="#1a56db" font-size="10" font-weight="600">A_P1</text>
+      <text x="790" y="93" fill="#d97706" font-size="10">XM-0001</text>
+      <text x="895" y="93" fill="#7c3aed" font-size="11" font-weight="700">A_P1 ✓</text>
+      <rect x="700" y="102" width="280" height="24" fill="#fdf4ff"/>
+      <text x="740" y="117" fill="#1a56db" font-size="10" font-weight="600">B_P1</text>
+      <text x="790" y="117" fill="#d97706" font-size="10">XM-0001</text>
+      <text x="895" y="117" fill="#7c3aed" font-size="11" font-weight="700">A_P1 ✓</text>
+      <rect x="700" y="126" width="280" height="24" fill="#fdf4ff"/>
+      <text x="740" y="141" fill="#1a56db" font-size="10" font-weight="600">C_P1</text>
+      <text x="790" y="141" fill="#d97706" font-size="10">XM-0001</text>
+      <text x="895" y="141" fill="#7c3aed" font-size="11" font-weight="700">A_P1 ✓</text>
+
+      <!-- Arrows between phases -->
+      <line x1="300" y1="105" x2="360" y2="105" stroke="#0d9488" stroke-width="2" marker-end="url(#am1-local)"/>
+      <line x1="640" y1="105" x2="700" y2="105" stroke="#7c3aed" stroke-width="2" marker-end="url(#dm1-local)"/>
+
+      <defs>
+        <marker id="am1-local" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#0d9488"/>
+        </marker>
+        <marker id="dm1-local" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0, 8 3.5, 0 7" fill="#7c3aed"/>
+        </marker>
+      </defs>
+
+      <!-- Key note box -->
+      <rect x="20" y="168" width="960" height="124" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="40" y="190" fill="#1e293b" font-size="12" font-weight="700">📍 三键在整个流程中的角色</text>
+      <rect x="40" y="202" width="285" height="74" rx="6" fill="#eff6ff"/>
+      <text x="183" y="220" text-anchor="middle" fill="#1a56db" font-size="11" font-weight="700">pk — 本地技术主键</text>
+      <text x="183" y="237" text-anchor="middle" fill="#1e293b" font-size="10.5">A_P1 / B_P1 / C_P1 三个始终不变</text>
+      <text x="183" y="253" text-anchor="middle" fill="#1e293b" font-size="10.5">project_sub.project_pk 永远关联 pk</text>
+      <text x="183" y="268" text-anchor="middle" fill="#1e293b" font-size="10.5">本地查询永远稳定</text>
+      <rect x="357" y="202" width="285" height="74" rx="6" fill="#fef3c7"/>
+      <text x="500" y="220" text-anchor="middle" fill="#d97706" font-size="11" font-weight="700">bk — 业务主键</text>
+      <text x="500" y="237" text-anchor="middle" fill="#1e293b" font-size="10.5">XM-0001 是三个实验室都认可的</text>
+      <text x="500" y="253" text-anchor="middle" fill="#1e293b" font-size="10.5">总部按 bk 识别同一个项目</text>
+      <text x="500" y="268" text-anchor="middle" fill="#1e293b" font-size="10.5">合并的逻辑依据</text>
+      <rect x="674" y="202" width="285" height="74" rx="6" fill="#f0fdf9"/>
+      <text x="817" y="220" text-anchor="middle" fill="#0d9488" font-size="11" font-weight="700">mk — 统一主键</text>
+      <text x="817" y="237" text-anchor="middle" fill="#1e293b" font-size="10.5">合并后全网统一为 A_P1</text>
+      <text x="817" y="253" text-anchor="middle" fill="#1e293b" font-size="10.5">影子记录按 mk 对齐</text>
+      <text x="817" y="268" text-anchor="middle" fill="#1e293b" font-size="10.5">跨实验室识别的通行证</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ══ SECTION 6: 17条规则 ══ -->
+<div class="section">
+  <div class="section-title"><div class="section-num">6</div>方案核心规则（17 条）</div>
+  <div class="rule-grid">
+    <div class="rule-item"><div class="rule-num">1</div><div>实验室先写本地，同步事件队列（sync_event）异步上传，网络中断不影响实验。</div></div>
+    <div class="rule-item"><div class="rule-num">2</div><div><strong>本地主键（pk）永不修改</strong>，雪花算法按节点机器编号分段，全网不冲突。</div></div>
+    <div class="rule-item"><div class="rule-num">3</div><div>业务主键（bk）写入后原则上不允许修改，写入前做格式标准化（去空格、统一大小写）。</div></div>
+    <div class="rule-item"><div class="rule-num">4</div><div><strong>统一主键（master_mk）一旦由总部确定，后续晚到数据只能映射到已有值，不重新选举。</strong></div></div>
+    <div class="rule-item"><div class="rule-num">5</div><div>本地关联用本地主键（pk/project_pk），跨库识别用统一主键（mk/project_mk），总部合并依据业务主键（bk）。</div></div>
+    <div class="rule-item"><div class="rule-num">6</div><div>总部按业务主键合并项目，同一业务编号在总部项目主表（hq_project）只保留一条记录。</div></div>
+    <div class="rule-item"><div class="rule-num">7</div><div>总部通过身份映射表（project_identity_map）记录各实验室来源主键 → 统一主键的全量对应关系。</div></div>
+    <div class="rule-item"><div class="rule-num">8</div><div>总部把统一主键回写给来源实验室，实验室只更新 mk 字段，本地主键（pk）不动。</div></div>
+    <div class="rule-item"><div class="rule-num">9</div><div>共享数据下发后，接收实验室生成影子记录，外部项目主键转换成本地项目主键。</div></div>
+    <div class="rule-item"><div class="rule-num">10</div><div>影子记录保留来源节点编号和来源主键（source_node_id + source_pk），用于幂等防重和数据溯源。</div></div>
+    <div class="rule-item"><div class="rule-num">11</div><div><strong>影子记录默认只读（is_shadow=1）</strong>，接收实验室不能直接修改外部数据。</div></div>
+    <div class="rule-item"><div class="rule-num">12</div><div>查询仍然按本地项目主键（project_pk）关联实验记录表，不需要联合查询（UNION ALL），分页排序正常。</div></div>
+    <div class="rule-item"><div class="rule-num">13</div><div>子表先到父表映射未建立时，进待处理队列（waiting_parent），父表到位后自动重试。</div></div>
+    <div class="rule-item"><div class="rule-num">14</div><div>所有同步必须幂等，依赖唯一键（来源节点 + 来源主键）防止重复写入。</div></div>
+    <div class="rule-item"><div class="rule-num">15</div><div>统一使用逻辑删除标志（deleted_flag），不做物理删除，支持审计追溯和断点补偿。</div></div>
+    <div class="rule-item"><div class="rule-num">16</div><div>字段内容冲突写入冲突记录表（project_conflict），主表保留当前值，人工审核后覆盖。</div></div>
+    <div class="rule-item"><div class="rule-num">17</div><div>新增工厂或实验室只需在总部注册节点、分配机器编号（machine_id），同步框架无需改动代码。</div></div>
+  </div>
+</div>
+
+</div><!-- /page -->
+</body>
+</html>

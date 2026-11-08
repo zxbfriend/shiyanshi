@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="11px" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask fill="white" id="clip2142">
+      <path d="M 1709 3050  C 1706.225 3050  1704 3047.775  1704 3045  L 1704 3044  C 1704 3041.225  1706.225 3039  1709 3039  L 1709 3039  C 1711.775 3039  1714 3041.225  1714 3044  L 1714 3045  C 1714 3047.775  1711.775 3050  1709 3050  " fill-rule="evenodd" />
+    </mask>
+  </defs>
+  <g transform="matrix(1 0 0 1 -1704 -3039 )">
+    <image preserveAspectRatio="none" style="overflow:visible" width="10" height="11" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAAQNJREFUGBlNkM2KwjAUhZPQLiqCLTg7UdwI4jsMzEJQEGbXzWAX3fRF9CH6Q5/AZ1BhXMwLiOAjqMsuuujPnBNbMXCT3OS7J+dGJkkyquv6p6qqKAiCh3gbYRgOka4RoWqgrZTymKbpR8vFcTzG/hexwd1KoqpPCAUzrGfDML7KsuzihSMgKp4sy1pIbASViqI4NPAVawfHA0KO4yxd1800+AafAE2YQ/3Ptu05IeaKEwefa5SeB0L0siyz2kSDNN54GlAJcUHRlHbaBtkMDbM7bZye8jzvIPaAdYNKqU8q8p9eED15nndj91A+E0Z8K9M0I1T4/ILWOAqF7/t3rYQ7rLt/+leCMXBzR3UAAAAASUVORK5CYII=" x="1704px" y="3039px" mask="url(#clip2142)" />
+  </g>
+</svg>

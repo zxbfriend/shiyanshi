@@ -1,0 +1,949 @@
+{
+  "version": "NEW-20260917",
+  "sources": [
+    {
+      "path": "docs/开发基线/开发包/M01-菜单权限初始化-开发包.sql",
+      "sha256": "71DEE163312FD394CC7D1BA3FD49C2E2086709FAE4148870495521E438EB041D"
+    },
+    {
+      "path": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql",
+      "sha256": "EA21290F9857E71F9E9463BFF6FADBBACFD2F4C3721DD2057DF510D6A56C4FAB"
+    },
+    {
+      "path": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql",
+      "sha256": "718F4AE3BC5C94AF3504690CC98E0FBD7C8B7518C5C3E008ED5DAE29B148A78F"
+    },
+    {
+      "path": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql",
+      "sha256": "7C8EC1868376FEE667169554F778956F619334157D77DC38E5CEC42640316B18"
+    },
+    {
+      "path": "docs/详细设计/04-工艺与方案管理/10-最终目标表结构.sql",
+      "sha256": "87F669D3B0D260C98B9EBB4B01BCDC97E64E7AE7D1422B3FDE0D242378BC51D8"
+    },
+    {
+      "path": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql",
+      "sha256": "924DBA2F0E7DA988EECAB8192B3267E4FA6EF26176AF899D54D8AFD5A2FCBA00"
+    },
+    {
+      "path": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql",
+      "sha256": "469F7DA9D785A02BA09661A13710F4B00BE03FD79464557A63991B2A992C95DB"
+    },
+    {
+      "path": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql",
+      "sha256": "D15EFC6BFFA98D88198D23BA0223BB32B6DB9CF3CEF0A0344A70063FFB17E13C"
+    },
+    {
+      "path": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql",
+      "sha256": "8A9F9D347B9B722B1B7D6C9947F376A09F4FFD48FAB495742BD274F704135184"
+    },
+    {
+      "path": "docs/详细设计/00-跨模块审阅收尾/05-审阅收尾完整目标表结构.sql",
+      "sha256": "267F69B3A637B6901BC3E7DC6E0A30A4C89E9ECD2E1F92CB00262B259787C077"
+    },
+    {
+      "path": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql",
+      "sha256": "1576B6194B62A1320D69FFB92B0B4A8A6DF0BF6A1C59E1F3931853D2C64D2D0E"
+    },
+    {
+      "path": "docs/详细设计/03-项目与培养管理/OBS-02-业务观测增量建表.sql",
+      "sha256": "B2ADFF96FF246B08BE6208E0E1A87AF539E38BFE3DEB6836B3A7D075BC4647D3"
+    },
+    {
+      "path": "docs/详细设计/07-补液运行与任务执行/OBS-02-业务观测增量建表.sql",
+      "sha256": "3B71D61FFB71931B283D9C07A3E7DD15AE0E45D696FB23AE2E8D866E9DC28C28"
+    },
+    {
+      "path": "sql/ymsw.sql",
+      "sha256": "4B414D70DF7C06D83C4A3B7A2BAD26229507AE85A0A730D3D0659B80938894A7"
+    },
+    {
+      "path": "docs/详细设计/06-流程审批管理/02-流程审批建表与场景初始化.sql",
+      "sha256": "AD75A5C252433485DF8276EA7935CCC8A95E0968B3984F88D9A10CC8F5DC0A56"
+    },
+    {
+      "path": "docs/详细设计/07-补液运行与任务执行/SC-01-开始培养表结构.sql",
+      "sha256": "648412A0CF38A33F8CD718BB1B5433F9AC03C79C3AFA070FCFDE508A4ACEBB30"
+    },
+    {
+      "path": "docs/详细设计/09-告警与通知管理/SC-01-开始培养配置集合.sql",
+      "sha256": "52DF775ED1F4BF2EE243A743A5BD788F2B704CD6ABCFC9ABF5948697E5A68E40"
+    },
+    {
+      "path": "docs/详细设计/04-工艺与方案管理/SC-01-开始培养固定种子.sql",
+      "sha256": "0EF3D2E1752FC14A828E86232B8A9E4DC50A89090AD9A4566125ED40AE50DB82"
+    },
+    {
+      "path": "docs/详细设计/04-工艺与方案管理/W05-01-手工补料固定种子.sql",
+      "sha256": "3BF0550B1518548854C00CF4BEFE7CFBCF9BF984FE61E9F4D3D1A180812678E7"
+    },
+    {
+      "path": "docs/详细设计/04-工艺与方案管理/W01-01-中试连接补料单元固定种子.sql",
+      "sha256": "690EF790A9E1F01F211518680D7B1C92DF177A1A710C6C60F83BF59E898BAD63"
+    },
+    {
+      "path": "docs/详细设计/04-工艺与方案管理/W02-01-中试更换料液固定种子.sql",
+      "sha256": "B22304834DEE10AA29DAD17A27938B12DC9CF3A1AE7305D4CF26D1E83B833234"
+    },
+    {
+      "path": "docs/详细设计/03-项目与培养管理/PD-01-项目检测规则表结构.sql",
+      "sha256": "1A356DEDAA317BC312CAD3381B495D0C9F17529360219AF93C6D9196BFB96FA4"
+    },
+    {
+      "path": "docs/详细设计/02-实验室与资源管理/RM-04-现有开发库控制器罐体绑定升级.sql",
+      "sha256": "506AE156AA4BBB7F61B4F5054F8276ECF30CF4D8712C87D6E60CFBA87C0B1F09"
+    },
+    {
+      "path": "docs/详细设计/04-工艺与方案管理/EC-01-中试结束培养固定种子.sql",
+      "sha256": "7341D10C6E03F89257CD137A9BD5C161DE264A8D515094E1D445AADD10575C3F"
+    },
+    {
+      "path": "docs/详细设计/02-实验室与资源管理/M02-WF-01-工作流执行与计量事实目标表结构.sql",
+      "sha256": "E8F6F77F4573D75417326FC93C5BC6001C059ACA4C45E663C52B5DD5429D62C2"
+    },
+    {
+      "path": "docs/详细设计/07-补液运行与任务执行/RC-01-培养运行设置变更表结构.sql",
+      "sha256": "6DC2133651C457738CECE176539D7CAE4FD9CAC9B4978A34C89C8EF295C5EB00"
+    },
+    {
+      "path": "docs/详细设计/04-工艺与方案管理/EC-02-小试结束培养固定种子.sql",
+      "sha256": "48D44E6389A3AF2DA0EC666FA47860E0CC2F93D35181AD56462F3A10D6F3C30F"
+    },
+    {
+      "path": "docs/详细设计/02-实验室与资源管理/RM-01-统一反应器型号表结构.sql",
+      "sha256": "FEFDDC40B7BDD09A4B659D7A5E2CC2D35388C93558735DF3195B4CC458918B5B"
+    },
+    {
+      "path": "docs/详细设计/01-系统管理/AUTH-01-认证安全增强表结构.sql",
+      "sha256": "7DB10A625651D6B131B07DAA173FD474F5C7C9B056F973FE5089FF6DF58CC846"
+    },
+    {
+      "path": "docs/详细设计/01-系统管理/认证安全-登录快照DDL.sql",
+      "sha256": "2980511202BA564D5225C8203D1CF2E67C654FAC8F38702485CC26A130FC9BC4"
+    },
+    {
+      "path": "docs/详细设计/03-项目与培养管理/培养固定泵连接事实目标表结构.sql",
+      "sha256": "CA92355F67501A7B8797B5BAE7A1835EC813EC5C9901627E05FF6275D50CB518"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "01-完整建表.sql",
+      "sha256": "3B580A7F2F6A7B828AAEF65A969121882029626F3495D13332FC868CF72A1FA7"
+    },
+    {
+      "path": "02-基础数据初始化.sql",
+      "sha256": "038AF1284C6109A3A7ED48E0F6F76F4C7E8D3AC38F688EA1D9F674104D78DE0A"
+    },
+    {
+      "path": "03-初始化结果核验.sql",
+      "sha256": "2CE4DFAD0B128DB5E303FFC069424EDECEE211EE600765D6D9FCD7AD2F01ED94"
+    }
+  ],
+  "runtimeValidation": "NOT_RUN",
+  "tables": [
+    {
+      "name": "sys_venue",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_dept",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_group",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_group_leader",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_group_member",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_menu",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_role",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_role_data_scope",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_role_dept",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_role_menu",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_user",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_user_role",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_dict_type",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_dict_data",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_config",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_logininfor",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_oper_log",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_data_change_log",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_user_password_history",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_user_auth_state",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_management_revision",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "sys_management_request",
+      "source": "docs/详细设计/01-系统管理/07-系统管理目标表结构.sql"
+    },
+    {
+      "name": "bottle_config",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "calibration_object",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "consumable_master",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "consumption_rule",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_air_pump_model",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_analyzer_model",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_bench_reactor",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_culture_container_spec",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_detector_item",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_detector_model",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_floor_scale_model",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_integrated_reactor",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "dev_peristaltic_pump_model",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "feed_medium",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_air_pump",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_balance",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_bench_reactor",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_bench_reactor_controller",
+      "source": "docs/详细设计/02-实验室与资源管理/RM-01-统一反应器型号表结构.sql"
+    },
+    {
+      "name": "lab_bench_reactor_controller_channel",
+      "source": "docs/详细设计/02-实验室与资源管理/RM-01-统一反应器型号表结构.sql"
+    },
+    {
+      "name": "lab_communication",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_culture_container",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_detection_rule",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_detector",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_detector_item_config",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_downstream_device",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_floor_scale",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_integrated_reactor",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_integrated_reactor_pump",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_integrated_reactor_pump_config",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_lab",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_lab_leader",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_peristaltic_pump",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_printer",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_printer_layout_setting",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_relay",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_sound_alarm",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "liquid_bag",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "sys_user_lab",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_engineering_profile",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_engineering_profile_version",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "res_project",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_project_leader",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_project_lab",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_project_tag",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_project_member",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_batch",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_batch_leader",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_batch_member",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_feeding_config",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_leader",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_member",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_occupancy",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_notice_outbox",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_parameter_application",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_parameter_snapshot",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_parameter_state",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_workflow_reference",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_runtime_event",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "res_culture_change_candidate",
+      "source": "docs/详细设计/03-项目与培养管理/23-重量补齐完整目标表结构.sql"
+    },
+    {
+      "name": "prc_template",
+      "source": "docs/详细设计/04-工艺与方案管理/10-最终目标表结构.sql"
+    },
+    {
+      "name": "prc_template_version",
+      "source": "docs/详细设计/04-工艺与方案管理/10-最终目标表结构.sql"
+    },
+    {
+      "name": "prc_template_binding",
+      "source": "docs/详细设计/04-工艺与方案管理/10-最终目标表结构.sql"
+    },
+    {
+      "name": "prc_template_version_model",
+      "source": "docs/详细设计/04-工艺与方案管理/10-最终目标表结构.sql"
+    },
+    {
+      "name": "prc_template_import_map",
+      "source": "docs/详细设计/04-工艺与方案管理/10-最终目标表结构.sql"
+    },
+    {
+      "name": "det_approval_assignee",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_ccpd_upload_log",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_dispatch_log",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_exception_note",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_print_export_log",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_result",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_result_item",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_result_sign_record",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_review_audit_log",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_sample",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_sample_id_history",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_sample_item",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_device_event",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_result_revision",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "det_result_correction",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "apr_scene",
+      "source": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "apr_lab_policy",
+      "source": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "apr_policy_revision",
+      "source": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "apr_request",
+      "source": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "apr_action",
+      "source": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "apr_delivery",
+      "source": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "apr_reconciliation",
+      "source": "docs/详细设计/06-流程审批管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_culture_runtime",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_workflow_instance",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_workflow_step",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_material_session",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_manual_result",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_confirmation",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_calculation",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_task",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_task_candidate",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_generation",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_execution",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_execution_segment",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_command",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_resource_guard",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_execution_sample",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_exception_handling",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_ledger",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_event",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_executor_assignment",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_executor_transfer",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_executor_transfer_member",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_legacy_handover",
+      "source": "docs/详细设计/07-补液运行与任务执行/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_mail_config",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_notify_receiver",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_notify_rule",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_record",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "lab_offline_alarm_config",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "lab_status_alarm_config",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "sys_notification",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_online_config",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_monitor_policy",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_config_revision",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_event",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_recipient",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_delivery",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_delivery_attempt",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "alarm_runtime",
+      "source": "docs/详细设计/09-告警与通知管理/10-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "audit_archive_manifest",
+      "source": "docs/详细设计/00-跨模块审阅收尾/05-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "audit_archive_record",
+      "source": "docs/详细设计/00-跨模块审阅收尾/05-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "audit_archive_key",
+      "source": "docs/详细设计/00-跨模块审阅收尾/05-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "lab_observation_mapping",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_observation_receipt",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_observation_conflict",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_observation",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_observation_association",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_observation_current",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_observation_outbox",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_observation_monitor",
+      "source": "docs/详细设计/02-实验室与资源管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "res_observation_binding_revision",
+      "source": "docs/详细设计/03-项目与培养管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "res_observation_binding_interval",
+      "source": "docs/详细设计/03-项目与培养管理/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "run_observation_monitor",
+      "source": "docs/详细设计/07-补液运行与任务执行/OBS-02-业务观测增量建表.sql"
+    },
+    {
+      "name": "lab_workflow_node",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "sys_downstream_device",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "sys_job",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "sys_job_log",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "sys_notice",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "sys_notice_read",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "sys_post",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "sys_user_post",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "workflow_node",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "workflow_step",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "workflow_subflow",
+      "source": "sql/ymsw.sql"
+    },
+    {
+      "name": "det_sample_mutation_receipt",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "lab_communication_usage",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_observation_raw_evidence",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_communication_apply_receipt",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_executor_resource_group",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_executor_resource_group_member",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_device_operation_grant",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_device_read_grant",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "lab_executor_control_verification",
+      "source": "docs/详细设计/02-实验室与资源管理/13-最终目标表结构.sql"
+    },
+    {
+      "name": "det_correction_evidence",
+      "source": "docs/详细设计/05-检测与数据签批/30-审阅收尾完整目标表结构.sql"
+    },
+    {
+      "name": "run_start_culture_session",
+      "source": "docs/详细设计/07-补液运行与任务执行/SC-01-开始培养表结构.sql"
+    },
+    {
+      "name": "run_start_culture_receipt",
+      "source": "docs/详细设计/07-补液运行与任务执行/SC-01-开始培养表结构.sql"
+    },
+    {
+      "name": "run_workflow_step_visit",
+      "source": "docs/详细设计/07-补液运行与任务执行/SC-01-开始培养表结构.sql"
+    },
+    {
+      "name": "run_workflow_step_visit_member",
+      "source": "docs/详细设计/07-补液运行与任务执行/SC-01-开始培养表结构.sql"
+    },
+    {
+      "name": "alarm_start_culture_collection",
+      "source": "docs/详细设计/09-告警与通知管理/SC-01-开始培养配置集合.sql"
+    },
+    {
+      "name": "dev_reactor_model",
+      "source": "docs/详细设计/02-实验室与资源管理/RM-01-统一反应器型号表结构.sql"
+    },
+    {
+      "name": "dev_reactor_model_channel",
+      "source": "docs/详细设计/02-实验室与资源管理/RM-01-统一反应器型号表结构.sql"
+    },
+    {
+      "name": "dev_reactor_model_pid",
+      "source": "docs/详细设计/02-实验室与资源管理/RM-01-统一反应器型号表结构.sql"
+    },
+    {
+      "name": "res_project_detection_rule",
+      "source": "docs/详细设计/03-项目与培养管理/PD-01-项目检测规则表结构.sql"
+    },
+    {
+      "name": "m02_workflow_execution_configuration",
+      "source": "docs/详细设计/02-实验室与资源管理/M02-WF-01-工作流执行与计量事实目标表结构.sql"
+    },
+    {
+      "name": "m02_workflow_metering_fact",
+      "source": "docs/详细设计/02-实验室与资源管理/M02-WF-01-工作流执行与计量事实目标表结构.sql"
+    },
+    {
+      "name": "run_culture_change_candidate",
+      "source": "docs/详细设计/07-补液运行与任务执行/RC-01-培养运行设置变更表结构.sql"
+    },
+    {
+      "name": "sys_sensitive_operation_receipt",
+      "source": "docs/详细设计/01-系统管理/AUTH-01-认证安全增强表结构.sql"
+    },
+    {
+      "name": "sys_login_security_snapshot",
+      "source": "docs/详细设计/01-系统管理/认证安全-登录快照DDL.sql"
+    },
+    {
+      "name": "res_culture_pump_connection_revision",
+      "source": "docs/详细设计/03-项目与培养管理/培养固定泵连接事实目标表结构.sql"
+    },
+    {
+      "name": "res_culture_pump_connection_state",
+      "source": "docs/详细设计/03-项目与培养管理/培养固定泵连接事实目标表结构.sql"
+    },
+    {
+      "name": "res_culture_pump_connection_application",
+      "source": "docs/详细设计/03-项目与培养管理/培养固定泵连接事实目标表结构.sql"
+    }
+  ],
+  "tableCount": 198,
+  "excluded": "M08; historical data; schema_version; Nacos/Seata/Quartz separate infrastructure",
+  "seedTables": [
+    "apr_scene",
+    "sys_management_revision",
+    "sys_config",
+    "sys_dict_type",
+    "workflow_node",
+    "workflow_subflow",
+    "workflow_step"
+  ]
+}

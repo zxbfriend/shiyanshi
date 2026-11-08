@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GUI 与 CoreService 协作说明</title>
+  <style>
+    body { font-family: "Microsoft YaHei", "Segoe UI", sans-serif; font-size: 14px; line-height: 1.65; color: #222; max-width: 1080px; margin: 0 auto; padding: 24px 20px 56px; background: #fafafa; }
+    h1 { font-size: 22px; border-bottom: 2px solid #0d6e6e; padding-bottom: 8px; }
+    h2 { font-size: 18px; margin: 36px 0 12px; color: #0d6e6e; border-bottom: 1px solid #ccc; padding-bottom: 6px; }
+    h3 { font-size: 15px; margin: 22px 0 8px; color: #333; }
+    h4 { font-size: 14px; margin: 14px 0 6px; color: #555; }
+    table { width: 100%; border-collapse: collapse; background: #fff; margin: 8px 0 16px; font-size: 13px; }
+    th, td { border: 1px solid #ddd; padding: 7px 9px; text-align: left; vertical-align: top; }
+    th { background: #f0f0f0; }
+    code { font-family: Consolas, monospace; background: #eee; padding: 1px 4px; font-size: 12px; }
+    .box { background: #fff; border: 1px solid #ddd; padding: 12px 16px; margin: 10px 0 16px; }
+    .nav { background: #fff; border: 1px solid #ddd; padding: 12px 16px; margin-bottom: 24px; }
+    .nav a { margin-right: 16px; color: #0d6e6e; }
+    .web { color: #1565c0; }
+    .core { color: #c62828; }
+    ul { margin: 6px 0; padding-left: 22px; }
+    .tag { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 3px; margin-right: 4px; }
+    .tag-web { background: #e3f2fd; color: #1565c0; }
+    .tag-core { background: #ffebee; color: #c62828; }
+    .note { background: #fff8e1; border-left: 3px solid #f9a825; padding: 8px 12px; margin: 10px 0; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<h1>GUI 与 CoreService 协作说明（留用表字段）</h1>
+<p>面向网站重做、CoreService 不动的场景。按三块说明：谁调谁、控什么设备、何时动哪些表字段。</p>
+
+<div class="nav">
+  <a href="#part1">一、Workflow</a>
+  <a href="#part2">二、手动取样 / 补料</a>
+  <a href="#part3">三、自动取测 + LoadSample</a>
+  <a href="#tables">四、建议留用表清单</a>
+</div>
+
+<div class="box">
+  <strong>分工总原则</strong>
+  <ul>
+    <li><span class="tag tag-web">网站</span>：业务落库（批次、工序、ManualOP、TaskQueue、LoadSample）、权限校验、列表展示；部分 Workflow 场景在调 Core <em>之前</em>就写好库存。</li>
+    <li><span class="tag tag-core">Core</span>：驱动生物反应器 / 补料泵 / 取样冲洗消毒动作 / 流体工作站；通过 <code>PumpIn/PumpOut</code> 直接改 <code>CDP_Item_Serials.Quantity</code>；自动取测拾取 Pending 任务并写检测相关状态；结束后 HTTP 回调网站记过程。</li>
+  </ul>
+</div>
+
+<!-- ===================== PART 1 ===================== -->
+<h2 id="part1">一、Workflow（入口 WorkflowController）</h2>
+<p>入口：<code>api/workflow/*</code>。以下只列<strong>会调用 CoreService</strong>的步骤；大量接种/连接/物料等纯网站落库步骤不展开。</p>
+
+<h3>1.1 调用总览</h3>
+<table>
+  <tr>
+    <th>网站 API</th>
+    <th>Core URL</th>
+    <th>设备 / 动作</th>
+    <th>Core 回调网站</th>
+  </tr>
+  <tr>
+    <td>GET get-machine-mode</td>
+    <td><code>mode/query</code></td>
+    <td>无硬件，查 Auto/Manual</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td>POST finish-start-batch</td>
+    <td><code>workflow/start_batch?action=finish&amp;batchids=</code></td>
+    <td>无泵动作；Core 把批次登记进内存 BatchManager</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td>POST start-pumping（预填充补料）</td>
+    <td><code>workflow/filling?action=start_pumping&amp;…</code></td>
+    <td>生物反应器补料泵 <code>PUMP_LIQUID</code></td>
+    <td>POST <code>/api/workflow/get-prefeeding-result</code></td>
+  </tr>
+  <tr>
+    <td>GET abort-pumping</td>
+    <td><code>workflow/filling?action=abort_pumping&amp;…</code></td>
+    <td><code>ABORT_PUMPLING</code></td>
+    <td>（结束仍可能走 start 的 wait 回调）</td>
+  </tr>
+  <tr>
+    <td>GET start-disinfection</td>
+    <td><code>workflow/disinfection?action=start_disinfection&amp;…</code></td>
+    <td>取样针内侧消毒 <code>INSIDE_STERILIZE</code></td>
+    <td>POST <code>/api/workflow/get-disinfect-result</code></td>
+  </tr>
+  <tr>
+    <td>GET abort-disinfection</td>
+    <td><code>workflow/disinfection?action=abort_disinfection&amp;…</code></td>
+    <td><code>ABORT_CLEARING</code></td>
+    <td>可能抑制回调</td>
+  </tr>
+  <tr>
+    <td>GET start-rinse-prefilling</td>
+    <td><code>workflow/rinseprefilling?action=start&amp;…</code></td>
+    <td><code>CLEAN_OUTSIDE</code>（冲洗/清管道）</td>
+    <td>当前误打到 <code>get-disinfect-result</code></td>
+  </tr>
+  <tr>
+    <td>GET abort-rinse-prefilling</td>
+    <td><code>workflow/rinseprefilling?action=abort&amp;…</code></td>
+    <td><code>ABORT_CLEARING</code></td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td>finish-feeding-unit-connection 内门禁</td>
+    <td><code>manual/operation/bioreactor?action=pumping_getinfo</code></td>
+    <td>仅查补料状态（是否 Pumping）</td>
+    <td>—</td>
+  </tr>
+</table>
+
+<div class="note">不走 Core 的相关接口：如 <code>start-pumpingV2</code> / <code>abort-pumpingV2</code> 走 OPC/IOT（PumpingService），不是 CoreServiceHttpClient。</div>
+
+<h3>1.2 分步骤：网站 vs Core、表字段时机</h3>
+
+<h4>① 查机器模式</h4>
+<table>
+  <tr><th>方</th><th>做什么</th><th>表 / 字段</th></tr>
+  <tr><td class="web">网站</td><td>调 Core，把 Auto→3 / Manual→1 返回前端</td><td>不写库</td></tr>
+  <tr><td class="core">Core</td><td>读 WorkModeManager 当前模式</td><td>不写库</td></tr>
+</table>
+
+<h4>② 完成开批 finish-start-batch</h4>
+<table>
+  <tr><th>时机</th><th>方</th><th>表.字段 / 动作</th></tr>
+  <tr><td>调 Core <strong>之前</strong></td><td class="web">网站</td><td>
+    <code>CDP_Workflow</code>：Creation_FinishBy / Creation_FinishTime<br>
+    <code>CDP_Batch</code>：StartBatchTime / StartBatchUser / Status→开批<br>
+    <code>CDP_StartQueue</code>：绑定 BatchID、Status<br>
+    插入培养液填充相关 TaskQueue / Batch_OP<br>
+    <strong><code>CDP_Item_Serials</code> INSERT</strong>：反应器 Quantity = MediumVolume + CellsVolume，ItemStatus=2；取样单元桶 Quantity=容量（废液可为 0）
+  </td></tr>
+  <tr><td>调 Core</td><td class="core">Core</td><td>读 <code>CDP_Batch</code>（BatchCode、ReactorSerialNo 等），写入内存 BatchManager。不改 Quantity。</td></tr>
+  <tr><td>Core 失败</td><td class="web">网站</td><td>返回错误；<strong>前面已提交的库不会回滚</strong></td></tr>
+</table>
+
+<h4>③ 预填充补料 start/abort-pumping（Workflow filling）</h4>
+<table>
+  <tr><th>时机</th><th>方</th><th>内容</th></tr>
+  <tr><td>发指令前</td><td class="web">网站</td><td>INSERT <code>CDP_ManualOP_Rec</code>（OperationType=9，Status=1，ExecParameters 含 speed/volume/location/item）；sourceid=ManualOPRecID</td></tr>
+  <tr><td>执行</td><td class="core">Core</td><td>设备：反应器补料泵。轮询天平/泵状态。</td></tr>
+  <tr><td>结束回调</td><td class="web">网站</td><td><code>get-prefeeding-result</code>：ManualOP Status 1→3 或 99；EndTime、ErrorCode；写 <code>CDP_OperateUnit_Events</code>。<strong>不改 Quantity</strong>（weight 传入但当前未加到 Item_Serials）。</td></tr>
+  <tr><td>失败立即返回</td><td class="web">网站</td><td>ManualOP ErrorCode/EndTime + Error Event</td></tr>
+</table>
+
+<h4>④ 消毒 / 冲洗预填充</h4>
+<table>
+  <tr><th>步骤</th><th>网站写库（发指令前）</th><th>Core 设备</th><th>回调后网站</th></tr>
+  <tr>
+    <td>消毒 start</td>
+    <td>ManualOP OperationType=<strong>7</strong> Status=1</td>
+    <td>INSIDE_STERILIZE</td>
+    <td>get-disinfect-result → ManualOP 完结 + Event</td>
+  </tr>
+  <tr>
+    <td>冲洗预填充 start</td>
+    <td>ManualOP OperationType=<strong>6</strong> Status=1</td>
+    <td>CLEAN_OUTSIDE</td>
+    <td>本应 get-rinse-prefilling-result；Core 现误回调 get-disinfect-result</td>
+  </tr>
+  <tr>
+    <td>abort</td>
+    <td>失败时 ManualOP→99</td>
+    <td>ABORT_CLEARING</td>
+    <td>—</td>
+  </tr>
+</table>
+
+<h4>⑤ 补料单元连接完成（门禁）</h4>
+<ul>
+  <li>可选：Core <code>pumping_getinfo</code>，若 WorkStage=Pumping 则禁止完成。</li>
+  <li>通过后<strong>纯网站</strong>：<code>CDP_Workflow</code> 完结、<code>CDP_Workflow_BatchSupplyConnection</code> Status=3、<code>CDP_Batch</code> 状态/补料人字段、<strong>INSERT CDP_Item_Serials</strong>（Quantity=MapCarriedItemQuantity）。</li>
+</ul>
+
+<h3>1.3 Workflow 块建议留用表</h3>
+<table>
+  <tr><th>表</th><th>关键字段</th><th>谁写</th></tr>
+  <tr><td>CDP_Workflow</td><td>LocCombinationID, WorkflowType, UserID, Creation_* / Finish_*</td><td class="web">网站</td></tr>
+  <tr><td>CDP_Batch</td><td>Status, StartBatch*, ReactorSerialNo, MediumVolume, CellsVolume, Supplementary*</td><td class="web">网站（Core 只读登记）</td></tr>
+  <tr><td>CDP_StartQueue</td><td>BatchID, Status</td><td class="web">网站</td></tr>
+  <tr><td>CDP_Item_Serials</td><td>Quantity, ItemStatus, BatchId, ItemSerialNumber, CarriedItemDefID</td><td class="web">开批/连接时网站 INSERT；<span class="core">手动补料取样线由 Core PumpIn/Out 改 Quantity</span></td></tr>
+  <tr><td>CDP_ManualOP_Rec</td><td>ManualOPRecID, OperationType, Status, ExecParameters, ErrorCode, Start/EndTime, BatchID</td><td class="web">网站（含回调更新）</td></tr>
+  <tr><td>CDP_OperateUnit_Events</td><td>EventType, Status, SourceID, BatchId, LabId, ErrorCode, EventMessage</td><td class="web">网站（回调写）</td></tr>
+  <tr><td>CDP_Workflow_BatchSupplyConnection(+Dtl)</td><td>Status, Volume/Speed 等</td><td class="web">网站</td></tr>
+</table>
+
+<!-- ===================== PART 2 ===================== -->
+<h2 id="part2">二、手动取样 / 补料（SystemControl）</h2>
+<p>入口：<code>PumpingController</code>（<code>api/pumping</code>）、<code>SampingController</code>（<code>api/sampling</code>）。走 <code>manual/operation/bioreactor</code>。</p>
+
+<h3>2.1 补料（PumpingController）</h3>
+<table>
+  <tr><th>网站 API</th><th>Core action</th><th>设备</th></tr>
+  <tr><td>POST start-pumping</td><td>start_pumping</td><td>反应器补料泵 + 天平</td></tr>
+  <tr><td>GET abort-pumping</td><td>abort_pumping</td><td>中止泵</td></tr>
+  <tr><td>（内部）pumping_getinfo</td><td>pumping_getinfo</td><td>查状态</td></tr>
+  <tr><td>回调 get-pumped-weight</td><td>Core 过程中 POST</td><td>—</td></tr>
+  <tr><td>回调 get-pumping-result</td><td>Core 结束 POST</td><td>—</td></tr>
+</table>
+
+<h4>时序与库表</h4>
+<table>
+  <tr><th>步骤</th><th>方</th><th>表 / 字段 / 设备</th></tr>
+  <tr>
+    <td>1. 开始前校验</td>
+    <td class="web">网站</td>
+    <td>权限、仓存（读 Item_Serials Quantity）、反应器容量；getinfo 防重复 Pumping</td>
+  </tr>
+  <tr>
+    <td>2. 落操作记录</td>
+    <td class="web">网站</td>
+    <td>INSERT <code>CDP_ManualOP_Rec</code>：OperationType=11/13/15/17，Status=Start(1)，ExecParameters={PumpingType,Speed,Volume,LocationCode,ItemCode}</td>
+  </tr>
+  <tr>
+    <td>3. 下发</td>
+    <td class="core">Core</td>
+    <td>校验补料瓶/反应器容器容量（读 Item_Serials）；执行 PumpLiquidAction</td>
+  </tr>
+  <tr>
+    <td>4. 过程中</td>
+    <td class="core">→网站</td>
+    <td>POST get-pumped-weight → 网站写补料过程明细（重量/泵速等）</td>
+  </tr>
+  <tr>
+    <td>5. 结束库存</td>
+    <td class="core">Core</td>
+    <td>
+      反应器容器 <code>PumpIn</code> → <strong>UPDATE CDP_Item_Serials SET Quantity=…</strong><br>
+      补料瓶 <code>PumpOut</code> → <strong>UPDATE Quantity</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>6. 结束回调</td>
+    <td class="web">网站</td>
+    <td>
+      get-pumping-result：ManualOP Status→Finish(3)/Canceled(99)；Event；成功则 INSERT Batch_OP/Sub/Parameter/Exec（Mode=Manual, Status=Executed）。<strong>不改 Quantity</strong>
+    </td>
+  </tr>
+</table>
+
+<h3>2.2 取样（SampingController）</h3>
+<table>
+  <tr><th>OperationType</th><th>Core start action</th><th>Core abort</th><th>设备含义</th></tr>
+  <tr><td>1 Rinse</td><td>start_clearing</td><td>abort_clearing</td><td>冲洗取样单元</td></tr>
+  <tr><td>2 ATFRinse</td><td>（ATF 冲洗）</td><td>abort_atfClearing</td><td>柱后冲洗</td></tr>
+  <tr><td>3 Sampling</td><td>start_sampling</td><td>abort_sampling</td><td>取样</td></tr>
+  <tr><td>4 ATFSampling</td><td>（ATF 取样）</td><td>abort_atfSampling</td><td>柱后取样</td></tr>
+  <tr><td>5 Disinfection</td><td>start_disinfection</td><td>abort_disinfection</td><td>消毒</td></tr>
+</table>
+
+<h4>时序与库表</h4>
+<table>
+  <tr><th>步骤</th><th>方</th><th>内容</th></tr>
+  <tr><td>发指令前</td><td class="web">网站</td><td>INSERT ManualOP（Status=1，Volume/Speed 等进 ExecParameters）</td></tr>
+  <tr><td>执行</td><td class="core">Core</td><td>驱动取样/冲洗/消毒硬件；轮询 IsSampling/IsClearing</td></tr>
+  <tr><td>取样结束库存</td><td class="core">Core</td><td>反应器 <code>PumpOut(volume)</code> → 更新 <code>CDP_Item_Serials.Quantity</code>；废液桶 PumpIn</td></tr>
+  <tr><td>回调</td><td class="web">网站</td><td>get-sampling-result：完结 ManualOP + Event；若成功且为取样(3/4) → 写 RESERVEDSAMPLE 的 Batch_OP（不改 Quantity）</td></tr>
+  <tr><td>查询状态</td><td>双方</td><td>sampling_getinfo：Core 返回工作阶段</td></tr>
+</table>
+
+<div class="note">
+  列表 Volume（Quantity/1000）在<strong>系统控制手动补料/取样</strong>路径上由 <strong>Core PumpIn/PumpOut</strong> 改库；网站回调只记过程。Workflow 开批/连接路径上 Quantity 则由<strong>网站 INSERT</strong>。
+</div>
+
+<h3>2.3 手动块建议留用表</h3>
+<table>
+  <tr><th>表</th><th>关键字段</th><th>谁写 / 时机</th></tr>
+  <tr><td>CDP_ManualOP_Rec</td><td>全部过程字段</td><td class="web">开始 INSERT；回调 UPDATE Status/ErrorCode/EndTime</td></tr>
+  <tr><td>CDP_Item_Serials</td><td>Quantity, CarriedItemDefID</td><td class="core">补料结束 PumpIn/Out；取样结束 PumpOut</td></tr>
+  <tr><td>CDP_OperateUnit_Events</td><td>过程事件</td><td class="web">回调</td></tr>
+  <tr><td>CDP_Batch_OP / _Sub / _ParameterValue / _Exec</td><td>手动补料/留样工序记录</td><td class="web">成功回调 InsertTaskQueueEntitys</td></tr>
+  <tr><td>补料过程明细表（SavePumpingOPDateilRec）</td><td>weight/speed 等</td><td class="web">get-pumped-weight</td></tr>
+  <tr><td>CDP_LabDevice / CDP_Testing_Equipment</td><td>设备号、IP</td><td>主数据（网站维护，Core 读）</td></tr>
+</table>
+
+<!-- ===================== PART 3 ===================== -->
+<h2 id="part3">三、自动取测 + LoadSample</h2>
+
+<h3>3.1 两条独立交接路径</h3>
+<table>
+  <tr><th>路径</th><th>网站触发</th><th>交接方式</th><th>Core 执行入口</th></tr>
+  <tr>
+    <td>自动取测</td>
+    <td>TaskQueue add-taskqueue（OPID=1 SAMPLINGTEST）</td>
+    <td>CDP_TaskQueue + CDP_Batch_OP Status=Pending</td>
+    <td>Auto 模式 TestOpsManager 拾取 OPID=1</td>
+  </tr>
+  <tr>
+    <td>手动取样自动检测</td>
+    <td>LoadSample Draft→Confirm→Start</td>
+    <td>ItemStatus 16/17 + ExtraData JSON</td>
+    <td>QCFluidCenter 按 ItemStatus 取 EP 管</td>
+  </tr>
+</table>
+
+<h3>3.2 TaskQueue 自动取测</h3>
+
+<h4>网站（TaskQueueController）</h4>
+<table>
+  <tr><th>API</th><th>做什么</th><th>表字段</th></tr>
+  <tr>
+    <td>POST add-taskqueue</td>
+    <td>校验→规则展开→耗材→落库 Mode=Auto Status=Pending</td>
+    <td>
+      <code>CDP_TaskQueue</code>（BatchOPID）<br>
+      <code>CDP_Batch_OP</code>：OPID=1, Mode=3, Status=1, BatchID, LabId<br>
+      <code>CDP_Batch_OP_Sub</code>：BGA/VICELL/OSMO/CEDEX/TESTINGRULE… Value=勾选<br>
+      <code>CDP_Batch_OP_ParameterValue</code>：TESTINGTIME(43)、体积、稀释等<br>
+      <code>CDP_Batch_OP_ParameterSubValue</code>：Cedex 分析项
+    </td>
+  </tr>
+  <tr>
+    <td>GET terminate-task</td>
+    <td>代理 Core <code>task/Terminate?operationid=</code></td>
+    <td>Core 内存标志；执行中检查（期望 ID 为 BatchOPID）</td>
+  </tr>
+  <tr>
+    <td>GET reset-task</td>
+    <td>Core Reset + 网站重建 Pending 任务</td>
+    <td>新 TaskQueue / Batch_OP 树</td>
+  </tr>
+</table>
+
+<div class="note">注意：前端若传 TaskQueueID 而 Core 按 BatchOPID 匹配，终止可能对不上，重做时需统一 ID。</div>
+
+<h4>Core</h4>
+<table>
+  <tr><th>做什么</th><th>设备</th><th>库表</th></tr>
+  <tr>
+    <td>轮询未完成 CDP_Batch_OP（OPID=1, Status&lt;5）按 TESTINGTIME 排序执行</td>
+    <td>取样针 / 泵；BGA、Vicell、OSMO、Cedex 子系统</td>
+    <td>
+      执行中：Batch_OP/_Sub Status→3；结束→5<br>
+      取样管 ExtraData 写入 BatchID/BatchOPID + 检测参数<br>
+      子系统写 <code>CDP_Testing_BGATask*</code>、<code>VicellTaskDtl</code>、<code>OSMOTaskDtl</code>、<code>CedexTaskDtl</code><br>
+      过程中可能 PumpIn/Out 改 Item_Serials.Quantity
+    </td>
+  </tr>
+</table>
+
+<h3>3.3 LoadSample（手动取样自动检测）</h3>
+
+<h4>网站流程与表</h4>
+<table>
+  <tr><th>步骤</th><th>API</th><th>Dtl.Status</th><th>ItemStatus</th><th>其他字段</th></tr>
+  <tr><td>Draft</td><td>save-manual-sample-auto-test</td><td>0</td><td>2 Using</td><td>写 Dtl 检测开关/体积；Item_Serials.ExtraData=JSON；IsEmpty=false</td></tr>
+  <tr><td>Confirm</td><td>set-load-sample-status=1</td><td>1</td><td>2</td><td>前端常切 Manual</td></tr>
+  <tr><td>Start</td><td>status=3</td><td>3</td><td><strong>17</strong>（含 BGA/Vicell）或 <strong>16</strong></td><td>前端切 Auto，Core 可拾取</td></tr>
+  <tr><td>Cancel</td><td>status=9</td><td>9</td><td>28 Discard</td><td>IsEmpty=true</td></tr>
+  <tr><td>完成</td><td>Sync / 回调</td><td>5</td><td>28</td><td>见下</td></tr>
+</table>
+
+<p><strong>ExtraData 关键键（网站写，Core 读）：</strong> BGA/BGASampleID/BGATemperature，Vicell/VicellSampleID/CellType/DilutionFactor/SampleVolume，Osmo/…，Cedex/… + CedexParameter JSON。</p>
+
+<p><strong>CDP_Test_LoadSampleDtl 关键字段：</strong> SampleId, Volume, Well, LocCombinationID, IsBGA/IsOsmo/IsVicell/IsCedex 及体积/温度/稀释，*IsComplete，Status，ItemSerialsId。</p>
+
+<h4>Core</h4>
+<ul>
+  <li>QCFluidCenter 在 Auto 下找 ItemStatus=17 优先，否则 16。</li>
+  <li>按 ExtraData 分液并登录 BGA / Vicell / OSMO / Cedex 设备服务。</li>
+  <li>设备子系统写 <code>CDP_Testing_*</code>；管状态最终到 Discard(28)，位置清空。</li>
+  <li>不创建 TaskQueue 行。</li>
+</ul>
+
+<h4>LoadSampleJob + Sync</h4>
+<table>
+  <tr><th>组件</th><th>做什么</th></tr>
+  <tr><td>LoadSampleJob</td><td>定时调 <code>SyncLoadSample()</code>（配置 LoadSampleJobIntervalEnable≠N）</td></tr>
+  <tr><td>SyncLoadSample</td><td>
+    查 Status 在 (1,5) 的 Dtl；按 CDP_Testing_* 状态置 *IsComplete<br>
+    BGA Status≥7；OSMO/Vicell/Cedex ≥5<br>
+    全部完成且位置空且 ItemStatus=28 → Dtl.Status=5
+  </td></tr>
+  <tr><td>可选回调 update-load-sample-status</td><td>按 DeviceType 置单设备 IsComplete；本 Core 树中未见调用，以 Job 同步为主</td></tr>
+</table>
+
+<h3>3.4 本块建议留用表</h3>
+<table>
+  <tr><th>表</th><th>用途</th><th>谁写</th></tr>
+  <tr><td>CDP_TaskQueue / CDP_Batch_OP / _Sub / _ParameterValue / _ParameterSubValue</td><td>自动取测队列</td><td class="web">创建；<span class="core">Core 改 Status 1→3→5</span></td></tr>
+  <tr><td>CDP_OP_Definition / DefinitionSub / Parameter*</td><td>OP 模板</td><td>主数据</td></tr>
+  <tr><td>CDP_Test_LoadSample / Dtl</td><td>手动载样自动测</td><td class="web">全流程；Sync 写 IsComplete/Status</td></tr>
+  <tr><td>CDP_Item_Serials</td><td>EP 管状态 ExtraData Quantity</td><td class="web">Draft/Start；<span class="core">拾取后改 ItemStatus/位置/Quantity</span></td></tr>
+  <tr><td>CDP_Testing_BGATask(+Result)、VicellTaskDtl、OSMOTaskDtl、CedexTaskDtl(+Result)</td><td>检测结果</td><td class="core">设备子系统</td></tr>
+  <tr><td>CDP_LabDevice / Location_Combinations</td><td>ROW6_EPTUBE3 孔位</td><td>主数据；网站改 IsEmpty</td></tr>
+  <tr><td>CDP_TestingDef / OP_ParameterSub</td><td>Cedex 项</td><td>主数据</td></tr>
+</table>
+
+<!-- ===================== SUMMARY TABLES ===================== -->
+<h2 id="tables">四、重做网站建议留用表（与 Core 协作相关）</h2>
+
+<h3>4.1 必须与 Core 对齐的字段</h3>
+<table>
+  <tr><th>表.字段</th><th>原因</th></tr>
+  <tr><td>CDP_Item_Serials.Quantity / ItemStatus / ExtraData / BatchId / ItemSerialNumber / LocCombinationID</td><td>Core PumpIn/Out、LoadSample 16/17、自动取测取样管</td></tr>
+  <tr><td>CDP_Batch_OP.Status / OPID / Mode / BatchID + Sub.Value + ParameterValue(TESTINGTIME 等)</td><td>Core 拾取自动取测</td></tr>
+  <tr><td>CDP_ManualOP_Rec.ManualOPRecID 及 Status/ErrorCode</td><td>sourceid 回调关联</td></tr>
+  <tr><td>CDP_Test_LoadSampleDtl.*IsComplete / Status + ExtraData 约定键名</td><td>LoadSample 与 Sync</td></tr>
+  <tr><td>CDP_Testing_* 任务/结果表</td><td>Core 子系统写入；网站展示/Sync</td></tr>
+  <tr><td>CDP_Batch.ReactorSerialNo / BatchCode / Status</td><td>开批登记、关联反应器物料</td></tr>
+</table>
+
+<h3>4.2 网站业务为主、Core 弱依赖或只读</h3>
+<table>
+  <tr><th>表</th><th>说明</th></tr>
+  <tr><td>CDP_Workflow / BatchSupplyConnection*</td><td>Workflow 业务；Core 基本不写</td></tr>
+  <tr><td>CDP_OperateUnit_Events / Signature*</td><td>网站事件审计</td></tr>
+  <tr><td>CDP_TaskQueue</td><td>网站队列头；执行状态以 Batch_OP 为准</td></tr>
+  <tr><td>Auth_* / CDP_LabDevice / Item_Def</td><td>权限与主数据</td></tr>
+</table>
+
+<h3>4.3 三块对照一览</h3>
+<table>
+  <tr><th>块</th><th>网站主责</th><th>Core 主责</th><th>Quantity 谁改</th></tr>
+  <tr>
+    <td>Workflow</td>
+    <td>开批/连接落库、ManualOP、回调记事</td>
+    <td>预填泵/消毒/冲洗硬件；BatchManager</td>
+    <td>开批/连接：网站 INSERT；预填回调：通常不改</td>
+  </tr>
+  <tr>
+    <td>手动取样补料</td>
+    <td>ManualOP、Event、Batch_OP 过程</td>
+    <td>泵/取样硬件 + PumpIn/Out</td>
+    <td><strong>Core</strong></td>
+  </tr>
+  <tr>
+    <td>自动取测 + LoadSample</td>
+    <td>建队 / 写 16·17+ExtraData / Sync</td>
+    <td>拾取任务或 EP 管；仪器子系统写 Testing_*</td>
+    <td>取样过程可能 Core；LoadSample 管状态 Core</td>
+  </tr>
+</table>
+
+</body>
+</html>

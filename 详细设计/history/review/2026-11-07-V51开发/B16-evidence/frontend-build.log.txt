@@ -1,0 +1,712 @@
+
+> @futurefab/ui-repo-futurefab-frontend@0.0.0 build:prod D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend
+> pnpm run build && pnpm run check:production
+
+
+> @futurefab/ui-repo-futurefab-frontend@0.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend
+> pnpm run build:shared && SEPARATE_TS_TASK=true lerna run build,build-dts,check-without-dts
+
+
+> @futurefab/ui-repo-futurefab-frontend@0.0.0 build:shared D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend
+> pnpm run routes:generate && tsx scripts/build-shared-libs.ts
+
+
+> @futurefab/ui-repo-futurefab-frontend@0.0.0 routes:generate D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend
+> tsx scripts/generate-route-paths.ts
+
+[shared] @futurefab/ui-lib-smp-base 版本及产物一致，复用构建
+lerna notice cli v8.2.4
+lerna info versioning independent
+
+ Lerna (powered by Nx)   Running targets build, build-dts, check-without-dts for 10 projects:
+
+- @futurefab/ui-app-smp-data
+- @futurefab/ui-app-smp-lab
+- @futurefab/ui-app-smp-settings
+- @futurefab/ui-lib-smp-base
+- @futurefab/ui-portal
+- @futurefab/ui-sdk-language
+- @futurefab/ui-sdk-smp-api
+- @futurefab/ui-sdk-smp-common
+- @futurefab/ui-sdk-smp-static-files
+- @futurefab/ui-sdk-smp-stores
+
+
+
+> @futurefab/ui-sdk-smp-api:build  [local cache]
+
+
+> @futurefab/ui-sdk-smp-api@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-api
+> vite build
+
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 157 modules transformed.
+rendering chunks...
+
+构建 Hash: 42c99c55
+computing gzip size...
+dist/index.js  228.47 kB │ gzip: 41.07 kB │ map: 787.93 kB
+✓ built in 5.77s
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+
+
+> @futurefab/ui-lib-smp-base:build
+
+(node:5652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-lib-smp-base@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\lib-smp-base
+> tsx ../../scripts/build-shared-libs.ts lib-smp-base
+
+(node:20392) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[shared] @futurefab/ui-lib-smp-base 版本及产物一致，复用构建
+
+> @futurefab/ui-sdk-language:build  [local cache]
+
+
+> @futurefab/ui-sdk-language@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-language
+> vite build
+
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 28 modules transformed.
+rendering chunks...
+
+构建 Hash: c3858c1e
+computing gzip size...
+dist/index.js  567.41 kB │ gzip: 148.55 kB │ map: 860.68 kB
+✓ built in 946ms
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+  - @futurefab/ant-design-vue/es/locale/en_US
+  - @futurefab/ant-design-vue/es/locale/zh_CN
+  - @futurefab/vxe-table/lib/locale/lang/en-US.js
+  - @futurefab/vxe-table/lib/locale/lang/zh-CN.js
+  - vue
+  - vue-i18n
+
+> @futurefab/ui-sdk-smp-stores:build  [local cache]
+
+
+> @futurefab/ui-sdk-smp-stores@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-stores
+> vite build
+
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 10 modules transformed.
+rendering chunks...
+
+构建 Hash: cfc166ea
+computing gzip size...
+dist/index.js  19.35 kB │ gzip: 5.96 kB │ map: 45.77 kB
+✓ built in 195ms
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+  - @futurefab/ui-sdk-smp-api
+  - pinia
+  - vue
+
+> @futurefab/ui-sdk-smp-api:build-dts
+
+(node:22384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-sdk-smp-api@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-api
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+
+> @futurefab/ui-lib-smp-base:build-dts
+
+(node:20076) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-lib-smp-base@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\lib-smp-base
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+
+> @futurefab/ui-sdk-smp-static-files:build-dts
+
+(node:18492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-sdk-smp-static-files@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-static-files
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+
+> @futurefab/ui-sdk-smp-static-files:build  [local cache]
+
+
+> @futurefab/ui-sdk-smp-static-files@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-static-files
+> pnpm run theme:generate && vite build
+
+
+> @futurefab/ui-sdk-smp-static-files@1.0.0 theme:generate D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-static-files
+> tsx ../../scripts/generate-theme-styles.ts
+
+主题 Less 已生成：D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-static-files\public\styles\
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 37 modules transformed.
+rendering chunks...
+
+构建 Hash: 6ee4562b
+computing gzip size...
+dist/logo-dark.png       4.02 kB
+dist/info-bg.png        43.20 kB
+dist/settings.png       81.48 kB
+dist/lab.png            82.22 kB
+dist/data.png           87.20 kB
+dist/background.png    777.56 kB
+dist/index.js        3,141.82 kB │ gzip: 1,682.11 kB │ map: 3,199.35 kB
+✓ built in 1.69s
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+  - @futurefab/icons-vue
+
+> @futurefab/ui-sdk-smp-common:build  [local cache]
+
+
+> @futurefab/ui-sdk-smp-common@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-common
+> vite build
+
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 201 modules transformed.
+rendering chunks...
+
+构建 Hash: 0bd5517d
+computing gzip size...
+dist/style.css  108.77 kB │ gzip:  37.78 kB
+dist/index.js   650.37 kB │ gzip: 138.89 kB │ map: 1,752.54 kB
+✓ built in 6.21s
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+  - @futurefab/ant-design-vue
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-sdk-language
+  - @futurefab/ui-sdk-smp-api
+  - @futurefab/ui-sdk-smp-static-files
+  - @futurefab/ui-sdk-smp-stores
+  - @futurefab/vxe-table
+  - vue
+  - vue-router
+  - xe-utils
+
+> @futurefab/ui-app-smp-settings:build  [local cache]
+
+
+> @futurefab/ui-app-smp-settings@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-settings
+> vite build
+
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 809 modules transformed.
+rendering chunks...
+
+构建 Hash: 8102b1f3
+computing gzip size...
+dist/style.css                                      164.15 kB │ gzip: 24.11 kB
+dist/load-candidate-pages-vEBWq2DF.js                 0.17 kB │ gzip:  0.11 kB
+dist/_plugin-vue_export-helper-BtEf6m8d.js            0.17 kB │ gzip:  0.14 kB
+dist/flag-form-DcDjVlsZ.js                            0.20 kB │ gzip:  0.15 kB
+dist/grant-exit-facts-CiulNKSN.js                     0.29 kB │ gzip:  0.20 kB
+dist/format-time-CIqbH7FC.js                          0.32 kB │ gzip:  0.22 kB
+dist/sdms-order-CS4kr59u.js                           0.50 kB │ gzip:  0.29 kB
+dist/subsystem-bga-CRM6bj40.js                        0.51 kB │ gzip:  0.30 kB
+dist/subsystem-osmo-CtLIn72R.js                       0.51 kB │ gzip:  0.30 kB
+dist/subsystem-cedex-DW9WlJ2a.js                      0.51 kB │ gzip:  0.30 kB
+dist/subsystem-vicell-BR-DRdyp.js                     0.51 kB │ gzip:  0.30 kB
+dist/subsystem-cedex-order-D4NC3EQK.js                0.52 kB │ gzip:  0.30 kB
+dist/owner-display-B-Or8b9N.js                        0.61 kB │ gzip:  0.33 kB
+dist/tool-swagger-C0QhgsYd.js                         0.65 kB │ gzip:  0.37 kB
+dist/monitor-druid-7bn7-q7B.js                        0.73 kB │ gzip:  0.39 kB
+dist/tree-order-BHJ2rye-.js                           0.93 kB │ gzip:  0.44 kB
+dist/leader-tree-BTvDlH9q.js                          1.05 kB │ gzip:  0.58 kB
+dist/retired-device-client-BvMDEgBk.js                1.13 kB │ gzip:  0.68 kB
+dist/member-grid-BxgOh4Yf.js                          1.18 kB │ gzip:  0.50 kB
+dist/dict-tag-DD0vZhHK.js                             1.24 kB │ gzip:  0.59 kB
+dist/sugar-day-ranges-BmAL-yjo.js                     1.35 kB │ gzip:  0.59 kB
+dist/use-guarded-write-GzOGMFa6.js                    1.44 kB │ gzip:  0.77 kB
+dist/m09-external-hint-KsYQbNiZ.js                    1.67 kB │ gzip:  0.76 kB
+dist/lab-select-CSL-nIyB.js                           1.67 kB │ gzip:  0.71 kB
+dist/member-tree-p6kb-_A1.js                          2.06 kB │ gzip:  0.65 kB
+dist/alarm-alarm-mail-config-CjIADh48.js              2.07 kB │ gzip:  0.95 kB
+dist/feeding-speed-select-CI-IJKe9.js                 2.10 kB │ gzip:  0.82 kB
+dist/pid-validation-DY0b9bT_.js                       2.21 kB │ gzip:  0.86 kB
+dist/use-alarm-mutation-W0iotloD.js                   2.43 kB │ gzip:  1.27 kB
+dist/grant-write-recovery-Cnhs-bXn.js                 2.50 kB │ gzip:  1.05 kB
+dist/monitor-cache-wah6PP-A.js                        4.87 kB │ gzip:  2.07 kB
+dist/monitor-server-BqZBiYNQ.js                       5.66 kB │ gzip:  2.14 kB
+dist/m09-test-ids-CdJPiNha.js                         7.31 kB │ gzip:  2.87 kB
+dist/monitor-online-ByJf5rl3.js                       7.49 kB │ gzip:  2.33 kB
+dist/logininfor-management-DrmO7Y-u.js               10.08 kB │ gzip:  3.14 kB
+dist/system-pwdhistory-Dr2vKsIY.js                   10.13 kB │ gzip:  3.10 kB
+dist/list-DB12XF2Q.js                                11.20 kB │ gzip:  2.38 kB
+dist/resource-batchleader-CnoUQVOe.js                11.21 kB │ gzip:  3.29 kB
+dist/resource-projectlab-AaI706PM.js                 11.22 kB │ gzip:  3.29 kB
+dist/resource-cultureleader-C-bVc2Og.js              11.28 kB │ gzip:  3.29 kB
+dist/resource-projectleader-6onm-DM-.js              11.28 kB │ gzip:  3.29 kB
+dist/smp-labgroupmember-xXgYsLqr.js                  11.41 kB │ gzip:  3.26 kB
+dist/smp-labgroupleader-BoM4qK-L.js                  11.43 kB │ gzip:  3.27 kB
+dist/smp-userlab-Dy3cF5k5.js                         11.99 kB │ gzip:  3.42 kB
+dist/resource-projecttag-CZpiNTfd.js                 13.08 kB │ gzip:  3.68 kB
+dist/log-DmPQFR_v.js                                 13.16 kB │ gzip:  3.49 kB
+dist/lab-detectorconfig-wW48dM7Z.js                  13.95 kB │ gzip:  4.18 kB
+dist/resource-batchmember-CNXgdYs2.js                14.74 kB │ gzip:  3.92 kB
+dist/resource-culturemember-DHZNFPKt.js              14.81 kB │ gzip:  3.92 kB
+dist/detectionrule-management-DwJys65o.js            15.25 kB │ gzip:  4.40 kB
+dist/lab-offlinealarm-CrCN4x5u.js                    15.90 kB │ gzip:  4.31 kB
+dist/resource-projectmember-Bo5MNst6.js              16.62 kB │ gzip:  4.09 kB
+dist/index.js                                        17.03 kB │ gzip:  2.84 kB
+dist/mail-config-editor-1wISIXS3.js                  17.06 kB │ gzip:  4.51 kB
+dist/monitor-datalog-CbRNLIEE.js                     17.24 kB │ gzip:  4.47 kB
+dist/role-auth-user-DfPH2eJJ.js                      17.87 kB │ gzip:  4.38 kB
+dist/post-management-CPA7TkPl.js                     18.90 kB │ gzip:  4.86 kB
+dist/calibrationobject-management-DOfTE3FR.js        19.05 kB │ gzip:  4.82 kB
+dist/feedmedium-management-qL2VudkE.js               19.07 kB │ gzip:  5.07 kB
+dist/lab-relay-CHIBTIVI.js                           19.11 kB │ gzip:  5.23 kB
+dist/lab-soundalarm-D1n9exRk.js                      19.27 kB │ gzip:  5.07 kB
+dist/authRole-C2v86_3E.js                            20.39 kB │ gzip:  4.77 kB
+dist/detail-BbbwA2zk.js                              20.60 kB │ gzip:  3.32 kB
+dist/operlog-management-B2tE_HOH.js                  20.76 kB │ gzip:  4.80 kB
+dist/smp-notification-CvwM_h0H.js                    20.86 kB │ gzip:  5.71 kB
+dist/alarm-alarm-notify-rule-CuXtYXKu.js             21.62 kB │ gzip:  5.89 kB
+dist/devairpum-management-Bnd0NhPd.js                21.78 kB │ gzip:  5.60 kB
+dist/devperistalticpump-management-BuuiuhoH.js       22.43 kB │ gzip:  5.62 kB
+dist/containerspec-management-DFRM2Z4c.js            22.74 kB │ gzip:  5.79 kB
+dist/config-management-rk4yUyxu.js                   23.56 kB │ gzip:  5.76 kB
+dist/lab-benchreactorcontrollerchannel-rdRdmhuS.js   24.39 kB │ gzip:  4.53 kB
+dist/lab-culturecontainer-B5NlQoCo.js                24.39 kB │ gzip:  5.53 kB
+dist/lab-consumption-rule-BAblMVcG.js                25.03 kB │ gzip:  7.36 kB
+dist/liquidbag-management-BIgl69fo.js                25.35 kB │ gzip:  6.05 kB
+dist/workflow-management-Bc3Ppgaw.js                 25.47 kB │ gzip:  6.14 kB
+dist/monitor-job-B2vKDAqu.js                         25.48 kB │ gzip:  5.44 kB
+dist/venue-management-DCMwCcot.js                    25.61 kB │ gzip:  7.01 kB
+dist/lab-printer-BKkywMnh.js                         26.67 kB │ gzip:  6.88 kB
+dist/benchreactor-management-D_s2QOJo.js             26.78 kB │ gzip:  6.83 kB
+dist/devfloorscale-management-CIQEh5cf.js            26.86 kB │ gzip:  6.29 kB
+dist/consumablemaster-management-Bj1ZK_qB.js         26.93 kB │ gzip:  6.11 kB
+dist/detectoritem-management-CllrrO8z.js             27.30 kB │ gzip:  6.35 kB
+dist/alarm-sms-delivery-CAf7RRev.js                  29.14 kB │ gzip:  7.04 kB
+dist/dept-management-CM4IGSxX.js                     29.24 kB │ gzip:  8.03 kB
+dist/alarm-mail-delivery-Dh0poEg9.js                 29.35 kB │ gzip:  7.11 kB
+dist/system-notice-DghRt2UX.js                       29.37 kB │ gzip:  6.73 kB
+dist/dev-analyzer-model-management-DG0DpuMk.js       29.52 kB │ gzip:  6.64 kB
+dist/lab-airpump-CUik2UCi.js                         30.44 kB │ gzip:  5.46 kB
+dist/labgroup-management-CaQpxd0V.js                 30.93 kB │ gzip:  7.31 kB
+dist/lab-statusalarm-AcR7CFIN.js                     31.37 kB │ gzip:  8.27 kB
+dist/lab-benchreactorcontroller-Bh0upmQt.js          32.68 kB │ gzip:  8.00 kB
+dist/menu-management-u4pnF9SL.js                     33.02 kB │ gzip:  7.98 kB
+dist/lab-balance-KcdUj6Gw.js                         33.47 kB │ gzip:  7.54 kB
+dist/alarm-alarm-record-f2o6rMHz.js                  35.19 kB │ gzip:  8.30 kB
+dist/sampling-template-management-BGykRGuu.js        35.22 kB │ gzip:  8.44 kB
+dist/lab-labbenchreactor-CI6tWyQn.js                 36.36 kB │ gzip:  9.32 kB
+dist/communication-dialog-BGNh19Oo.js                37.73 kB │ gzip:  7.48 kB
+dist/lab-labairpump-Cj43A-F6.js                      38.21 kB │ gzip:  8.78 kB
+dist/lab-labperistalticpump-DuaEUSUQ.js              41.96 kB │ gzip:  9.42 kB
+dist/pump-speed-management-tsaRqa92.js               43.64 kB │ gzip:  8.09 kB
+dist/lab-downstreamdevice-BaBov9TP.js                44.70 kB │ gzip:  9.26 kB
+dist/reactormodel-management-BUvIK5WM.js             44.87 kB │ gzip: 10.59 kB
+dist/role-management-DRnGco__.js                     46.00 kB │ gzip: 10.40 kB
+dist/lab-labfloorscale-BQylTZjs.js                   47.32 kB │ gzip: 10.02 kB
+dist/lab-bottle-config-CTmEaVEa.js                   48.38 kB │ gzip: 11.13 kB
+dist/perfusion-template-management-Bfsj96-W.js       52.29 kB │ gzip: 12.00 kB
+dist/lab-labdetector-CeDwypb5.js                     52.82 kB │ gzip: 11.97 kB
+dist/lab-management-BqELPe3C.js                      54.22 kB │ gzip: 12.85 kB
+dist/sortable.esm-D0WL5ZbY.js                        54.30 kB │ gzip: 15.08 kB
+dist/dict-management-pSgRShye.js                     55.68 kB │ gzip: 10.95 kB
+dist/devdetector-management-DZIZ9FLv.js              57.25 kB │ gzip: 12.26 kB
+dist/project-management-BZMAd0eR.js                  64.21 kB │ gzip: 14.58 kB
+dist/auto-control-template-management-DQgyb-5b.js    64.90 kB │ gzip: 14.15 kB
+dist/feeding-template-management-vNBTtUF7.js         66.66 kB │ gzip: 14.71 kB
+dist/system-user-VyVlOl_u.js                         96.14 kB │ gzip: 22.07 kB
+dist/lab-labintegratedreactor-i62mTTK-.js            99.06 kB │ gzip: 21.14 kB
+dist/config-template-management-DgCUqSM1.js         103.19 kB │ gzip: 23.39 kB
+dist/batch-management-vPERmdx8.js                   125.30 kB │ gzip: 28.30 kB
+dist/culture-management-Beaeawaq.js                 225.14 kB │ gzip: 52.68 kB
+dist/tool-build-BLTXKPk4.js                         385.83 kB │ gzip: 89.89 kB
+✓ built in 16.37s
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+  - @futurefab/ant-design-vue
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/ui-sdk-language
+  - @futurefab/ui-sdk-smp-api
+  - @futurefab/ui-sdk-smp-common
+  - @futurefab/ui-sdk-smp-stores
+  - vue
+  - vue-router
+
+> @futurefab/ui-sdk-smp-stores:build-dts
+
+(node:19236) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9956) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-sdk-smp-stores@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-stores
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+
+> @futurefab/ui-sdk-language:build-dts
+
+(node:20652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-sdk-language@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-language
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+
+> @futurefab/ui-sdk-smp-common:build-dts
+
+(node:5396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13752) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-sdk-smp-common@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\sdk-smp-common
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+
+> @futurefab/ui-app-smp-lab:build
+
+(node:26652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27544) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-app-smp-lab@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-lab
+> vite build
+
+(node:29376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 372 modules transformed.
+rendering chunks...
+
+构建 Hash: d6f7e932
+computing gzip size...
+dist/style.css                              246.28 kB │ gzip:  33.03 kB
+dist/_plugin-vue_export-helper-CLnTiSo1.js    0.17 kB │ gzip:   0.14 kB
+dist/feeding-workflow-Zj6jiik0.js             0.20 kB │ gzip:   0.15 kB
+dist/index.js                                 2.68 kB │ gzip:   0.84 kB
+dist/task-detail-Cr6Hipy_.js                 10.06 kB │ gzip:   4.11 kB
+dist/api-C5H4OJ6h.js                         11.70 kB │ gzip:   3.83 kB
+dist/executor-assignments-DDJ6Ht_p.js        13.10 kB │ gzip:   4.04 kB
+dist/culture-dashboard-B3_8ZPrd.js           25.42 kB │ gzip:   7.94 kB
+dist/lab-overview-D6i4iZCE.js                25.61 kB │ gzip:   6.34 kB
+dist/run-tasks-D3J34p4A.js                   43.98 kB │ gzip:  10.25 kB
+dist/approval-requests-BAHGdZZ1.js           47.17 kB │ gzip:  11.32 kB
+dist/reactor-overview-B2t-1P9F.js           663.40 kB │ gzip: 131.36 kB
+dist/feeding-workflow-Ct0VXJyQ.js           917.60 kB │ gzip: 224.37 kB
+✓ built in 9.85s
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+  - @futurefab/ant-design-vue
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/ui-sdk-language
+  - @futurefab/ui-sdk-smp-api
+  - @futurefab/ui-sdk-smp-common
+  - @futurefab/ui-sdk-smp-stores
+  - dayjs
+  - vue
+  - vue-router
+
+> @futurefab/ui-app-smp-data:build
+
+(node:8280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27592) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-app-smp-data@1.0.0 build D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-data
+> vite build
+
+(node:17612) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+可使用的预构建 lib:
+  - @futurefab/ui-lib-smp-base
+外部公共库:
+  - @futurefab/ant-design-vue (es, es/locale/en_US, es/locale/zh_CN, lib)
+  - @futurefab/echarts
+  - @futurefab/icons-vue
+  - @futurefab/ui-framework
+  - @futurefab/vxe-table (lib/locale/lang/en-US.js, lib/locale/lang/zh-CN.js)
+  - ant-design-vue (es, lib)
+  - dayjs (esm, esm/plugin/advancedFormat, esm/plugin/customParseFormat, esm/plugin/isBetween, esm/plugin/isToday, esm/plugin/isTomorrow, esm/plugin/localeData, esm/plugin/quarterOfYear, esm/plugin/weekOfYear, esm/plugin/weekYear, esm/plugin/weekday, plugin/advancedFormat, plugin/customParseFormat, plugin/isBetween, plugin/isToday, plugin/isTomorrow, plugin/localeData, plugin/quarterOfYear, plugin/weekOfYear, plugin/weekYear, plugin/weekday)
+  - debug
+  - immer
+  - pinia
+  - vue
+  - vue-demi
+  - vue-i18n
+  - vue-router
+  - xe-utils
+rolldown-vite v7.1.9 building for production...
+
+transforming...✓ 134 modules transformed.
+rendering chunks...
+
+构建 Hash: b683a3e2
+computing gzip size...
+dist/style.css                               32.43 kB │ gzip:  5.89 kB
+dist/_plugin-vue_export-helper-BtEf6m8d.js    0.17 kB │ gzip:  0.14 kB
+dist/detection-record-DB75_JPd.js             0.25 kB │ gzip:  0.18 kB
+dist/guarded-revision-SaWOv1i7.js             0.86 kB │ gzip:  0.54 kB
+dist/confirmation-DXeqsD-m.js                 1.49 kB │ gzip:  0.76 kB
+dist/m05-test-ids-P1aRUe54.js                 5.76 kB │ gzip:  1.82 kB
+dist/detect-signrecord-BHZ4-Yhq.js            5.92 kB │ gzip:  2.07 kB
+dist/index.js                                 6.21 kB │ gzip:  1.43 kB
+dist/device-usage-DZjBFy4G.js                10.45 kB │ gzip:  3.58 kB
+dist/detect-exceptionnote-s_rF-MdQ.js        11.07 kB │ gzip:  3.21 kB
+dist/detect-sampleitem-gz8hllrl.js           11.22 kB │ gzip:  3.20 kB
+dist/detect-samplehistory-CXFIgRr8.js        11.49 kB │ gzip:  3.26 kB
+dist/detect-auditlog-CQJAcHAI.js             12.04 kB │ gzip:  3.21 kB
+dist/detect-printlog-aaqsFGGR.js             13.09 kB │ gzip:  3.41 kB
+dist/M05ReportJobPanel-gRpemKLR.js           13.24 kB │ gzip:  3.51 kB
+dist/detect-ccpdlog-8LoIdpnc.js              14.40 kB │ gzip:  3.57 kB
+dist/detect-assignee-wtBGExDU.js             14.54 kB │ gzip:  3.63 kB
+dist/detect-detresult-CkyGXO6R.js            18.23 kB │ gzip:  4.51 kB
+dist/detect-approval-record-Cs4KDEFA.js      20.22 kB │ gzip:  4.57 kB
+dist/detect-detresultitem-B4KzpWIG.js        20.85 kB │ gzip:  3.84 kB
+dist/detection-record-BRPWYumz.js            27.98 kB │ gzip:  6.24 kB
+dist/detect-sample-BLml-a2y.js               30.97 kB │ gzip:  5.03 kB
+dist/detect-workbench-BmP5IfUD.js            40.10 kB │ gzip:  7.30 kB
+dist/detect-result-correction-HtL75The.js    42.42 kB │ gzip:  7.00 kB
+dist/batch-comparison-BK4qNRBZ.js            42.80 kB │ gzip: 11.31 kB
+dist/sign-workbench-Pt9oULma.js              53.48 kB │ gzip: 12.15 kB
+dist/statistics-CvrwaQ4l.js                  72.56 kB │ gzip: 19.63 kB
+dist/detection-workbench-CLbC2CjR.js        325.99 kB │ gzip: 84.24 kB
+✓ built in 5.93s
+
+使用到以下外部库，将保存于 UIMeta.externals 中:
+  - @futurefab/ant-design-vue
+  - @futurefab/echarts
+  - @futurefab/ui-framework
+  - @futurefab/ui-sdk-language
+  - @futurefab/ui-sdk-smp-api
+  - @futurefab/ui-sdk-smp-common
+  - @futurefab/ui-sdk-smp-stores
+  - vue
+  - vue-router
+
+> @futurefab/ui-app-smp-data:build-dts
+
+(node:29712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-app-smp-data@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-data
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+
+> @futurefab/ui-app-smp-lab:build-dts
+
+(node:22252) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15264) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-app-smp-lab@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-lab
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+src/views/config-association/pilot-state.ts(57,35): error TS2339: Property 'route' does not exist on type '{ kind: "PUMP" | "MFC"; channelNo: number; route?: "" | "HEAD_SPACE" | "SPARGER_1" | "SPARGER_2" | undefined; } | null'.
+src/views/config-association/pilot-state.ts(177,38): error TS18047: 'row.source' is possibly 'null'.
+src/views/config-association/pilot-state.ts(185,13): error TS18047: 'row.source' is possibly 'null'.
+src/views/config-association/pilot-state.ts(186,22): error TS18047: 'row.source' is possibly 'null'.
+src/views/config-association/pilot-state.ts(187,21): error TS18047: 'row.source' is possibly 'null'.
+src/views/config-association/pilot-state.ts(187,98): error TS18047: 'row.source' is possibly 'null'.
+ ELIFECYCLE  Command failed with exit code 2.
+
+> @futurefab/ui-lib-smp-base:check-without-dts
+
+(node:26804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-lib-smp-base@1.0.0 check-without-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\lib-smp-base
+> vue-tsc --noEmit --composite false
+
+
+> @futurefab/ui-app-smp-settings:build-dts
+
+(node:9796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @futurefab/ui-app-smp-settings@1.0.0 build-dts D:\Code\zhixianweilai\yaoming-cloud\futurefab-frontend\packages\app-smp-settings
+> vue-tsc --composite false --declaration --emitDeclarationOnly --declarationMap --skipLibCheck && tsc-alias
+
+src/views/alarm-alarm-notify-rule/index.vue(31,40): error TS7006: Parameter 'rule' implicitly has an 'any' type.
+src/views/alarm-mail-delivery/view.vue(399,51): error TS2550: Property 'replaceAll' does not exist on type 'string'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2021' or later.
+src/views/alarm-sms-delivery/view.vue(398,51): error TS2550: Property 'replaceAll' does not exist on type 'string'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2021' or later.
+ ELIFECYCLE  Command failed with exit code 2.
+
+
+
+ Lerna (powered by Nx)   Running targets build, build-dts, check-without-dts for 10 projects failed
+
+Tasks not run because their dependencies failed or --nx-bail=true:
+
+- @futurefab/ui-app-smp-data:check-without-dts
+- @futurefab/ui-app-smp-lab:check-without-dts
+- @futurefab/ui-app-smp-settings:check-without-dts
+- @futurefab/ui-portal:build
+- @futurefab/ui-portal:build-dts
+- @futurefab/ui-portal:check-without-dts
+
+Failed tasks:
+
+- @futurefab/ui-app-smp-lab:build-dts
+- @futurefab/ui-app-smp-settings:build-dts
+
+ ELIFECYCLE  Command failed with exit code 1.
+ ELIFECYCLE  Command failed with exit code 1.
