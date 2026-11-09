@@ -131,7 +131,7 @@ W01 selection_snapshot在schema1核心字段上登记本用途扩展：occupancy
 
 步骤时间记录：四步分别记录服务端开始/结束时间及结束原因；刷新重开新建尝试，旧时间审计保留，未知结束时间不伪造。时间留痕不构成业务表单的中间保存点。
 
-当前专题：[开始培养详细设计](开始培养工作流详细设计.md)；实施拆分：[开始培养开发计划](../../开发任务/小试中试开始培养开发计划-20261017.md)。本次仅文档补充，业务代码、数据库、设备操作均未执行。
+当前专题：[开始培养详细设计](开始培养工作流详细设计.md)；实施拆分：[开始培养开发计划](../../开发任务/05-专题交付/小试中试开始培养开发计划-20261017.md)。本次仅文档补充，业务代码、数据库、设备操作均未执行。
 
 
 > 2026-09-17 OBS模式增补：[业务观测采样与告警交接](业务观测采样与告警交接.md)为sample.raw_readings v2及OBSERVATION_ALARM事件payload v2的固定白名单；旧v1继续双读，不得向v1直接加未知键。执行spec增加sampleIdentityVersion=2的版本化扩展，仅新执行启用，其他字段/事件类型维持本文件原模式。
@@ -163,7 +163,7 @@ MeasurementPolicy.stability沿用上表三个既有字段，不新增JSON叶子�
 | 表.字段 | 完整结构/来源 | 可变性 |
 | --- | --- | --- |
 | runtime.readiness_evidence | {schemaVersion,dependencies:[{code,state:VERIFIED/UNVERIFIED/FAILED,sourceRef,issues}],evaluatedAt} | 投影可更新并写事件 |
-| runtime.plan_barrier_evidence | {schemaVersion,sourceEventId,oldPlan:SourceRef,newPlan:SourceRef,expectedCultureVersion,barrierVersion,affectedTaskIds,issues} | 屏障当前进度，历史进event |
+| runtime.plan_barrier_evidence | {schemaVersion,sourceEventId,oldPlan:SourceRef/null,newPlan:SourceRef,expectedCultureVersion,barrierVersion,affectedTaskIds,issues}；仅可信来源确认当前槽位无旧生效方案且旧快照编号、版本均为空时 oldPlan 为 null，不得将历史快照冒充当前生效方案；此时存在未终结任务则不得按旧方案取消 | 屏障当前进度，历史进event |
 | workflow.definition_snapshot | {schemaVersion,definition:SourceRef,nodeId,subflowId,subflowCode,repeatable,steps:[{stepId,stepCode,order,name,description,imageRef}],applicability}；M04导出固定内容 | 不可变 |
 | workflow.actor_snapshot | Actor | 不可变 |
 | workflow.selection_snapshot | {schemaVersion,culture:SourceRef,reactor:DeviceRef,pumps:[ResourceSnapshot],selectionRequestId,actor:Actor} | 不可变 |

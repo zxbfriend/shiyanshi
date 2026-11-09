@@ -12,7 +12,7 @@ GET `ProjectDetectionRuleController.get` 解析路径/实验室 → 应用服务
 
 PUT `ProjectDetectionRuleController.save` 使用WriteMeta双头 → 应用服务形态校验及M02只读值域校验 → M03-047 SYSTEM守卫 → 项目锁内Q05资格+lab操作+项目参与关系+项目CAS → 项目版本+1与覆盖配置upsert → 前后审计及幂等回执同事务。锁序为SYSTEM守卫→project→project配置；不修改M02规则行。精确契约见[项目级检测规则配置契约](项目级检测规则配置契约.md)。
 
-版本：DD-20260917-CALL-01。覆盖《接口目录与契约定位》的 Controller 入口；字段、权限、错误和DTO以来源契约为准，调用顺序以本文和[总设计](../00-Controller与模块接口调用总设计.md)为准。本文不表示接口已实现。
+版本：DD-20260917-CALL-01。覆盖《接口目录与契约定位》的 Controller 入口；字段、权限、错误和DTO以来源契约为准，调用顺序以本文和[总设计](../00-总纲与约定/00-Controller与模块接口调用总设计.md)为准。本文不表示接口已实现。
 
 ## 1. Controller入口逐项映射
 
@@ -109,7 +109,7 @@ B06/B07：删除预览先按当前会话的删除功能权限及 Q21 三类身�
 - HTTP字段必须先映射为 M03 自有Command/Query DTO；不得把Entity或Mapper参数暴露给Controller。
 - 查询端口无副作用；preview/precheck只返回当时快照，不替代最终锁内重验。
 - 命令端口必须保存requestId/requestHash或等价唯一回执；相同键异载荷返回REQUEST_CONFLICT。
-- 管理写时序不得重排公共守卫链：幂等回执冲突/重放判定 → SYSTEM全局管理版本判定 → 新请求业务回调。删除预览快照令牌的结构、签名与绑定校验在守卫链之前完成（失败即400/403，不进入事务）；令牌有效期与当前删除事实复核放在新请求回调内，全局版本与范围同时漂移时先返回MANAGEMENT_CONFLICT。成功回执的同键同载荷重放不得因令牌此后过期或对象已删除而失败。口径见[详细设计](详细设计.md)7.4与[开发任务/65号](../../开发任务/65-M03项目删除M03-006-007批次交付-20261004.md)§1第5—6项。
+- 管理写时序不得重排公共守卫链：幂等回执冲突/重放判定 → SYSTEM全局管理版本判定 → 新请求业务回调。删除预览快照令牌的结构、签名与绑定校验在守卫链之前完成（失败即400/403，不进入事务）；令牌有效期与当前删除事实复核放在新请求回调内，全局版本与范围同时漂移时先返回MANAGEMENT_CONFLICT。成功回执的同键同载荷重放不得因令牌此后过期或对象已删除而失败。口径见[详细设计](详细设计.md)7.4与[开发任务/65号](../../开发任务/03-接线与阻塞记录/65-M03项目删除M03-006-007批次交付-20261004.md)§1第5—6项。
 - 跨模块只调用总设计登记的Port；依赖失败不得降级成空集合、成功或“无需审批”。
 - 具体主表、唯一键、CHECK、JSON和索引以完整建表基线及模块最终目标DDL为准。
 
@@ -123,10 +123,10 @@ B06/B07：删除预览先按当前会话的删除功能权限及 Q21 三类身�
 
 | 入口及调用者 | 实际调用顺序与事务要求 |
 | --- | --- |
-| POST `.../plans/feeding/candidates/prepare` → `ResCultureController.prepareFeedingCandidate` → `CultureFeedingCandidateApplicationService.prepare` | 双管理头／edit → 原管理幂等与SYSTEM版本 → 对象及实验室范围 → lab／M06政策根／culture／slot锁 → SC019 INIT或SC048 MODIFY当前明确DIRECT政策 → 精确M04来源 → 固化候选snapshot、原输入及拟生效代次 → slot CAS至PREPARED → 原审计及回执。全过程不改effective指针／原任务、不创建新任务或M06单。 |
+| POST `.../plans/feeding/candidates/prepare` → `ResCultureController.prepareFeedingCandidate` → `CultureFeedingCandidateApplicationService.prepare` | 双管理头／edit → 原管理幂等与SYSTEM版本 → 对象及实验室范围 → lab／M06政策根／culture／slot锁 → SC019 INIT或SC048 MODIFY当前明确DIRECT政策 → 模板三字段或手工`plan`互斥，模板经M04精确导出，手工方案由服务端校验并经M04冻结，均复核固定包 → 固化候选snapshot、原输入及拟生效代次 → slot CAS至PREPARED → 原审计及回执。全过程不改effective指针／原任务、不创建新任务或M06单。 |
 | GET `.../candidates/{candidateId}/approval-material` → `feedingApprovalMaterial` → `approvalMaterial` | edit及原申请人／对象／实验室范围 → 读原snapshot与preparation_input → 复核原requestKey／requestHash、候选摘要、M04冻结来源及槽位 → 返回PreparationResult和顶层managementRevision；只读，不默认核准D0、算法或执行准备。 |
 | POST `.../candidates/{candidateId}/discard-preparation` → `discardFeedingPreparation` → `discardPreparation` | 双管理头／edit → 原幂等及SYSTEM版本 → 范围 → lab／政策根／culture／slot锁 → 原候选／摘要／版本、PREPARED且无审批单 → CAS DISCARDED → 原审计及回执；不撤销已生效方案或任务。 |
-| 原POST `.../candidates` → `submitFeedingCandidate` → `submit` | 原8字段加prepared三字段成组；DIRECT引用原准备，原输入／M04来源仍一致且expectedSlotVersion为准备后版本 → 新请求的双头、幂等、范围及原锁序 → 重新核当前SC019／SC048政策及准备原件 → 原M06明确DIRECT决定 → 原P02／M04校验／M07屏障与独立生成批准 → 旧任务处理／新任务生成／槽位生效CAS与application同事务提交。任一失败整体回滚，不先返回APPLIED再补批准。 |
+| 原POST `.../candidates` → `submitFeedingCandidate` → `submit` | 共同输入及互斥的模板三字段或手工`plan`；DIRECT另须成组提供prepared三字段并引用原准备，原输入／冻结来源仍一致且expectedSlotVersion为准备后版本 → 新请求的双头、幂等、范围及原锁序 → 重新核当前SC019／SC048政策及准备原件 → 原M06明确DIRECT决定 → 原P02／M04校验／M07屏障与独立生成批准 → 旧任务处理／新任务生成／槽位生效CAS与application同事务提交。任一失败整体回滚，不先返回APPLIED再补批准。 |
 
 prepare的原UUID只作为preparationRequestId关联，正式submit使用自己的原UUID及最新同模块managementRevision；准备、提交及撤销结果未知分别保留该次原请求／载荷重放，不换键重做。材料历史阶段不恢复原候选权限，不将PREPARED当PENDING／M06待审或M07任务业务状态。旧候选preparation_input保持NULL，不回填或推造准备。
 
