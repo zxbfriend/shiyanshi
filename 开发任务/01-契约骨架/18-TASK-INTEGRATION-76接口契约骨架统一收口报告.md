@@ -45,7 +45,7 @@ ADJUST=58、NEW=18（合计 76，与 00 机读清单 M01 子集完全一致；�
 - 00 物理接口表自身两处口径并存，机读链内部不完全自洽。
 权威文档互相冲突且无法按层级唯一裁决 → 按任务书 §五.1 不得为 76/76 强行通过。骨架五层接线（Controller→GroupQueryApplicationService→501）已完成并如实登记；裁决落地若需改 Controller/View/DTO 属生产代码，须随 R1/业务任务执行。
 
-> **TASK-G4 补记（2026-09-19）**：本节为当时裁决记录，保持原样。G4 阶段门已由 TASK-G4 闭合：裁决响应外壳=公共分页外壳 `PageResult<GroupRow>`（顶层 rows/total/pageNum/pageSize，先权限/数据范围过滤再计数分页）；复核确认主设计 §17.1、接口目录与 024 时序口径彼此同义，00 清单 response_vo 与《物理接口与骨架字段设计》字段表的 `List<GroupRow>` 属转录错误、已勘误（非需求新增）。M01-024 判 COMPLETE_SKELETON，详见 docs/开发任务/20-TASK-G4-M01-024分页外壳裁决与最终收口报告.md。
+> **TASK-G4 补记（2026-09-19）**：本节为当时裁决记录，保持原样。G4 阶段门已由 TASK-G4 闭合：裁决响应外壳=公共分页外壳 `PageResult<GroupRow>`（顶层 rows/total/pageNum/pageSize，先权限/数据范围过滤再计数分页）；复核确认主设计 §17.1、接口目录与 024 时序口径彼此同义，00 清单 response_vo 与《物理接口与骨架字段设计》字段表的 `List<GroupRow>` 属转录错误、已勘误（非需求新增）。M01-024 判 COMPLETE_SKELETON，详见 docs/开发任务/01-契约骨架/20-TASK-G4-M01-024分页外壳裁决与最终收口报告.md。
 
 ## 8. M01-044 / M01-071 最终裁决及依据
 
@@ -109,7 +109,7 @@ M01ResponseLeakGuardTest 13、ConfigDetailViewMaskingTest 6、M01UserSkeletonCon
 
 1. `docs/开发任务/10-全接口契约骨架覆盖审计.json`（收口更新：76 条逐字段同步、状态汇总、missing_files 清零、contract_drifts＋5、task_packages/推荐序/门禁自检/阻塞项 G4）
 2. `docs/开发任务/10-全接口契约骨架覆盖审计.md`（由更新后 JSON 程序化同源重渲染＋同步章节改写，新增 §十七收口说明）
-3. `docs/开发任务/18-TASK-INTEGRATION-76接口契约骨架统一收口报告.md`（本文件，新增）
+3. `docs/开发任务/01-契约骨架/18-TASK-INTEGRATION-76接口契约骨架统一收口报告.md`（本文件，新增）
 4. 临时只读取证/渲染/校验脚本 `integration_gate_scan.tmp.js`、`integration_gate_rows.tmp.json`、`integration_update.tmp.js`、`integration_md.tmp.js`、`integration_verify.tmp.js`——**验收后已全部删除，不属于交付物**；未新增集成测试类（24 门禁取证由既有各包契约测试＋本任务临时脚本完成，取证结论固化于审计 evidencePathsAndLines）。
 
 ## 22. 是否修改生产源码 / 发现的骨架缺陷

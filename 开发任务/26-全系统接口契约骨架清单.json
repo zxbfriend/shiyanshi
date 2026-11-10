@@ -8,7 +8,7 @@
   "_tmp_skelgen/spec/*.json interfaces[].blocked（blocked 登记）",
   "futurefab-modules/futurefab-system/src/test/resources/contract/skeleton-m0{2..9}.json（生成代码同源门禁条目）",
   "docs/开发任务/10-全接口契约骨架覆盖审计.json（M01 76/76 基线）",
-  "docs/开发任务/02-PKG-00公共契约与Port物理签名设计.md §6（71内部契约 Port 冻结表）",
+  "docs/开发任务/01-契约骨架/02-PKG-00公共契约与Port物理签名设计.md §6（71内部契约 Port 冻结表）",
   "PortSignatureSnapshotTest.FROZEN_SIGNATURES（Port 物理签名快照）"
  ],
  "scope": "M01—M07、M09 全部现行契约 Controller 入口（532条）；M08 完全排除",

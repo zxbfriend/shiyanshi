@@ -2,7 +2,7 @@
 
 图片：`futurefab-frontend-design-overview.png`，使用内置 imagegen 生成。
 
-内容依据 `work5/futurefab-frontend迁移设计方案.md` 和 `docs/实施进度.md`，重点展示：
+内容依据 `work5/futurefab-frontend迁移设计方案.md` 和 `docs/前端与工程笔记/实施进度.md`，重点展示：
 
 - 登录 → 门户选择 → 主入口切换 → 业务页面；当前授权主入口为系统设置、数据管理、系统监控。
 - 10 个工作区包：1 个门户、3 个业务子应用、5 个共享 SDK、1 个公司依赖预构建库。

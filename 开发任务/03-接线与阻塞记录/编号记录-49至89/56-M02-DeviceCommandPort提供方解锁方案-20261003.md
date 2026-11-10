@@ -3,7 +3,7 @@
 - 日期：2026-10-03
 - 基线：分支 cloud，HEAD `5fb95624`（= origin/cloud），工作区干净；本轮零代码/SQL/登记改动
 - 性质：SUPPORTING 过程文档；不替代任何现行契约；现行文档未变动
-- 前序：`docs/详细设计/02-实验室与资源管理/history/review/DeviceCommandPort提供方阻塞预检-20261003.md`（commit 94182695）、`docs/开发任务/53-TP-M09-02告警记录与消音预检报告-20261003.md`（work7）
+- 前序：`docs/详细设计/02-实验室与资源管理/history/review/DeviceCommandPort提供方阻塞预检-20261003.md`（commit 94182695）、`docs/开发任务/03-接线与阻塞记录/编号记录-49至89/53-TP-M09-02告警记录与消音预检报告-20261003.md`（work7）
 - 方法：只读检索现行权威文档与代码（grep/Read 行号可复核；本会话无 codebase-memory 工具，未使用）
 
 ## 1. 当前阻塞是否仍成立 —— 成立（HEAD 5fb95624 复核）

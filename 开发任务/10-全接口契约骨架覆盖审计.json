@@ -1247,7 +1247,7 @@
     "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/domain/vo/m01/GroupRow.java",
     "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/domain/vo/common/PageResult.java",
     "futurefab-modules/futurefab-system/src/test/java/com/futurefab/system/contract/M01OrgSkeletonContractTest.java（g4AdjudicationGroupListUsesCommonPageResultShell）",
-    "docs/开发任务/20-TASK-G4-M01-024分页外壳裁决与最终收口报告.md"
+    "docs/开发任务/01-契约骨架/20-TASK-G4-M01-024分页外壳裁决与最终收口报告.md"
    ],
    "gapDescription": [
     "骨架阶段无缺口；真实分页、keyword 搜索（组名/编码/负责人）、数据范围过滤、memberCount/leaders 装配与 total 计算属业务实现阶段（05 §9 接线验证）",
@@ -3783,7 +3783,7 @@
     "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/domain/dto/m01/OperLogDetailQuery.java",
     "futurefab-modules/futurefab-system/src/main/java/com/futurefab/system/domain/vo/m01/OperLogDetailView.java",
     "futurefab-modules/futurefab-system/src/test/java/com/futurefab/system/contract/M01SystemSkeletonContractTest.java（§5b 074 断言组）",
-    "docs/开发任务/19-TASK-INTEGRATION-R1-M01-074骨架修正报告.md"
+    "docs/开发任务/01-契约骨架/19-TASK-INTEGRATION-R1-M01-074骨架修正报告.md"
    ],
    "gapDescription": [
     "日志详情脱敏投影（operParam/jsonResult/errorMsg 截断）与 changes 白名单快照待业务实现（骨架不得返回数据伪装）"
@@ -3922,7 +3922,7 @@
    "raisedBy": "TASK-INTEGRATION",
    "interfaceId": "M01-053",
    "finding": "13报告裁决以 USR06 冻结输出 data=W 复用 MutationResult，而 00机读清单 response_vo=DeleteResult",
-   "basis": "docs/开发任务/13-TASK-USR契约骨架执行报告.md vs 00清单",
+   "basis": "docs/开发任务/01-契约骨架/13-TASK-USR契约骨架执行报告.md vs 00清单",
    "verdict": "登记为设计侧待裁决冲突；本收口不改动既有 COMPLETE 结论，裁决前以已交付裁决为准"
   },
   {

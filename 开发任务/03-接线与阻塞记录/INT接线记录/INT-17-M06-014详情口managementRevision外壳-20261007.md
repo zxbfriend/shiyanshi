@@ -9,7 +9,7 @@ M06-011 详情口（`GET /process/approval/requests/{approvalId}`）现标 `@Cur
 的唯一版本来源（AGENTS.md §13.3）。本批不写口加注、不改守卫语义、不改应用服务行为、不翻 M06-015，
 也不动 M06-010/012/013。
 
-依据 INT-14（`docs/开发任务/INT-14-M06-014-revision出口选择复核-20261007.md`，已入库 `4005594c`）：
+依据 INT-14（`docs/开发任务/03-接线与阻塞记录/INT接线记录/INT-14-M06-014-revision出口选择复核-20261007.md`，已入库 `4005594c`）：
 推荐 M06-011 而非 M06-010——版本值取自 `sys_management_revision` 的固定 SYSTEM 单行，两口数值必然相同，
 因此差别只在耦合面：审批动作页面本来就同页消费 M06-011 的详情快照与 M06-013 的预检摘要
 （`ProcessApprovalQueryApplicationServiceImpl:147-184`，预检摘要同响应 `:166-183`），把版本出口钉在详情口不引入列表依赖，

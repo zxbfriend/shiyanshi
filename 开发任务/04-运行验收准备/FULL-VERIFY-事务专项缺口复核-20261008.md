@@ -16,7 +16,7 @@
 ### 结论：**已被 INT-17 关闭（CONTRACT_TESTED）**
 
 承载测试：`futurefab-modules/futurefab-system/src/test/java/com/futurefab/system/contract/M06ApprovalActionLogWiredContractTest.java`
-关联文档：`docs/开发任务/INT-17-M06-014详情口managementRevision外壳-20261007.md`
+关联文档：`docs/开发任务/03-接线与阻塞记录/INT接线记录/INT-17-M06-014详情口managementRevision外壳-20261007.md`
 
 INT-17 起，该测试类除原 M06-012 只读契约外，额外承担 M06-011 详情口顶层 `managementRevision` 外壳取证，明确覆盖用户列的两点：
 
@@ -39,7 +39,7 @@ INT-17 §6 验证记录：该定向套件（`M06*` 等 25 类 / 331 条 / 0 失�
 ## 二、M05 检测结果事实 Provider 专项
 
 承载测试：`futurefab-modules/futurefab-system/src/test/java/com/futurefab/system/contract/M05DetectionResultAdapterContractTest.java`（INT-04 契约测试）
-关联文档：`docs/开发任务/INT-04-DetectionResultPort-provider前置窗口-20261007.md`、`INT-13-M07-019-M05来源确认Aprime过渡-20261007.md`、`INT-09-M07-019-DET-I06字段缺口裁决包-20261007.md`
+关联文档：`docs/开发任务/03-接线与阻塞记录/INT接线记录/INT-04-DetectionResultPort-provider前置窗口-20261007.md`、`INT-13-M07-019-M05来源确认Aprime过渡-20261007.md`、`INT-09-M07-019-DET-I06字段缺口裁决包-20261007.md`
 
 逐条核对用户列出的四条：
 
@@ -61,13 +61,13 @@ INT-17 §6 验证记录：该定向套件（`M06*` 等 25 类 / 331 条 / 0 失�
 
 1. **M06-011 缺口是否已闭**：已闭 — 标记“已被 INT-17 关闭”（CONTRACT_TESTED；HTTP/浏览器/菜单仍为 NOT_VERIFIED/BLOCKED_MENU，属 INT-17 已登记的独立阻塞面）。
 2. **M05 Provider 缺口是否已闭**：部分关闭 — ①②③ 已闭；④ `content_snapshot` 写入方缺失 / `BLOCKED_DATA` 未覆盖，建议拆为独立 `BLOCKED_DATA` 跟踪项，故该缺口整体**未闭**。
-3. **修改文件清单**：本报告为本次复核唯一新增文件 `docs/开发任务/FULL-VERIFY-事务专项缺口复核-20261008.md`（交付物，未提交）。**未修改任何测试/生产/契约/SQL/DDL 文件**，未改 `M06ApprovalActionLogWiredContractTest`、`M05DetectionResultAdapterContractTest` 或其他任何源码。
+3. **修改文件清单**：本报告为本次复核唯一新增文件 `docs/开发任务/04-运行验收准备/FULL-VERIFY-事务专项缺口复核-20261008.md`（交付物，未提交）。**未修改任何测试/生产/契约/SQL/DDL 文件**，未改 `M06ApprovalActionLogWiredContractTest`、`M05DetectionResultAdapterContractTest` 或其他任何源码。
 4. **测试是否运行**：**未运行 Maven**。依据：用户授权“不跑 Maven 也可以”；静态证据已充分（方法名 + 断言直接对应三条要求）；INT-17 §6 已记录该 M06 类定向套件 0 失败（可作为 CONTRACT_TESTED 已验证的既往证据）。如总控要求运行态确认，可用：
    `mvn -o -pl futurefab-modules/futurefab-system -am test -Dtest="M06ApprovalActionLogWiredContractTest,M05DetectionResultAdapterContractTest" -Dsurefire.failIfNoSpecifiedTests=false`
    （注意：模块全量曾有一例环境红 `M05WorkbenchAndReportBlockedEvidenceContractTest`（前端 `node_modules` 悬空符号链接），不在上述 `-Dtest` 范围，不影响这两类结果。）
 5. **git status**：
    - `M .gitignore`（开工前既存的用户无关修改，本批未触碰、未纳入）
-   - 本次新增（未跟踪、未 stage）：`docs/开发任务/FULL-VERIFY-事务专项缺口复核-20261008.md`
+   - 本次新增（未跟踪、未 stage）：`docs/开发任务/04-运行验收准备/FULL-VERIFY-事务专项缺口复核-20261008.md`
    - `HEAD` = `24a6df9afcefa0a0f753067f003ecd5cc069ce6b`，与 `origin/cloud` 一致，ahead-behind `0 0`。
    - 未执行 add/commit/push/reset/stash/clean/pull/merge/rebase。
 

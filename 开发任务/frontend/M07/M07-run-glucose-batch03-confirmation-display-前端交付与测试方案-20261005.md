@@ -16,7 +16,7 @@
 | 本批代码改动 | **无**（0 个源码/路由/菜单/测试文件变更） |
 | 本批交付层级 | **NO_UI**（页面不存在）+ **BLOCKED_MENU**（无菜单登记）+ **BLOCKED_M05**（写路径后端失败关闭）；HTTP / 浏览器 / 数据库 / 外部设备 **NOT_VERIFIED** |
 | 本批禁止并已遵守 | 不 git add、不 commit、不 push；不改后端/SQL/客户材料/history；不强行造页面；不接外部设备；不伪造测量结果；不发设备指令；不伪造 M05 样品校验通过 |
-| 权威依据 | `docs/详细设计/07-补液运行与任务执行/任务页面与接口契约.md`、`培养运行操作页与独立入口.md`（DD-20260917，§9 明示「本文是目标设计，未实现页面或接口」）、`计量确认与补液计算契约.md`、`错误码全集.md`、`接口目录与契约定位.md` 定位017—021、`docs/开发基线/01-完整建表.sql`、`docs/开发任务/M07-残糖确认写路径批交接-20261005.md`（work10 后端批）、AGENTS.md §13.2/§13.3/§13.6 |
+| 权威依据 | `docs/详细设计/07-补液运行与任务执行/任务页面与接口契约.md`、`培养运行操作页与独立入口.md`（DD-20260917，§9 明示「本文是目标设计，未实现页面或接口」）、`计量确认与补液计算契约.md`、`错误码全集.md`、`接口目录与契约定位.md` 定位017—021、`docs/开发基线/01-完整建表.sql`、`docs/开发任务/03-接线与阻塞记录/模块台账与其他/M07-残糖确认写路径批交接-20261005.md`（work10 后端批）、AGENTS.md §13.2/§13.3/§13.6 |
 
 ## 2. 修改文件清单
 
@@ -139,7 +139,7 @@ M07 模块码→HTTP 状态（`docs/详细设计/07-补液运行与任务执行/
 | V8 | `grep -rn "@ManagementGuardedWrite\|CurrentManagementRevision" controller/run/` | 后端静态 | 守卫写 3 处（`RunMeasurementController.java:44,56,69`）；`@CurrentManagementRevision` **0 处** |
 | V9 | `grep -n "setObjectVersion" service/impl/application/m07/…Impl.java domain/vo/m07/ConfirmationView.java` | 后端静态 | ConfirmationView 只有 setter 定义（:47），Impl 内无对视图的赋值 ⇒ §3.6 第 2 条成立 |
 | V10 | 读 `docs/开发基线/01-完整建表.sql:3129-3156`、`RunConfirmationMapper.xml:48-57`、`skeleton-m07.json`（017—021 wired=true，015 无 wired） | 契约静态 | 与 §3.2/§3.3 一致 |
-| V11 | 读 `docs/开发任务/M07-残糖确认写路径批交接-20261005.md`（work10 批，后端层级 IMPLEMENTED+CONTRACT_TESTED，全链 NOT_VERIFIED） | 交叉印证 | 与本批静态判定无冲突；未据此把任何后端事项宣称为已联调 |
+| V11 | 读 `docs/开发任务/03-接线与阻塞记录/模块台账与其他/M07-残糖确认写路径批交接-20261005.md`（work10 批，后端层级 IMPLEMENTED+CONTRACT_TESTED，全链 NOT_VERIFIED） | 交叉印证 | 与本批静态判定无冲突；未据此把任何后端事项宣称为已联调 |
 
 未运行：前端 `type-check` / `build-dts` / 生产构建 / vitest（无源码改动，运行它们对本批结论无增量证据；仓库基线由 Batch 02 回报时的绿灯记录覆盖）。未执行任何 SQL、未发起任何 HTTP 请求。
 

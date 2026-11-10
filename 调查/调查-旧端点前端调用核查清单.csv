@@ -25,7 +25,7 @@
 24,POST /detect/signrecord,DetResultSignRecordController.java:85（抛88）,停用写口+Legacy台账,无（SDK 仅 listSignrecord）,"无",无,确认无任何调用方,不适用（已400拒绝且无调用方）
 25,PUT /detect/signrecord,DetResultSignRecordController.java:93（抛96）,停用写口+Legacy台账,无,"无",无,确认无任何调用方,不适用
 26,DELETE /detect/signrecord/{signIds},DetResultSignRecordController.java:101（抛104）,停用写口+Legacy台账,无,"无",无,确认无任何调用方,不适用
-27,GET /process/approval/deliveries/{id}/reconciliation-preview,ApprovalReconciliationController.java:44,调查结论（docs/调查-M06审批投递现状.md:14）,无,"无",无（仅设计文档描述）,确认无任何调用方,不适用
+27,GET /process/approval/deliveries/{id}/reconciliation-preview,ApprovalReconciliationController.java:44,调查结论（docs/调查/调查-M06审批投递现状.md:14）,无,"无",无（仅设计文档描述）,确认无任何调用方,不适用
 28,POST /process/approval/deliveries/{id}/reconciliations,ApprovalReconciliationController.java:56,调查结论（同上）,无,"无",无,确认无任何调用方,不适用
 29,POST /process/approval/reconciliations/{id}/review,ApprovalReconciliationController.java:65,调查结论（同上）,无,"无",无,确认无任何调用方,不适用
 30,POST /process/approval/reconciliations/{id}/withdraw,ApprovalReconciliationController.java:74,调查结论（同上）,无,"无",无,确认无任何调用方,不适用

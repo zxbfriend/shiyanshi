@@ -138,7 +138,7 @@
 
 新增测试（1）：`futurefab-modules/futurefab-system/src/test/java/com/futurefab/system/contract/M01OrgSkeletonContractTest.java`
 
-新增报告（1）：`docs/开发任务/14-TASK-ORG契约骨架执行报告.md`（本文件）
+新增报告（1）：`docs/开发任务/01-契约骨架/14-TASK-ORG契约骨架执行报告.md`（本文件）
 
 未触碰：其他并行任务（ACL/DIC/CFG/SECURITY/ROUTE）自有文件、`docs/开发任务/10-*` 审计双文件、`05-*` 差异审计与 06—13 报告、仓库根 `_tmp_*`、Mapper/XML/SQL、`futurefab-ui`、`docs/接口文档` 等只读资料。
 

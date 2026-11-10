@@ -598,7 +598,7 @@ expected（PHYSICAL 时 after 空）。同一业务对象无论输入多少种�
 |------|------|
 | `service/audit/ManagementAuditWriter.java` | 新增 `canonicalSnapshotObjectId`；`indexByObjectId` canonical key + 重复失败关闭；`snapshotIds`/`validateSnapshots`/`renderSnapshot` 改调同一函数；类 Javadoc 增 ⑦ |
 | `test/.../audit/ManagementAuditWriterOutcomeClosureTest.java` | 文末新增 R2 §四 6 项测试 + 2 个助手 + 类 Javadoc R2 段 |
-| `docs/开发任务/24-TASK-INFRA-AUDIT执行报告.md` | 本报告升级 R2（标题、头注、本修订记录） |
+| `docs/开发任务/01-契约骨架/24-TASK-INFRA-AUDIT执行报告.md` | 本报告升级 R2（标题、头注、本修订记录） |
 
 mtime 窗口（21:25 后）取证：本任务源码触碰仅上述前两文件；
 `ManagementAuditWriterTest.java`/`TxTest`/`AuditPolicyRegistry*` 等 21:02-21:21 文件为 R1 前序交付；

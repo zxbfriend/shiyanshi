@@ -115,7 +115,7 @@ Controller必须只调用表中的唯一应用端口。应用端口先做当前�
 
 本文件自动登记 76 个目录内HTTP入口、0 个内部定位项、0 个尾部补登记入口。数量校验只防漏项；逐接口仍须以来源契约完成成功、拒绝、冲突、重复、超时/UNKNOWN和失权用例。
 
-## 6. TASK-GATES 补充：管理写快照时序与 SEC-I01 口径（2026-09-19，裁决明细见 docs/开发任务/21-TASK-GATES-G1-G3阶段门裁决报告.md）
+## 6. TASK-GATES 补充：管理写快照时序与 SEC-I01 口径（2026-09-19，裁决明细见 docs/开发任务/01-契约骨架/21-TASK-GATES-G1-G3阶段门裁决报告.md）
 
 - §1 各写口的真实实现时序统一收敛为 21 报告 §1.3 十六步（Controller 只绑定→AppService 合并可信 WriteMeta→守卫先解析 ActorContext→同事务锁 SYSTEM 行→幂等→版本校验→写前 beforeSnapshot→业务写→写后审计前 afterSnapshot→白名单审计明细→Hook 同事务写审计→revision CAS→回执→提交→提交后仅回填 committedManagementRevision）；29 个 operationCode 的 auditTitle/businessType/主ID与affectedIds来源/快照白名单/脱敏禁列以 21 报告 §1.4 映射表为唯一来源。
 - §3 SEC-I01 行冻结：输入仅 requestId+sessionKey（operationCode 走守卫服务端枚举）；输出 ActorContext **五字段**（actorUserId/actorName/sessionKey/authzVersion/requestId；原"六字段+labScopes 经 M02 聚合"口径已由 TASK-GATES-R1 废止，见 22 报告——SEC-I01 不依赖 M02、不承载领域范围，实验室范围唯一权威=M02 LabAuthorizationPort 事务内实时判定）；单请求一次解析、全链复用同一快照；authzVersion=resolve 时刻 sys_management_revision SYSTEM 当前值（非 session_version/非 objectVersion）；失败复用 401 SESSION_INVALID/SESSION_REPLACED、409 SESSION_VERSION_CONFLICT、403 ACCOUNT_UNAVAILABLE、503 AUTH_DEPENDENCY_UNAVAILABLE，fail-closed 不降级匿名；对象范围与受保护校验仍由事务内 AppService/领域 Port 重验（G3）。

@@ -1,6 +1,6 @@
 # 旧 CRUD 写端点去重核查（阶段 2 前置 · 2026-11-04）
 
-> 范围：`docs/调查-旧CRUD写端点处置登记表.md` 登记的 70 条 DISABLE（原 73 条中 3 条 DetectionRule 已于 2026-11-04 改判 ADJUST 并移出）。
+> 范围：`docs/调查/调查-旧CRUD写端点处置登记表.md` 登记的 70 条 DISABLE（原 73 条中 3 条 DetectionRule 已于 2026-11-04 改判 ADJUST 并移出）。
 > 目标：在加 `@Deprecated` 之前，先确认每条是否真的还能被调用，避免给已停用端点做无效标注、也避免标注仍在前端使用的端点。
 > 方法：只读检索仓库内 Controller、`sdk-smp-api`、`app-smp-*` 页面、`futurefab-api`/Feign、测试与配置；逐条比对路径、方法、SDK 函数与页面调用点。
 > 限制：本轮**不改任何 Java 代码**，不 commit/push；未执行 HTTP、浏览器、SQL、Java 运行验证，结论层级为「静态检查通过」。

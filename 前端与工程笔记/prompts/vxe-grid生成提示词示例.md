@@ -29,8 +29,8 @@
 - 已有页面提供 rows/loading、pageNum/pageSize、权限状态、statusLabel、编辑和删除处理函数
 
 【先阅读，不猜组件 API】
-1. README.md、docs/系统设置纯表格迁移交接.md。
-2. docs/VXE表格基础配置.md、docs/公共按钮组件.md。
+1. README.md、docs/前端与工程笔记/系统设置纯表格迁移交接.md。
+2. docs/前端与工程笔记/VXE表格基础配置.md、docs/前端与工程笔记/公共按钮组件.md。
 3. packages/sdk-smp-common/src/table.ts 和 src/index.ts。
 4. packages/sdk-smp-common/src/components/icon-button/index.vue、button-tip/index.vue 及 interface.ts。
 5. packages/app-smp-settings/src/views/post-management/grid.ts 和 index.vue。

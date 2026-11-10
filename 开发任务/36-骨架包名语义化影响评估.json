@@ -6,12 +6,12 @@
     "mode": "READ_ONLY 评估：未修改任何 Java/XML/SQL/Vue 源码、26 清单、skeleton 资源、测试门禁；未执行任何 git 写操作",
     "basis": [
       "docs/开发任务/26-全系统接口契约骨架清单.json",
-      "docs/开发任务/30-TASK-SKELETON-全系统骨架待验收汇总.md",
+      "docs/开发任务/01-契约骨架/30-TASK-SKELETON-全系统骨架待验收汇总.md",
       "docs/开发任务/31-第8步全量骨架验收复核审计报告.md（合并定稿版）",
-      "docs/开发任务/33-第9步任务包生成基线规则.md（R1，12条规则）",
+      "docs/开发任务/02-骨架验收与任务包/33-第9步任务包生成基线规则.md（R1，12条规则）",
       "futurefab-modules/futurefab-system/src/test/resources/contract/skeleton-m02..m07/m09.json",
       "futurefab-modules/futurefab-system/src/test/resources/contract/port-closure-anchor.json",
-      "docs/详细设计/00-业务模块划分与设计目录.md（模块业务名权威）"
+      "docs/详细设计/00-总纲与约定/00-业务模块划分与设计目录.md（模块业务名权威）"
     ],
     "evidence": "统计由 _tmp_skelgen/gen/audit36.js 只读遍历产出（audit36-stats.json），本报告数字全部同源"
   },
@@ -84,7 +84,7 @@
     "approxTotal": "约 1924 个文件（源码 ~1844 + 资源/清单/生成器/文档 ~80），另有 463 测试全量回归、三处锚点重算、00 冻结清单勘误"
   },
   "mappingCorrection": {
-    "authority": "docs/详细设计/00-业务模块划分与设计目录.md §2",
+    "authority": "docs/详细设计/00-总纲与约定/00-业务模块划分与设计目录.md §2",
     "table": [
       { "module": "M01", "business": "系统管理", "userSuggestion": "system|identity", "assessment": "system 与根包 com.futurefab.system 段重名（…system.domain.dto.system 拗口）；identity 覆盖不全（含字典/配置/日志）。备选 sysmgmt/admin" },
       { "module": "M02", "business": "实验室与资源管理", "userSuggestion": "lab", "assessment": "可接受；资源(设备/耗材)域占比大，labresource 更准但冗长" },
